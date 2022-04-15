@@ -121,7 +121,7 @@ class TetaClient {
   /// Throws an exception on request error ( statusCode != 200 )
   ///
   /// Returns the collection as `Map<String,dynamic>`
-  Future<CollectionObject> getCollection(
+  Future<List<Map<String, dynamic>>> getCollection(
     final int projectId,
     final String collectionId,
   ) async {
@@ -139,7 +139,9 @@ class TetaClient {
 
     final data = json.encode(res.body) as Map<String, dynamic>;
 
-    return CollectionObject.fromJson(json: data);
+    final docs = data['docs'] as List<Map<String, dynamic>>;
+
+    return docs;
   }
 
   /// Gets all collection where prj_id is [projectId].
