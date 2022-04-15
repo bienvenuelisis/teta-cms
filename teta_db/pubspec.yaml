@@ -1,6 +1,6 @@
 name: teta_db
-description: A new Flutter package project.
-version: 0.0.4
+description: TetaCMS official package
+version: 0.0.5
 homepage:
 publish_to: none
 
