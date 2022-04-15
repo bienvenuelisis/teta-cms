@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:teta_db/src/constants.dart';
+import 'package:teta_db/src/middle.dart';
 import 'package:teta_db/teta_db.dart';
 
 class TetaClient {
@@ -38,8 +39,8 @@ class TetaClient {
       final response = await TetaMiddleAPI.instance.getDocsByQuery(
         collection: 'collections',
         query: <String, dynamic>{
-          TetaCMSConstants.prjIdKey: prjId,
-          TetaCMSConstants.docId: id,
+          Constants.prjIdKey: prjId,
+          Constants.docId: id,
         },
       );
       if (response.isNotEmpty) {

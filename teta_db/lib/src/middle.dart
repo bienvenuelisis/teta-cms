@@ -2,8 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
-import './constants.dart';
+import 'package:teta_db/src/constants.dart';
 
 class TetaMiddleAPI {
   /// Singleton
@@ -11,15 +10,11 @@ class TetaMiddleAPI {
 }
 
 class _TetaDB {
-  Map<String, String> get _headers => <String, String>{
-        'Content-Type': 'application/json',
-      };
-
   Future<dynamic> getDocsById({
     required final String collection,
     required final String id,
   }) async {
-    final url = '${Constants.urlBase}$collection/$id';
+    final url = '${Constants.tetaUrl}/db/$collection/$id';
     final response = await http.get(
       Uri.parse(url),
     );
@@ -35,10 +30,10 @@ class _TetaDB {
     required final Map<String, dynamic> query,
     final Map<String, dynamic> projection = const <String, dynamic>{},
   }) async {
-    final url = '${Constants.urlBase}get/$collection';
+    final url = '${Constants.tetaUrl}/db/get/$collection';
     final response = await http.post(
       Uri.parse(url),
-      headers: _headers,
+      headers: Constants.defaultHeaders,
       body: json.encode(
         <String, dynamic>{
           'query': query,
@@ -61,10 +56,10 @@ class _TetaDB {
     required final String collection,
     required final Map<String, dynamic> attributes,
   }) async {
-    final url = '${Constants.urlBase}$collection';
+    final url = '${Constants.tetaUrl}/db/$collection';
     final response = await http.post(
       Uri.parse(url),
-      headers: _headers,
+      headers: Constants.defaultHeaders,
       body: json.encode(attributes),
     );
     if (response.statusCode == 200) {
@@ -81,10 +76,10 @@ class _TetaDB {
     required final Map<String, dynamic> query,
     required final Map<String, dynamic> data,
   }) async {
-    final url = '${Constants.urlBase}$collection';
+    final url = '${Constants.tetaUrl}/db/$collection';
     final response = await http.put(
       Uri.parse(url),
-      headers: _headers,
+      headers: Constants.defaultHeaders,
       body: json.encode(
         <String, dynamic>{
           'query': query,
@@ -103,7 +98,7 @@ class _TetaDB {
     required final String collection,
     required final String id,
   }) async {
-    final url = '${Constants.urlBase}$collection/$id';
+    final url = '${Constants.tetaUrl}/db/$collection/$id';
     final response = await http.delete(
       Uri.parse(url),
     );
@@ -118,10 +113,10 @@ class _TetaDB {
     required final String collection,
     required final Map<String, dynamic> query,
   }) async {
-    final url = '${Constants.urlBase}$collection';
+    final url = '${Constants.tetaUrl}/db/$collection';
     final response = await http.delete(
       Uri.parse(url),
-      headers: _headers,
+      headers: Constants.defaultHeaders,
       body: json.encode(
         query,
       ),

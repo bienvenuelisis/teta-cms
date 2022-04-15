@@ -50,7 +50,7 @@ class _TetaDB {
   ) async {
     final body = value;
 
-    final uri = Uri.parse('$_baseUrl/db/$collection');
+    final uri = Uri.parse('${Constants.tetaUrl}/db/$collection');
 
     final res = await http.post(
       uri,
@@ -71,12 +71,11 @@ class _TetaDB {
     final dynamic value,
     final Map<String, dynamic>? rawPath,
   }) async {
-    final query =
-        rawPath ?? TetaNoSqlUtils.instance.pathToObject('$path', value);
+    final query = rawPath ?? TetaDBUtils.instance.pathToObject('$path', value);
 
     final body = query;
 
-    final uri = Uri.parse('$_baseUrl/db/$collection');
+    final uri = Uri.parse('${Constants.tetaUrl}/db/$collection');
 
     final res = await http.delete(
       uri,
@@ -99,7 +98,7 @@ class _TetaDB {
     final Map<String, dynamic> doc, {
     required final String token,
   }) async {
-    final uri = Uri.parse('$_baseUrl/cms/doc/$uid/$docId');
+    final uri = Uri.parse('${Constants.tetaUrl}/cms/doc/$uid/$docId');
 
     final res = await http.put(
       uri,
@@ -125,13 +124,13 @@ class _TetaDB {
     final Map<String, dynamic> content, {
     required final String token,
   }) async {
-    final query = TetaNoSqlUtils.instance.pathToObject(path, value);
+    final query = TetaDBUtils.instance.pathToObject(path, value);
 
     final body = {'query': query, 'data': content};
 
     debugPrint('$body');
 
-    final uri = Uri.parse('$_baseUrl/db/$collection');
+    final uri = Uri.parse('${Constants.tetaUrl}/db/$collection');
 
     final res = await http.put(
       uri,
@@ -185,7 +184,7 @@ class _TetaDB {
     final collection = arr.first;
     final query = arr.sublist(1).join('.');
 
-    final uri = Uri.parse('$_baseUrl/db/get/$collection');
+    final uri = Uri.parse('${Constants.tetaUrl}/db/get/$collection');
     final res = await http.post(
       uri,
       headers: {

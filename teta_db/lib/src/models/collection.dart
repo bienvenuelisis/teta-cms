@@ -10,9 +10,9 @@ class CollectionObject extends Equatable {
 
   CollectionObject.fromJson({
     required final Map<String, dynamic> json,
-  })  : id = json[TetaCMSConstants.docId] as String,
+  })  : id = json[Constants.docId] as String,
         name = json['name'] as String,
-        prjId = json[TetaCMSConstants.prjIdKey] as int;
+        prjId = json[Constants.prjIdKey] as int;
 
   final String id;
   final String name;
@@ -20,7 +20,7 @@ class CollectionObject extends Equatable {
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'name': name,
-        TetaCMSConstants.prjIdKey: prjId,
+        Constants.prjIdKey: prjId,
         'security': 'prj_id',
       };
 

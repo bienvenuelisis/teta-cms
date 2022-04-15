@@ -1,10 +1,10 @@
 part of '../index.dart';
 
-class TetaNoSqlUtils {
-  static final instance = _TetaNoSqlUtils();
+class TetaDBUtils {
+  static final instance = _TetaDBUtils();
 }
 
-class _TetaNoSqlUtils {
+class _TetaDBUtils {
   /// Creates a `path` for `select` function using [collection] and [path].
   ///
   /// [collection] = The collection

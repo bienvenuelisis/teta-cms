@@ -22,7 +22,7 @@ class _TetaRealtime {
         .disableAutoConnect()
         .build();
 
-    _socket = socket_io.io(_baseUrl, opts);
+    _socket = socket_io.io(Constants.tetaUrl, opts);
 
     _socket?.onConnect((final dynamic _) {
       completer.complete();
@@ -64,9 +64,10 @@ class _TetaRealtime {
 
     final collection = path.split('.').first;
 
-    final body = TetaNoSqlUtils.instance.pathToObject(path, value);
+    final body = TetaDBUtils.instance.pathToObject(path, value);
 
-    final uri = Uri.parse('$_baseUrl/realtime/$collection/${_socket!.id}');
+    final uri =
+        Uri.parse('${Constants.tetaUrl}/realtime/$collection/${_socket!.id}');
     final res = await http.post(
       uri,
       headers: {'content-type': 'application/json'},
