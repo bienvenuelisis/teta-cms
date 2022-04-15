@@ -121,7 +121,7 @@ class TetaClient {
   /// Throws an exception on request error ( statusCode != 200 )
   ///
   /// Returns the collection as `Map<String,dynamic>`
-  Future<List<Map<String, dynamic>>> getCollection(
+  Future<List<dynamic>> getCollection(
     final int projectId,
     final String collectionId,
   ) async {
@@ -139,7 +139,7 @@ class TetaClient {
 
     final data = json.encode(res.body) as Map<String, dynamic>;
 
-    final docs = data['docs'] as List<Map<String, dynamic>>;
+    final docs = data['docs'] as List<dynamic>;
 
     return docs;
   }
