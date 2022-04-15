@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:teta_db/src/constants.dart';
-import 'package:teta_db/src/middle.dart';
-import 'package:teta_db/teta_db.dart';
+import 'package:teta_cms/src/constants.dart';
+import 'package:teta_cms/src/middle.dart';
+import 'package:teta_cms/teta_cms.dart';
 
 class TetaClient {
   TetaClient(this.token);

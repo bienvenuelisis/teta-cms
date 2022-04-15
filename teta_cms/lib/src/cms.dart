@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
-import 'package:teta_db/src/client.dart';
+import 'package:teta_cms/src/client.dart';
 
 /// TetaCMS instance.
 ///

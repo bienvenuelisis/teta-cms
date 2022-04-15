@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:teta_db/teta_db.dart';
+import 'package:teta_cms/teta_cms.dart';
 
 void main() {
   if (true) {
