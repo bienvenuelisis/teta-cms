@@ -12,6 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
 
+  http:
   equatable:
   socket_io_client: ^1.0.2
   hive:

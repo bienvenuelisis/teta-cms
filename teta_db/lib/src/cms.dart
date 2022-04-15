@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:teta_cms/src/constants.dart';
+import 'package:teta_db/src/constants.dart';
 import 'package:teta_db/teta_db.dart';
 
 class TetaCMS {

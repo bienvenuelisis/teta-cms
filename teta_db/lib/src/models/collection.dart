@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:teta_cms/src/constants.dart';
+import 'package:teta_db/src/constants.dart';
 
 class CollectionObject extends Equatable {
   const CollectionObject({
