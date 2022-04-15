@@ -1,193 +1,235 @@
-import 'package:flutter/material.dart';
-import 'package:teta_cms/src/constants.dart';
-import 'package:teta_cms/src/middle.dart';
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
 import 'package:teta_cms/teta_cms.dart';
 
 class TetaClient {
   TetaClient(this.token);
   final String token;
 
-  Future<List<CollectionObject>> getCollections({
-    required final int prjId,
-  }) async {
-    try {
-      final response = await TetaDB.instance.select(
-        'collections.prj_id',
-        prjId,
-        isList: true,
-        projection: 'collections.docs',
-        token: token,
-      ) as List<dynamic>;
-      final collections = <CollectionObject>[];
-      for (final col in response) {
-        collections.add(
-          CollectionObject.fromJson(json: col as Map<String, dynamic>),
-        );
-      }
-      return collections;
-    } catch (e) {
-      debugPrint('$e');
-      return [];
+  /// Creates a new collection with name [collectionName] and prj_id [projectId].
+  ///
+  /// Throws an exception on request error ( statusCode != 200 )
+  ///
+  /// Returns the created collection as `Map<String,dynamic`
+  Future<Map<String, dynamic>> createCollection(
+    final int projectId,
+    final String collectionName,
+  ) async {
+    final uri =
+        Uri.parse('https://public.teta.so:9840/cms/$projectId/$collectionName');
+
+    final res = await http.post(
+      uri,
+      headers: {'authorization': 'Bearer $token'},
+    );
+
+    if (res.statusCode != 200) {
+      throw Exception('createCollection returned status ${res.statusCode}');
     }
+
+    final data = json.encode(res.body) as Map<String, dynamic>;
+
+    return data;
   }
 
-  Future<CollectionObject?> getCollection({
-    required final int prjId,
-    required final String id,
-  }) async {
-    try {
-      final response = await TetaMiddleAPI.instance.getDocsByQuery(
-        collection: 'collections',
-        query: <String, dynamic>{
-          Constants.prjIdKey: prjId,
-          Constants.docId: id,
-        },
-      );
-      if (response.isNotEmpty) {
-        return CollectionObject.fromJson(
-          json: response.first as Map<String, dynamic>,
-        );
-      }
-    } catch (e) {
-      debugPrint('$e');
+  /// Deletes the collection with id [collectionId] if prj_id is [projectId].
+  ///
+  /// Throws an exception on request error ( statusCode != 200 )
+  ///
+  /// Returns `true` on success
+  Future<bool> deleteCollection(
+    final int projectId,
+    final String collectionId,
+  ) async {
+    final uri =
+        Uri.parse('https://public.teta.so:9840/cms/$projectId/$collectionId');
+
+    final res = await http.delete(
+      uri,
+      headers: {
+        'authorization': 'Bearer $token',
+      },
+    );
+
+    if (res.statusCode != 200) {
+      throw Exception('deleteDocument returned status ${res.statusCode}');
     }
-    return null;
+
+    return true;
   }
 
-  Future<void> insertCollection({
-    required final CollectionObject collection,
-  }) async {
-    try {
-      final dynamic response = await TetaMiddleAPI.instance.insertDoc(
-        collection: 'collections',
-        attributes: collection.toJson(),
-      );
-      debugPrint('$response');
-    } catch (e) {
-      debugPrint('$e');
+  /// Inserts the document [document] on [collectionId] if prj_id is [projectId].
+  ///
+  /// Throws an exception on request error ( statusCode != 200 )
+  ///
+  /// Returns `true` on success
+  Future<bool> insertDocument(
+    final int projectId,
+    final String collectionId,
+    final Map<String, dynamic> document,
+  ) async {
+    final uri =
+        Uri.parse('https://public.teta.so:9840/cms/$projectId/$collectionId');
+
+    final res = await http.put(
+      uri,
+      headers: {
+        'content-type': 'application/json',
+        'authorization': 'Bearer $token',
+      },
+      body: json.encode(document),
+    );
+
+    if (res.statusCode != 200) {
+      throw Exception('insertDocument returned status ${res.statusCode}');
     }
+
+    return true;
   }
 
-  Future<void> updateCollection({
-    required final CollectionObject collection,
-  }) async {
-    try {
-      final dynamic response = await TetaDB.instance.insert(
-        'collections',
-        'prj_id',
-        collection.prjId,
-        <String, dynamic>{
-          'name': collection.name,
-        },
-        token: token,
-      );
-      debugPrint('$response');
-    } catch (e) {
-      debugPrint('$e');
+  /// Deletes the document with id [documentId] on [collectionId] if prj_id is [projectId].
+  ///
+  /// Throws an exception on request error ( statusCode != 200 )
+  ///
+  /// Returns `true` on success
+  Future<bool> deleteDocument(
+    final int projectId,
+    final String collectionId,
+    final String documentId,
+  ) async {
+    final uri = Uri.parse(
+      'https://public.teta.so:9840/cms/$projectId/$collectionId/$documentId',
+    );
+
+    final res = await http.delete(
+      uri,
+      headers: {
+        'authorization': 'Bearer $token',
+      },
+    );
+
+    if (res.statusCode != 200) {
+      throw Exception('deleteDocument returned status ${res.statusCode}');
     }
+
+    return true;
   }
 
-  Future<void> deleteCollection({
-    required final CollectionObject collection,
-  }) async {
-    try {
-      final response = await TetaDB.instance.delete(
-        'collections',
-        path: 'collections._id',
-        value: collection.id,
-        token: token,
-      );
-      debugPrint('$response');
-    } catch (e) {
-      debugPrint('$e');
+  /// Gets the collection with id [collectionId] if prj_id is [projectId].
+  ///
+  /// Throws an exception on request error ( statusCode != 200 )
+  ///
+  /// Returns the collection as `Map<String,dynamic>`
+  Future<CollectionObject> getCollection(
+    final int projectId,
+    final String collectionId,
+  ) async {
+    final uri =
+        Uri.parse('https://public.teta.so:9840/cms/$projectId/$collectionId');
+
+    final res = await http.get(
+      uri,
+      headers: {'authorization': 'Bearer $token'},
+    );
+
+    if (res.statusCode != 200) {
+      throw Exception('getCollection returned status ${res.statusCode}');
     }
+
+    final data = json.encode(res.body) as Map<String, dynamic>;
+
+    return CollectionObject.fromJson(json: data);
   }
 
-  Future<List<dynamic>> getDocs({
-    required final String id,
-  }) async {
-    try {
-      final dynamic json = await TetaDB.instance.select(
-        'collections._id',
-        id,
-        projection: 'docs',
-        isList: true,
-        projectionInclusive: true,
-        token: token,
-      );
+  /// Gets all collection where prj_id is [projectId].
+  ///
+  /// Throws an exception on request error ( statusCode != 200 )
+  ///
+  /// Returns the collections as `List<Map<String,dynamic>>` without `docs`
+  Future<List<CollectionObject>> getCollections(
+    final int projectId,
+  ) async {
+    final uri = Uri.parse('https://public.teta.so:9840/cms/$projectId');
 
-      final docs = ((json as List<dynamic>).first
-          as Map<String, dynamic>)['docs'] as List<dynamic>;
+    final res = await http.get(
+      uri,
+      headers: {'authorization': 'Bearer $token'},
+    );
 
-      debugPrint('$docs');
-      debugPrint('${docs.runtimeType}');
-
-      return docs;
-    } catch (e) {
-      debugPrint('$e');
-      return <dynamic>[];
+    if (res.statusCode != 200) {
+      throw Exception('getCollections returned status ${res.statusCode}');
     }
+
+    final data = json.encode(res.body) as List<dynamic>;
+
+    return data
+        .map(
+          (final dynamic e) =>
+              CollectionObject.fromJson(json: e as Map<String, dynamic>),
+        )
+        .toList();
   }
 
-  Future<void> insertDoc({
-    required final CollectionObject collection,
-    required final Map<String, dynamic> doc,
-  }) async {
-    try {
-      final response = await TetaDB.instance.insert(
-        'collections',
-        'collections._id',
-        collection.id,
-        <String, dynamic>{
-          '\$push': {
-            'docs': doc,
-          },
-        },
-        token: token,
-      );
-      debugPrint('insertDoc response: $response');
-    } catch (e) {
-      debugPrint('error in insertDoc: $e');
+  /// Updates the collection [collectionId] with [name] if prj_id is [projectId].
+  ///
+  /// Throws an exception on request error ( statusCode != 200 )
+  ///
+  /// Returns the updated collection as `Map<String,dynamic>`
+  Future<bool> updateCollection(
+    final int projectId,
+    final String collectionId,
+    final String name,
+  ) async {
+    final uri =
+        Uri.parse('https://public.teta.so:9840/cms/$projectId/$collectionId');
+
+    final res = await http.patch(
+      uri,
+      headers: {
+        'content-type': 'application/json',
+        'authorization': 'Bearer $token',
+      },
+      body: json.encode(<String, dynamic>{
+        'name': name,
+      }),
+    );
+
+    if (res.statusCode != 200) {
+      throw Exception('updateCollection returned status ${res.statusCode}');
     }
+
+    return true;
   }
 
-  Future<void> updateDoc({
-    required final CollectionObject collection,
-    required final Map<String, dynamic> doc,
-  }) async {
-    try {
-      final response = await TetaDB.instance.updateDocument(
-        collection.id,
-        doc['_id'] as String,
-        doc,
-        token: token,
-      );
-      debugPrint('insertDoc response: $response');
-    } catch (e) {
-      debugPrint('error in insertDoc: $e');
-    }
-  }
+  /// Updates the document with id [documentId] on [collectionId] with [content] if prj_id is [projectId].
+  ///
+  /// Throws an exception on request error ( statusCode != 200 )
+  ///
+  /// Returns `true` on success
+  Future<bool> updateDocument(
+    final int projectId,
+    final String collectionId,
+    final String documentId,
+    final Map<String, dynamic> content,
+  ) async {
+    final uri = Uri.parse(
+      'https://public.teta.so:9840/cms/$projectId/$collectionId/$documentId',
+    );
 
-  Future<void> deleteDoc({
-    required final int prjId,
-    required final String docId,
-  }) async {
-    try {
-      // update
-      final response = await TetaDB.instance.insert(
-        'collections',
-        'prj_id',
-        prjId,
-        <String, dynamic>{
-          '\$pull': {
-            'docs': {'_id': docId},
-          }
-        },
-        token: token,
-      );
-      debugPrint('$response');
-    } catch (e) {
-      debugPrint('$e');
+    final res = await http.put(
+      uri,
+      headers: {
+        'content-type': 'application/json',
+        'authorization': 'Bearer $token',
+      },
+      body: json.encode(content),
+    );
+
+    if (res.statusCode != 200) {
+      throw Exception('updateDocument returned status ${res.statusCode}');
     }
+
+    return true;
   }
 }

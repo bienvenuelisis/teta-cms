@@ -7,11 +7,9 @@ void main() {
     test(
       'Put new collection',
       () async {
-        await TetaCMS.instance.client.insertCollection(
-          collection: const CollectionObject(
-            name: 'Collection 1',
-            prjId: 98521,
-          ),
+        await TetaCMS.instance.client.createCollection(
+          98521,
+          'Collection 1',
         );
       },
     );
@@ -19,11 +17,10 @@ void main() {
   test(
     'Get collections',
     () async {
-      final collections =
-          await TetaCMS.instance.client.getCollections(prjId: 1);
+      final collections = await TetaCMS.instance.client.getCollections(1);
       final firstCollection = await TetaCMS.instance.client.getCollection(
-        prjId: 1,
-        id: collections.first.id,
+        1,
+        collections.first.id,
       );
       debugPrint('$firstCollection');
     },
