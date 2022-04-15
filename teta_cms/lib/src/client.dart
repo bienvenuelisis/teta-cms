@@ -28,7 +28,7 @@ class TetaClient {
       throw Exception('createCollection returned status ${res.statusCode}');
     }
 
-    final data = json.encode(res.body) as Map<String, dynamic>;
+    final data = json.decode(res.body) as Map<String, dynamic>;
 
     return data;
   }
@@ -133,11 +133,13 @@ class TetaClient {
       headers: {'authorization': 'Bearer $token'},
     );
 
+    TetaCMS.log('getCollections: ${res.body}');
+
     if (res.statusCode != 200) {
       throw Exception('getCollection returned status ${res.statusCode}');
     }
 
-    final data = json.encode(res.body) as Map<String, dynamic>;
+    final data = json.decode(res.body) as Map<String, dynamic>;
 
     final docs = data['docs'] as List<dynamic>;
 
