@@ -1,7 +1,7 @@
 library teta_db;
 
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
-}
+export '';
+export 'src/cms.dart';
+export 'src/index.dart';
+export 'src/models/collection.dart';
+export 'src/models/row.dart';
