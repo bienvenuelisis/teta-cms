@@ -29,7 +29,7 @@ class TetaCMS {
   static TetaCMS get instance {
     assert(
       _instance._initialized,
-      'You must initializze the Teta CMS instance before calling TetaCMS.instance',
+      'You must initialize the Teta CMS instance before calling TetaCMS.instance',
     );
     return _instance;
   }
@@ -42,10 +42,10 @@ class TetaCMS {
     final String? token,
     final bool? debug,
   }) async {
-    assert(
+    /*assert(
       !_instance._initialized,
       'This instance is already initialized',
-    );
+    );*/
     _instance
       .._init(token ?? _getToken())
       .._debugEnable = debug ?? kDebugMode
@@ -84,7 +84,7 @@ class TetaCMS {
     }
   }
 
-  Future<String?> getToken() async {
+  static Future<String?> getToken() async {
     final box = await Hive.openBox<dynamic>('supabase_authentication');
     final accessToken =
         ((json.decode(box.get('SUPABASE_PERSIST_SESSION_KEY') as String)
