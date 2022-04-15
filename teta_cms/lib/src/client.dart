@@ -159,6 +159,8 @@ class TetaClient {
       headers: {'authorization': 'Bearer $token'},
     );
 
+    TetaCMS.log(res.body);
+
     if (res.statusCode != 200) {
       throw Exception('getCollections returned status ${res.statusCode}');
     }

@@ -46,10 +46,8 @@ class TetaCMS {
       !_instance._initialized,
       'This instance is already initialized',
     );*/
-    _instance
-      .._init(token ?? _getToken())
-      .._debugEnable = debug ?? kDebugMode
-      ..log('***** TetaCMS init completed $_instance');
+    _instance._init(token ?? _getToken());
+    TetaCMS.log('***** TetaCMS init completed $_instance');
     return _instance;
   }
 
@@ -61,7 +59,6 @@ class TetaCMS {
   ///
   /// Throws an error if [TetaCMS.initialize] was not called.
   late TetaClient client;
-  bool _debugEnable = false;
 
   /// Dispose the instance to free up resources.
   void dispose() {
@@ -78,8 +75,8 @@ class TetaCMS {
     return box.get('tkn') as String;
   }
 
-  void log(final String msg) {
-    if (_debugEnable) {
+  static void log(final String msg) {
+    if (kDebugMode) {
       debugPrint(msg);
     }
   }
