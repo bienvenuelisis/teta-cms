@@ -60,7 +60,7 @@ class TetaCMS {
   /// The TetaCMS client for this instance
   ///
   /// Throws an error if [TetaCMS.initialize] was not called.
-  late final TetaClient client;
+  late TetaClient client;
   bool _debugEnable = false;
 
   /// Dispose the instance to free up resources.
