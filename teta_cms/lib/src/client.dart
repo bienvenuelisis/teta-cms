@@ -201,6 +201,8 @@ class TetaClient {
       }),
     );
 
+    TetaCMS.log(res.body);
+
     if (res.statusCode != 200) {
       throw Exception('updateCollection returned status ${res.statusCode}');
     }
@@ -231,6 +233,8 @@ class TetaClient {
       },
       body: json.encode(content),
     );
+
+    TetaCMS.log(res.body);
 
     if (res.statusCode != 200) {
       throw Exception('updateDocument returned status ${res.statusCode}');
