@@ -165,7 +165,7 @@ class TetaClient {
       throw Exception('getCollections returned status ${res.statusCode}');
     }
 
-    final data = json.encode(res.body) as List<dynamic>;
+    final data = json.decode(res.body) as List<dynamic>;
 
     return data
         .map(

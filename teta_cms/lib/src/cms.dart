@@ -81,6 +81,10 @@ class TetaCMS {
     }
   }
 
+  static void printWarning(final String text) => log('\x1B[33m$text\x1B[0m');
+
+  static void printError(final String text) => log('\x1B[31m$text\x1B[0m');
+
   static Future<String?> getToken() async {
     final box = await Hive.openBox<dynamic>('supabase_authentication');
     final accessToken =
