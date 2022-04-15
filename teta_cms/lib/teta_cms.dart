@@ -1,4 +1,4 @@
-library teta_db;
+library teta_cms;
 
 export 'src/cms.dart';
 export 'src/index.dart';
