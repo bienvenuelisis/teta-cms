@@ -1,10 +1,10 @@
 part of '../index.dart';
 
-class TetaNoSqlRealtime {
-  static final instance = _TetaNoSqlRealtime();
+class TetaRealtime {
+  static final instance = _TetaRealtime();
 }
 
-class _TetaNoSqlRealtime {
+class _TetaRealtime {
   socket_io.Socket? _socket;
   List<NoSqlStream> streams = [];
 

@@ -2,9 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:teta_cms/src/db/constants.dart';
 
-class TetaDB {
+import './constants.dart';
+
+class TetaMiddleAPI {
   /// Singleton
   static _TetaDB instance = _TetaDB();
 }

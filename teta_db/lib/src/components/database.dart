@@ -1,10 +1,10 @@
 part of '../index.dart';
 
-class TetaNoSql {
-  static _TetaNoSql instance = _TetaNoSql();
+class TetaDB {
+  static _TetaDB instance = _TetaDB();
 }
 
-class _TetaNoSql {
+class _TetaDB {
   Future<String?> getToken() async {
     final box = await Hive.openBox<dynamic>('supabase_authentication');
     final accessToken =

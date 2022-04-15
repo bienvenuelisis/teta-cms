@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:teta_cms/src/constants.dart';
-import 'package:teta_cms/src/db/index.dart';
 import 'package:teta_db/teta_db.dart';
 
 class TetaCMS {
@@ -18,7 +17,7 @@ class _TetaCMS {
     required final int prjId,
   }) async {
     try {
-      final response = await TetaNoSql.instance.select(
+      final response = await TetaDB.instance.select(
         'collections.prj_id',
         prjId,
         isList: true,
@@ -43,7 +42,7 @@ class _TetaCMS {
     required final String id,
   }) async {
     try {
-      final response = await TetaDB.instance.getDocsByQuery(
+      final response = await TetaMiddleAPI.instance.getDocsByQuery(
         collection: 'collections',
         query: <String, dynamic>{
           TetaCMSConstants.prjIdKey: prjId,
@@ -65,7 +64,7 @@ class _TetaCMS {
     required final CollectionObject collection,
   }) async {
     try {
-      final dynamic response = await TetaDB.instance.insertDoc(
+      final dynamic response = await TetaMiddleAPI.instance.insertDoc(
         collection: 'collections',
         attributes: collection.toJson(),
       );
@@ -79,7 +78,7 @@ class _TetaCMS {
     required final CollectionObject collection,
   }) async {
     try {
-      final dynamic response = await TetaNoSql.instance.insert(
+      final dynamic response = await TetaDB.instance.insert(
         'collections',
         'prj_id',
         collection.prjId,
@@ -98,7 +97,7 @@ class _TetaCMS {
     required final CollectionObject collection,
   }) async {
     try {
-      final response = await TetaNoSql.instance.delete(
+      final response = await TetaDB.instance.delete(
         'collections',
         path: 'collections._id',
         value: collection.id,
@@ -114,7 +113,7 @@ class _TetaCMS {
     required final String id,
   }) async {
     try {
-      final dynamic json = await TetaNoSql.instance.select(
+      final dynamic json = await TetaDB.instance.select(
         'collections._id',
         id,
         projection: 'docs',
@@ -141,7 +140,7 @@ class _TetaCMS {
     required final Map<String, dynamic> doc,
   }) async {
     try {
-      final response = await TetaNoSql.instance.insert(
+      final response = await TetaDB.instance.insert(
         'collections',
         'collections._id',
         collection.id,
@@ -163,7 +162,7 @@ class _TetaCMS {
     required final Map<String, dynamic> doc,
   }) async {
     try {
-      final response = await TetaNoSql.instance.updateDocument(
+      final response = await TetaDB.instance.updateDocument(
         collection.id,
         doc['_id'] as String,
         doc,
@@ -181,7 +180,7 @@ class _TetaCMS {
   }) async {
     try {
       // update
-      final response = await TetaNoSql.instance.insert(
+      final response = await TetaDB.instance.insert(
         'collections',
         'prj_id',
         prjId,
