@@ -1,6 +1,6 @@
 name: teta_db
 description: A new Flutter package project.
-version: 0.0.2
+version: 0.0.3
 homepage:
 publish_to: none
 
@@ -12,8 +12,6 @@ dependencies:
   flutter:
     sdk: flutter
 
-  teta_db:
-    path: ../teta_db
   equatable:
   socket_io_client: ^1.0.2
   hive:
