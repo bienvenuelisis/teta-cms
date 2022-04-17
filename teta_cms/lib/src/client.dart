@@ -25,6 +25,8 @@ class TetaClient {
       headers: {'authorization': 'Bearer $token'},
     );
 
+    TetaCMS.log('createCollection: ${res.body}');
+
     if (res.statusCode != 200) {
       throw Exception('createCollection returned status ${res.statusCode}');
     }
@@ -53,6 +55,8 @@ class TetaClient {
         'authorization': 'Bearer $token',
       },
     );
+
+    TetaCMS.log('deleteCollection: ${res.body}');
 
     if (res.statusCode != 200) {
       throw Exception('deleteDocument returned status ${res.statusCode}');
@@ -84,6 +88,8 @@ class TetaClient {
       body: json.encode(document),
     );
 
+    TetaCMS.log('insertDocument: ${res.body}');
+
     if (res.statusCode != 200) {
       throw Exception('insertDocument returned status ${res.statusCode}');
     }
@@ -111,6 +117,8 @@ class TetaClient {
         'authorization': 'Bearer $token',
       },
     );
+
+    TetaCMS.log('deleteDocument: ${res.body}');
 
     if (res.statusCode != 200) {
       throw Exception('deleteDocument returned status ${res.statusCode}');
