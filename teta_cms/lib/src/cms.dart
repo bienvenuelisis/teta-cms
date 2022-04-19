@@ -39,6 +39,7 @@ class TetaCMS {
   /// This must be called only once. If called more than once, an
   /// [AssertionError] is thrown
   static Future<TetaCMS> initialize({
+    required final int prjId,
     final String? token,
     final bool? debug,
   }) async {
@@ -46,7 +47,10 @@ class TetaCMS {
       !_instance._initialized,
       'This instance is already initialized',
     );*/
-    _instance._init(token ?? _getToken());
+    _instance._init(
+      token ?? _getToken(),
+      prjId,
+    );
     TetaCMS.log('***** TetaCMS init completed $_instance');
     return _instance;
   }
@@ -65,8 +69,14 @@ class TetaCMS {
     _initialized = false;
   }
 
-  void _init(final String token) {
-    client = TetaClient(token);
+  void _init(
+    final String token,
+    final int prjId,
+  ) {
+    client = TetaClient(
+      token,
+      prjId,
+    );
     _initialized = true;
   }
 

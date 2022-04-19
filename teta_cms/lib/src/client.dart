@@ -4,20 +4,23 @@ import 'package:http/http.dart' as http;
 import 'package:teta_cms/teta_cms.dart';
 
 class TetaClient {
-  TetaClient(this.token);
+  TetaClient(
+    this.token,
+    this.prjId,
+  );
   final String token;
+  final int prjId;
 
-  /// Creates a new collection with name [collectionName] and prj_id [projectToken].
+  /// Creates a new collection with name [collectionName] and prj_id [prjId].
   ///
   /// Throws an exception on request error ( statusCode != 200 )
   ///
   /// Returns the created collection as `Map<String,dynamic`
   Future<Map<String, dynamic>> createCollection(
-    final String projectToken,
     final String collectionName,
   ) async {
     final uri = Uri.parse(
-      'https://public.teta.so:9840/cms/$projectToken/$collectionName',
+      'https://public.teta.so:9840/cms/$prjId/$collectionName',
     );
 
     final res = await http.post(
@@ -36,17 +39,16 @@ class TetaClient {
     return data;
   }
 
-  /// Deletes the collection with id [collectionId] if prj_id is [projectToken].
+  /// Deletes the collection with id [collectionId] if prj_id is [prjId].
   ///
   /// Throws an exception on request error ( statusCode != 200 )
   ///
   /// Returns `true` on success
   Future<bool> deleteCollection(
-    final String projectToken,
     final String collectionId,
   ) async {
     final uri = Uri.parse(
-      'https://public.teta.so:9840/cms/$projectToken/$collectionId',
+      'https://public.teta.so:9840/cms/$prjId/$collectionId',
     );
 
     final res = await http.delete(
@@ -65,18 +67,17 @@ class TetaClient {
     return true;
   }
 
-  /// Inserts the document [document] on [collectionId] if prj_id is [projectToken].
+  /// Inserts the document [document] on [collectionId] if prj_id is [prjId].
   ///
   /// Throws an exception on request error ( statusCode != 200 )
   ///
   /// Returns `true` on success
   Future<bool> insertDocument(
-    final String projectToken,
     final String collectionId,
     final Map<String, dynamic> document,
   ) async {
     final uri = Uri.parse(
-      'https://public.teta.so:9840/cms/$projectToken/$collectionId',
+      'https://public.teta.so:9840/cms/$prjId/$collectionId',
     );
 
     final res = await http.put(
@@ -97,18 +98,17 @@ class TetaClient {
     return true;
   }
 
-  /// Deletes the document with id [documentId] on [collectionId] if prj_id is [projectToken].
+  /// Deletes the document with id [documentId] on [collectionId] if prj_id is [prjId].
   ///
   /// Throws an exception on request error ( statusCode != 200 )
   ///
   /// Returns `true` on success
   Future<bool> deleteDocument(
-    final String projectToken,
     final String collectionId,
     final String documentId,
   ) async {
     final uri = Uri.parse(
-      'https://public.teta.so:9840/cms/$projectToken/$collectionId/$documentId',
+      'https://public.teta.so:9840/cms/$prjId/$collectionId/$documentId',
     );
 
     final res = await http.delete(
@@ -127,17 +127,16 @@ class TetaClient {
     return true;
   }
 
-  /// Gets the collection with id [collectionId] if prj_id is [projectId].
+  /// Gets the collection with id [collectionId] if prj_id is [prjId].
   ///
   /// Throws an exception on request error ( statusCode != 200 )
   ///
   /// Returns the collection as `Map<String,dynamic>`
   Future<List<dynamic>> getCollection(
-    final String projectId,
     final String collectionId,
   ) async {
     final uri =
-        Uri.parse('https://public.teta.so:9840/cms/$projectId/$collectionId');
+        Uri.parse('https://public.teta.so:9840/cms/$prjId/$collectionId');
 
     final res = await http.get(
       uri,
@@ -157,15 +156,13 @@ class TetaClient {
     return docs;
   }
 
-  /// Gets all collection where prj_id is [projectToken].
+  /// Gets all collection where prj_id is [prjId].
   ///
   /// Throws an exception on request error ( statusCode != 200 )
   ///
   /// Returns the collections as `List<Map<String,dynamic>>` without `docs`
-  Future<List<CollectionObject>> getCollections(
-    final String projectToken,
-  ) async {
-    final uri = Uri.parse('https://public.teta.so:9840/cms/$projectToken');
+  Future<List<CollectionObject>> getCollections() async {
+    final uri = Uri.parse('https://public.teta.so:9840/cms/$prjId');
 
     final res = await http.get(
       uri,
@@ -188,18 +185,17 @@ class TetaClient {
         .toList();
   }
 
-  /// Updates the collection [collectionId] with [name] if prj_id is [projectToken].
+  /// Updates the collection [collectionId] with [name] if prj_id is [prjId].
   ///
   /// Throws an exception on request error ( statusCode != 200 )
   ///
   /// Returns the updated collection as `Map<String,dynamic>`
   Future<bool> updateCollection(
-    final String projectToken,
     final String collectionId,
     final String name,
   ) async {
     final uri = Uri.parse(
-      'https://public.teta.so:9840/cms/$projectToken/$collectionId',
+      'https://public.teta.so:9840/cms/$prjId/$collectionId',
     );
 
     final res = await http.patch(
@@ -222,19 +218,18 @@ class TetaClient {
     return true;
   }
 
-  /// Updates the document with id [documentId] on [collectionId] with [content] if prj_id is [projectToken].
+  /// Updates the document with id [documentId] on [collectionId] with [content] if prj_id is [prjId].
   ///
   /// Throws an exception on request error ( statusCode != 200 )
   ///
   /// Returns `true` on success
   Future<bool> updateDocument(
-    final String projectToken,
     final String collectionId,
     final String documentId,
     final Map<String, dynamic> content,
   ) async {
     final uri = Uri.parse(
-      'https://public.teta.so:9840/cms/$projectToken/$collectionId/$documentId',
+      'https://public.teta.so:9840/cms/$prjId/$collectionId/$documentId',
     );
 
     final res = await http.put(
