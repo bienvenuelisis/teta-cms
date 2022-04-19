@@ -12,11 +12,11 @@ class CollectionObject extends Equatable {
     required final Map<String, dynamic> json,
   })  : id = json[Constants.docId] as String,
         name = json['name'] as String,
-        prjId = json[Constants.prjIdKey] as String;
+        prjId = json[Constants.prjIdKey] as int;
 
   final String id;
   final String name;
-  final String prjId;
+  final int prjId;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'name': name,
