@@ -177,12 +177,18 @@ class TetaClient {
 
     final data = json.decode(res.body) as List<dynamic>;
 
-    return data
+    TetaCMS.log('getCollections data: $data');
+
+    final list = data
         .map(
           (final dynamic e) =>
               CollectionObject.fromJson(json: e as Map<String, dynamic>),
         )
         .toList();
+
+    TetaCMS.log('getCollections list: $list');
+
+    return list;
   }
 
   /// Updates the collection [collectionId] with [name] if prj_id is [prjId].
