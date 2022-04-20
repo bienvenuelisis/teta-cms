@@ -68,12 +68,13 @@ class TetaRealtime {
   }) async {
     if (_socket == null) await _openSocket();
 
-    if (collectionId == null) throw Exception('collectionId is required');
+    final collId = action.targetDocument ? collectionId : '*';
+    if (collId == null) throw Exception('collectionId is required');
     final docId = action.targetDocument ? documentId : '*';
     if (docId == null) throw Exception('documentId is required');
 
     final uri = Uri.parse(
-      '${Constants.tetaUrl}/stream/listen/${_socket!.id}/${action.type}/$prjId/$collectionId/$docId',
+      '${Constants.tetaUrl}/stream/listen/${_socket!.id}/${action.type}/$prjId/$collId/$docId',
     );
 
     final res = await http.post(
