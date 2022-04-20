@@ -123,8 +123,8 @@ class TetaRealtime {
     final StreamAction action = StreamAction.all,
   }) async* {
     final streamController = StreamController<List<CollectionObject>>();
-    await on(
-      callback: (final e) async* {
+    on(
+      callback: (final e) async {
         final resp = await TetaCMS.instance.client.getCollections();
         streamController.add(resp);
       },
