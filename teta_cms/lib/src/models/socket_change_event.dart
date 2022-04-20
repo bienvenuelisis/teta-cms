@@ -3,20 +3,18 @@ part of '../index.dart';
 class SocketChangeEvent {
   SocketChangeEvent();
 
-  factory SocketChangeEvent.fromJson(final Map<String, dynamic> json) {
-    final instance = SocketChangeEvent()
-      ..collection = json['collection'] as String
-      ..data = json['data']
-      ..method = json['method'] as String
-      ..timestamp = json['timestamp'] as int
-      ..uid = json['uid'] as String;
+  SocketChangeEvent.fromJson(final Map<String, dynamic> json)
+      : action = json['action'] as String?,
+        collectionId = json['collection_id'] as String?,
+        prjId = json['prj_id'] as int?,
+        documentId = json['document_id'] as String?,
+        timestamp = json['timestamp'] as String?,
+        uid = json['uid'] as String;
 
-    return instance;
-  }
-
-  late String collection;
-  String? method;
-  Object? data;
-  int? timestamp;
+  String? action;
+  String? collectionId;
+  int? prjId;
+  String? documentId;
+  String? timestamp;
   String? uid;
 }
