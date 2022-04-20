@@ -73,7 +73,7 @@ class TetaRealtime {
     if (docId == null) throw Exception('documentId is required');
 
     final uri = Uri.parse(
-      '${Constants.tetaUrl}/stream/listen/${_socket!.id}/$action/$prjId/$collectionId/$docId',
+      '${Constants.tetaUrl}/stream/listen/${_socket!.id}/${action.type}/$prjId/$collectionId/$docId',
     );
 
     final res = await http.post(uri, headers: {
