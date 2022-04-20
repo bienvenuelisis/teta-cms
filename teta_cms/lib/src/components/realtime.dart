@@ -69,7 +69,7 @@ class TetaRealtime {
     if (_socket == null) await _openSocket();
 
     if (collectionId == null) throw Exception('collectionId is required');
-    final docId = action.targetDocument ? '*' : documentId;
+    final docId = action.targetDocument ? documentId : '*';
     if (docId == null) throw Exception('documentId is required');
 
     final uri = Uri.parse(
