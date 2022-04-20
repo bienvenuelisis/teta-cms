@@ -1,36 +1,26 @@
 // ignore_for_file: camel_case_types
 
-abstract class StreamAction {
+class StreamAction {
   // ignore: avoid_positional_boolean_parameters
-  StreamAction(final String _type, final bool _targetDocument) {
-    type = _type;
-    targetDocument = _targetDocument;
-  }
+  const StreamAction(this.type, this.targetDocument);
 
-  late String type;
-  late bool targetDocument;
-}
+  final String type;
+  final bool targetDocument;
 
-class CREATE_COLLECTION extends StreamAction {
-  CREATE_COLLECTION() : super('CREATE_COLLECTION', false);
-}
+  static const StreamAction all = StreamAction('ALL', false);
 
-class DELETE_COLLECTION extends StreamAction {
-  DELETE_COLLECTION() : super('DELETE_COLLECTION', false);
-}
+  static const StreamAction createCollection =
+      StreamAction('CREATE_COLLECTION', false);
 
-class UPDATE_COLLECTION extends StreamAction {
-  UPDATE_COLLECTION() : super('UPDATE_COLLECTION', false);
-}
+  static const StreamAction deleteCollection =
+      StreamAction('CREATE_COLLECTION', false);
 
-class CREATE_DOCUMENT extends StreamAction {
-  CREATE_DOCUMENT() : super('CREATE_DOCUMENT', true);
-}
+  static const StreamAction updateCollection =
+      StreamAction('UPDATE_COLLECTION', false);
 
-class DELETE_DOCUMENT extends StreamAction {
-  DELETE_DOCUMENT() : super('DELETE_DOCUMENT', true);
-}
+  static const StreamAction createDoc = StreamAction('CREATE_DOCUMENT', true);
 
-class UPDATE_DOCUMENT extends StreamAction {
-  UPDATE_DOCUMENT() : super('UPDATE_DOCUMENT', true);
+  static const StreamAction deleteDoc = StreamAction('DELETE_DOCUMENT', true);
+
+  static const StreamAction updateDoc = StreamAction('UPDATE_DOCUMENT', true);
 }

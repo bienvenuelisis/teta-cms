@@ -1,12 +1,15 @@
 part of '../index.dart';
 
 class TetaRealtime {
-  static final instance = _TetaRealtime();
-}
+  TetaRealtime(
+    this.token,
+    this.prjId,
+  );
+  final String token;
+  final int prjId;
 
-class _TetaRealtime {
   socket_io.Socket? _socket;
-  List<NoSqlStream> streams = [];
+  List<RealtimeSubscription> streams = [];
 
   Future<void> _openSocket() {
     final completer = Completer<void>();
@@ -57,24 +60,20 @@ class _TetaRealtime {
   ///
   /// Returns a `NoSqlStream`
   ///
-  Future<NoSqlStream> listen({
-    final StreamAction? action,
-    final int? projectId,
+  Future<RealtimeSubscription> on({
+    final StreamAction action = StreamAction.all,
     final String? collectionId,
     final String? documentId,
-    final String? token,
     final Function(SocketChangeEvent)? callback,
   }) async {
     if (_socket == null) await _openSocket();
 
-    if (action == null) throw Exception('action is required');
-    if (projectId == null) throw Exception('projectId is required');
     if (collectionId == null) throw Exception('collectionId is required');
     final docId = action.targetDocument ? '*' : documentId;
     if (docId == null) throw Exception('documentId is required');
 
     final uri = Uri.parse(
-      '${Constants.tetaUrl}/stream/listen/${_socket!.id}/$action/$projectId/$collectionId/$docId',
+      '${Constants.tetaUrl}/stream/listen/${_socket!.id}/$action/$prjId/$collectionId/$docId',
     );
 
     final res = await http.post(uri, headers: {
@@ -89,8 +88,30 @@ class _TetaRealtime {
     final uid =
         (json.decode(res.body) as Map<String, dynamic>)['uid'] as String;
 
-    final stream = NoSqlStream(uid, callback!, () => _closeStream(uid));
+    final stream =
+        RealtimeSubscription(uid, callback!, () => _closeStream(uid));
     streams.add(stream);
     return stream;
+  }
+
+  /// Creates a websocket connection to the NoSql database
+  /// that listens for events of type [action] and
+  /// fires [callback] when the event is emitted.
+  ///
+  /// Returns a `NoSqlStream`
+  ///
+  Stream<SocketChangeEvent> stream({
+    final StreamAction action = StreamAction.all,
+    final String? collectionId,
+    final String? documentId,
+  }) async* {
+    final streamController = StreamController<SocketChangeEvent>();
+    await on(
+      collectionId: collectionId,
+      callback: (final e) async* {
+        streamController.add(e);
+      },
+    );
+    yield* streamController.stream;
   }
 }

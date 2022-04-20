@@ -1,7 +1,7 @@
 part of '../index.dart';
 
-class NoSqlStream {
-  NoSqlStream(this.uid, this.callback, this.close);
+class RealtimeSubscription {
+  RealtimeSubscription(this.uid, this.callback, this.close);
 
   String uid;
   Function(SocketChangeEvent) callback;

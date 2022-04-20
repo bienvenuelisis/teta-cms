@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:teta_cms/src/client.dart';
+import 'package:teta_cms/teta_cms.dart';
 
 /// TetaCMS instance.
 ///
@@ -64,6 +65,11 @@ class TetaCMS {
   /// Throws an error if [TetaCMS.initialize] was not called.
   late TetaClient client;
 
+  /// The TetaCMS realtime for this instance
+  ///
+  /// Throws an error if [TetaCMS.initialize] was not called.
+  late TetaRealtime realtime;
+
   /// Dispose the instance to free up resources.
   void dispose() {
     _initialized = false;
@@ -74,6 +80,10 @@ class TetaCMS {
     final int prjId,
   ) {
     client = TetaClient(
+      token,
+      prjId,
+    );
+    realtime = TetaRealtime(
       token,
       prjId,
     );
