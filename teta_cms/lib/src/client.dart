@@ -169,11 +169,15 @@ class TetaClient {
       headers: {'authorization': 'Bearer $token'},
     );
 
+    TetaCMS.log('getCollections: ${res.body}');
+
     if (res.statusCode != 200) {
       throw Exception('getCollections returned status ${res.statusCode}');
     }
 
     final data = json.decode(res.body) as List<dynamic>;
+
+    TetaCMS.log('getCollections data: $data');
 
     final list = data
         .map(
@@ -182,7 +186,7 @@ class TetaClient {
         )
         .toList();
 
-    TetaCMS.log('getCollection list: $list');
+    TetaCMS.log('getCollections list: $list');
 
     return list;
   }
