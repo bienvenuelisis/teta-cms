@@ -1,4 +1,4 @@
-part of '../index.dart';
+part of 'index.dart';
 
 class TetaRealtime {
   TetaRealtime(
@@ -76,10 +76,13 @@ class TetaRealtime {
       '${Constants.tetaUrl}/stream/listen/${_socket!.id}/${action.type}/$prjId/$collectionId/$docId',
     );
 
-    final res = await http.post(uri, headers: {
-      'content-type': 'application/json',
-      'authorization': 'Bearer $token',
-    });
+    final res = await http.post(
+      uri,
+      headers: {
+        'content-type': 'application/json',
+        'authorization': 'Bearer $token',
+      },
+    );
 
     if (res.statusCode != 200) {
       throw Exception('Request resulted in ${res.statusCode} - ${res.body}');
@@ -110,6 +113,36 @@ class TetaRealtime {
       collectionId: collectionId,
       callback: (final e) async* {
         streamController.add(e);
+      },
+    );
+    yield* streamController.stream;
+  }
+
+  /// Stream all collections without docs
+  Stream<List<CollectionObject>> streamCollections({
+    final StreamAction action = StreamAction.all,
+  }) async* {
+    final streamController = StreamController<List<CollectionObject>>();
+    await on(
+      callback: (final e) async* {
+        final resp = await TetaCMS.instance.client.getCollections();
+        streamController.add(resp);
+      },
+    );
+    yield* streamController.stream;
+  }
+
+  /// Stream a single collection with its docs only
+  Stream<List<dynamic>> streamCollection({
+    required final String collectionId,
+    final StreamAction action = StreamAction.all,
+  }) async* {
+    final streamController = StreamController<List<dynamic>>();
+    await on(
+      collectionId: collectionId,
+      callback: (final e) async* {
+        final resp = await TetaCMS.instance.client.getCollection(collectionId);
+        streamController.add(resp);
       },
     );
     yield* streamController.stream;
