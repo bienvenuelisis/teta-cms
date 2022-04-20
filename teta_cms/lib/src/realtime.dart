@@ -145,15 +145,23 @@ class TetaRealtime {
   Stream<List<dynamic>> streamCollection({
     required final String collectionId,
     final StreamAction action = StreamAction.all,
-  }) async* {
-    final streamController = StreamController<List<dynamic>>();
-    await on(
+  }) {
+    late final StreamController<List<dynamic>> streamController;
+    streamController = StreamController<List<dynamic>>.broadcast(
+      onCancel: () {
+        if (!streamController.hasListener) {
+          streamController.close();
+        }
+      },
+    );
+    on(
       collectionId: collectionId,
       callback: (final e) async* {
         final resp = await TetaCMS.instance.client.getCollection(collectionId);
         streamController.add(resp);
+        TetaCMS.log('stream collection callback');
       },
     );
-    yield* streamController.stream;
+    return streamController.stream;
   }
 }
