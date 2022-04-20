@@ -156,10 +156,11 @@ class TetaRealtime {
     );
     on(
       collectionId: collectionId,
-      callback: (final e) async* {
+      callback: (final e) async {
+        TetaCMS.printWarning('stream collection callback');
         final resp = await TetaCMS.instance.client.getCollection(collectionId);
         streamController.add(resp);
-        TetaCMS.log('stream collection callback');
+        TetaCMS.printWarning('stream collection added');
       },
     );
     return streamController.stream;
