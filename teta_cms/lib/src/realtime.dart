@@ -68,8 +68,7 @@ class TetaRealtime {
   }) async {
     if (_socket == null) await _openSocket();
 
-    final collId = action.targetDocument ? collectionId : '*';
-    if (collId == null) throw Exception('collectionId is required');
+    final collId = collectionId ?? '*';
     final docId = action.targetDocument ? documentId : '*';
     if (docId == null) throw Exception('documentId is required');
 
