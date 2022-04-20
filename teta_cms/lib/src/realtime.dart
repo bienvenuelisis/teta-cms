@@ -142,8 +142,8 @@ class TetaRealtime {
   }
 
   /// Stream a single collection with its docs only
-  Stream<List<dynamic>> streamCollection({
-    required final String collectionId,
+  Stream<List<dynamic>> streamCollection(
+    final String collectionId, {
     final StreamAction action = StreamAction.all,
   }) {
     late final StreamController<List<dynamic>> streamController;
