@@ -44,35 +44,43 @@ class _TetaRealtime {
   void _closeStream(final String uid) {
     final stream = streams.firstWhere((final stream) => stream.uid == uid);
     streams.remove(stream);
+
+    if (streams.isEmpty) {
+      _socket!.close();
+      _socket = null;
+    }
   }
 
   /// Creates a websocket connection to the NoSql database
-  /// that listens for events in [path] with value [value] and
+  /// that listens for events of type [action] and
   /// fires [callback] when the event is emitted.
-  ///
-  /// ### Tip:
-  /// You can use `buildPath` from `TetaNoSqlUtils` to create your path.
   ///
   /// Returns a `NoSqlStream`
   ///
-  Future<NoSqlStream> stream(
-    final String path,
-    final dynamic value,
-    final Function(SocketChangeEvent) callback,
-  ) async {
+  Future<NoSqlStream> listen({
+    final StreamAction? action,
+    final int? projectId,
+    final String? collectionId,
+    final String? documentId,
+    final String? token,
+    final Function(SocketChangeEvent)? callback,
+  }) async {
     if (_socket == null) await _openSocket();
 
-    final collection = path.split('.').first;
+    if (action == null) throw Exception('action is required');
+    if (projectId == null) throw Exception('projectId is required');
+    if (collectionId == null) throw Exception('collectionId is required');
+    final docId = action.targetDocument ? '*' : documentId;
+    if (docId == null) throw Exception('documentId is required');
 
-    final body = TetaDBUtils.instance.pathToObject(path, value);
-
-    final uri =
-        Uri.parse('${Constants.tetaUrl}/realtime/$collection/${_socket!.id}');
-    final res = await http.post(
-      uri,
-      headers: {'content-type': 'application/json'},
-      body: jsonEncode(body),
+    final uri = Uri.parse(
+      '${Constants.tetaUrl}/stream/listen/${_socket!.id}/$action/$projectId/$collectionId/$docId',
     );
+
+    final res = await http.post(uri, headers: {
+      'content-type': 'application/json',
+      'authorization': 'Bearer $token',
+    });
 
     if (res.statusCode != 200) {
       throw Exception('Request resulted in ${res.statusCode} - ${res.body}');
@@ -81,7 +89,7 @@ class _TetaRealtime {
     final uid =
         (json.decode(res.body) as Map<String, dynamic>)['uid'] as String;
 
-    final stream = NoSqlStream(uid, callback, () => _closeStream(uid));
+    final stream = NoSqlStream(uid, callback!, () => _closeStream(uid));
     streams.add(stream);
     return stream;
   }
