@@ -98,10 +98,9 @@ class TetaRealtime {
   }
 
   /// Creates a websocket connection to the NoSql database
-  /// that listens for events of type [action] and
-  /// fires [callback] when the event is emitted.
+  /// that listens for events of type [action]
   ///
-  /// Returns a `NoSqlStream`
+  /// Returns a `Stream<SocketChangeEvent>`
   ///
   Stream<SocketChangeEvent> stream({
     final StreamAction action = StreamAction.all,
@@ -130,11 +129,11 @@ class TetaRealtime {
         }
       },
     );
+    TetaCMS.instance.client.getCollections().then(streamController.add);
     on(
       callback: (final e) async {
         final resp = await TetaCMS.instance.client.getCollections();
         streamController.add(resp);
-        TetaCMS.log('streamCollections callback');
       },
     );
     return streamController.stream;
@@ -153,13 +152,14 @@ class TetaRealtime {
         }
       },
     );
+    TetaCMS.instance.client
+        .getCollection(collectionId)
+        .then(streamController.add);
     on(
       collectionId: collectionId,
       callback: (final e) async {
-        TetaCMS.printWarning('stream collection callback');
         final resp = await TetaCMS.instance.client.getCollection(collectionId);
         streamController.add(resp);
-        TetaCMS.printWarning('stream collection added');
       },
     );
     return streamController.stream;
