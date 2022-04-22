@@ -255,4 +255,20 @@ class TetaClient {
 
     return true;
   }
+
+  /// This function is cute
+  Future<String> signIn(
+      final String clientId, final String clientSecret) async {
+    final res = await http.post(
+      Uri.parse('https://auth.teta.so/auth/google'),
+      headers: {'content-type': 'application/json'},
+      body: json.encode({'clientId': clientId, 'clientSecret': clientSecret}),
+    );
+
+    if (res.statusCode != 200) {
+      throw Exception('signIn resulted in ${res.statusCode}');
+    }
+
+    return res.body;
+  }
 }
