@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
+import 'package:teta_cms/src/auth.dart';
 import 'package:teta_cms/src/client.dart';
 import 'package:teta_cms/teta_cms.dart';
 
@@ -65,10 +66,11 @@ class TetaCMS {
   /// Throws an error if [TetaCMS.initialize] was not called.
   late TetaClient client;
 
-  /// The TetaCMS realtime for this instance
-  ///
-  /// Throws an error if [TetaCMS.initialize] was not called.
+  /// The TetaRealtime instance
   late TetaRealtime realtime;
+
+  /// The TetaAuth instance
+  late TetaAuth auth;
 
   /// Dispose the instance to free up resources.
   void dispose() {
@@ -84,6 +86,10 @@ class TetaCMS {
       prjId,
     );
     realtime = TetaRealtime(
+      token,
+      prjId,
+    );
+    auth = TetaAuth(
       token,
       prjId,
     );
