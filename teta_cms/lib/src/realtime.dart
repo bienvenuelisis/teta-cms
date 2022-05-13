@@ -143,6 +143,9 @@ class TetaRealtime {
   Stream<List<dynamic>> streamCollection(
     final String collectionId, {
     final StreamAction action = StreamAction.all,
+    final List<Filter> filters = const [],
+    final int page = 0,
+    final int limit = 20,
   }) {
     late final StreamController<List<dynamic>> streamController;
     streamController = StreamController<List<dynamic>>.broadcast(
@@ -158,7 +161,12 @@ class TetaRealtime {
     on(
       collectionId: collectionId,
       callback: (final e) async {
-        final resp = await TetaCMS.instance.client.getCollection(collectionId);
+        final resp = await TetaCMS.instance.client.getCollection(
+          collectionId,
+          filters: filters,
+          limit: limit,
+          page: page,
+        );
         streamController.add(resp);
       },
     );
