@@ -156,7 +156,12 @@ class TetaRealtime {
       },
     );
     TetaCMS.instance.client
-        .getCollection(collectionId)
+        .getCollection(
+          collectionId,
+          filters: filters,
+          limit: limit,
+          page: page,
+        )
         .then(streamController.add);
     on(
       collectionId: collectionId,
