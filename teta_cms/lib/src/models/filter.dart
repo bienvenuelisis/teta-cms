@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 enum FilterType { equal, like, gt, lt }
 
 class Filter {
@@ -9,9 +7,18 @@ class Filter {
   FilterType? type;
   String value;
 
-  Map<String, dynamic> toJson() => <String, dynamic>{
-        'key': key,
-        'type': type,
-        'value': value,
-      };
+  Map<String, dynamic> toJson() {
+    final t = type == FilterType.equal
+        ? 'equal'
+        : type == FilterType.like
+            ? 'equal'
+            : type == FilterType.gt
+                ? 'equal'
+                : 'lt';
+    return <String, dynamic>{
+      'key': key,
+      'type': t,
+      'value': value,
+    };
+  }
 }
