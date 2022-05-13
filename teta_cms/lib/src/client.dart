@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:teta_cms/src/models/filter.dart';
 import 'package:teta_cms/teta_cms.dart';
 
 class TetaClient {
@@ -161,12 +162,23 @@ class TetaClient {
   /// Throws an exception on request error ( statusCode != 200 )
   ///
   /// Returns the collections as `List<Map<String,dynamic>>` without `docs`
-  Future<List<CollectionObject>> getCollections() async {
+  Future<List<CollectionObject>> getCollections({
+    final List<Filter> filters = const [],
+    final int page = 0,
+    final int limit = 20,
+  }) async {
     final uri = Uri.parse('https://public.teta.so:9840/cms/$prjId');
 
     final res = await http.get(
       uri,
-      headers: {'authorization': 'Bearer $token'},
+      headers: {
+        'authorization': 'Bearer $token',
+        'cms-filters': filters.isEmpty
+            ? ''
+            : json.encode(filters.map((e) => e.toJson()).toList()),
+        'cms-pagination':
+            json.encode(<String, dynamic>{'page': page, 'pageElems': limit}),
+      },
     );
 
     TetaCMS.log('getCollections: ${res.body}');
