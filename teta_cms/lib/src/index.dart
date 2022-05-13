@@ -9,6 +9,8 @@ import 'package:teta_cms/src/constants.dart';
 import 'package:teta_cms/src/models/stream_actions.dart';
 import 'package:teta_cms/teta_cms.dart';
 
+export 'package:teta_cms/src/models/filter.dart';
+
 part 'components/utils.dart';
 part 'models/no_sql_stream.dart';
 part 'models/socket_change_event.dart';
