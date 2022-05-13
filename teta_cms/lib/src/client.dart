@@ -134,14 +134,24 @@ class TetaClient {
   ///
   /// Returns the collection as `Map<String,dynamic>`
   Future<List<dynamic>> getCollection(
-    final String collectionId,
-  ) async {
+    final String collectionId, {
+    final List<Filter> filters = const [],
+    final int page = 0,
+    final int limit = 20,
+  }) async {
     final uri =
         Uri.parse('https://public.teta.so:9840/cms/$prjId/$collectionId');
 
     final res = await http.get(
       uri,
-      headers: {'authorization': 'Bearer $token'},
+      headers: {
+        'authorization': 'Bearer $token',
+        'cms-filters': filters.isEmpty
+            ? ''
+            : json.encode(filters.map((final e) => e.toJson()).toList()),
+        'cms-pagination':
+            json.encode(<String, dynamic>{'page': page, 'pageElems': limit}),
+      },
     );
 
     TetaCMS.log('getCollection: ${res.body}');
@@ -162,22 +172,13 @@ class TetaClient {
   /// Throws an exception on request error ( statusCode != 200 )
   ///
   /// Returns the collections as `List<Map<String,dynamic>>` without `docs`
-  Future<List<CollectionObject>> getCollections({
-    final List<Filter> filters = const [],
-    final int page = 0,
-    final int limit = 20,
-  }) async {
+  Future<List<CollectionObject>> getCollections() async {
     final uri = Uri.parse('https://public.teta.so:9840/cms/$prjId');
 
     final res = await http.get(
       uri,
       headers: {
         'authorization': 'Bearer $token',
-        'cms-filters': filters.isEmpty
-            ? ''
-            : json.encode(filters.map((e) => e.toJson()).toList()),
-        'cms-pagination':
-            json.encode(<String, dynamic>{'page': page, 'pageElems': limit}),
       },
     );
 
