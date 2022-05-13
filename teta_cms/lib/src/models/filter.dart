@@ -11,9 +11,9 @@ class Filter {
     final t = type == FilterType.equal
         ? 'equal'
         : type == FilterType.like
-            ? 'equal'
+            ? 'like'
             : type == FilterType.gt
-                ? 'equal'
+                ? 'gt'
                 : 'lt';
     return <String, dynamic>{
       'key': key,
