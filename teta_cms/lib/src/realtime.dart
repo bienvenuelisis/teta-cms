@@ -161,6 +161,7 @@ class TetaRealtime {
     on(
       collectionId: collectionId,
       callback: (final e) async {
+        TetaCMS.printWarning('$filters, $limit, $page');
         final resp = await TetaCMS.instance.client.getCollection(
           collectionId,
           filters: filters,
