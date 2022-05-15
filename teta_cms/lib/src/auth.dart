@@ -57,12 +57,12 @@ class TetaAuth {
       },
     );
     WebViewXController? webViewController;
-    await showDialog<bool>(
+    final result = await showDialog<String>(
       context: context,
       builder: (final ctx) => AlertDialog(
         content: SizedBox(
-          width: 200,
-          height: 200,
+          width: 400,
+          height: 400,
           child: UniversalPlatform.isWindows
               ? Webview(
                   windowsController,
@@ -92,12 +92,14 @@ class TetaAuth {
                   },
                   onPageStarted: (final url) {
                     TetaCMS.printWarning(url);
-                    Navigator.of(context, rootNavigator: true).pop(url);
+                    const x = 0;
+                    //Navigator.of(context, rootNavigator: true).pop(url);
                   },
                 ),
         ),
       ),
     );
+    TetaCMS.log('result: $result');
   }
 
   Future<WebviewPermissionDecision> _onPermissionRequested(
