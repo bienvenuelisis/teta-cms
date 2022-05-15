@@ -43,7 +43,7 @@ class TetaAuth {
   Future signInWithBrowser(
     final BuildContext context,
   ) async {
-    final url = signIn();
+    final url = await signIn();
     await showDialog<void>(
       context: context,
       builder: (final ctx) => AlertDialog(
@@ -51,7 +51,7 @@ class TetaAuth {
           width: 200,
           height: 200,
           child: Center(
-            child: Text('$url'),
+            child: Text(url),
           ),
         ),
       ),
