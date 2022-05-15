@@ -66,8 +66,13 @@ class TetaAuth {
         content: SizedBox(
           width: 400,
           height: 400,
-          child: UniversalPlatform.isWindows
-              ? Webview(
+          child: Stack(
+            children: [
+              const Center(
+                child: CircularProgressIndicator(),
+              ),
+              if (UniversalPlatform.isWindows)
+                Webview(
                   windowsController,
                   width: double.infinity,
                   height: double.infinity,
@@ -83,7 +88,8 @@ class TetaAuth {
                     context,
                   ),
                 )
-              : WebViewX(
+              else
+                WebViewX(
                   width: double.maxFinite,
                   height: double.maxFinite,
                   onWebViewCreated: (final controller) {
@@ -99,6 +105,8 @@ class TetaAuth {
                     //Navigator.of(context, rootNavigator: true).pop(url);
                   },
                 ),
+            ],
+          ),
         ),
       ),
     );
