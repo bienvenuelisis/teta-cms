@@ -49,6 +49,7 @@ class TetaAuth {
     final int prjId,
   ) async {
     final url = await signIn(prjId: prjId);
+    TetaCMS.printWarning('Teta Auth return url: $url');
     final windowsController = WebviewController();
     windowsController.url.listen(
       (final url) {
@@ -60,6 +61,8 @@ class TetaAuth {
     final result = await showDialog<String>(
       context: context,
       builder: (final ctx) => AlertDialog(
+        backgroundColor: const Color(0xFF181818),
+        contentPadding: EdgeInsets.zero,
         content: SizedBox(
           width: 400,
           height: 400,
