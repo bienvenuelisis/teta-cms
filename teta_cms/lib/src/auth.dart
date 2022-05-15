@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:teta_cms/teta_cms.dart';
 
@@ -37,5 +38,23 @@ class TetaAuth {
     }
 
     return res.body;
+  }
+
+  Future signInWithBrowser(
+    final BuildContext context,
+  ) async {
+    final url = signIn();
+    await showDialog<void>(
+      context: context,
+      builder: (final ctx) => AlertDialog(
+        content: SizedBox(
+          width: 200,
+          height: 200,
+          child: Center(
+            child: Text('$url'),
+          ),
+        ),
+      ),
+    );
   }
 }
