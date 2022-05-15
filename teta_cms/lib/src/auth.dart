@@ -64,8 +64,10 @@ class TetaAuth {
         backgroundColor: const Color(0xFF181818),
         contentPadding: EdgeInsets.zero,
         content: SizedBox(
-          width: 400,
-          height: 400,
+          width:
+              MediaQuery.of(context).size.width >= 600 ? 400 : double.maxFinite,
+          height:
+              MediaQuery.of(context).size.width >= 600 ? 400 : double.maxFinite,
           child: Stack(
             children: [
               const Center(
