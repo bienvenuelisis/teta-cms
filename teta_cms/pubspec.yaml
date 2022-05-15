@@ -16,6 +16,9 @@ dependencies:
   equatable:
   socket_io_client: ^1.0.2
   hive:
+  universal_platform: ^1.0.0+1
+  webviewx:
+  webview_windows:
 
 dev_dependencies:
   flutter_test:

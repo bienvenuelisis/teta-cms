@@ -3,6 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:teta_cms/teta_cms.dart';
+import 'package:universal_platform/universal_platform.dart';
+import 'package:webview_windows/webview_windows.dart';
+import 'package:webviewx/webviewx.dart';
 
 class TetaAuth {
   TetaAuth(
@@ -46,17 +49,84 @@ class TetaAuth {
     final int prjId,
   ) async {
     final url = await signIn(prjId: prjId);
-    await showDialog<void>(
+    final windowsController = WebviewController();
+    windowsController.url.listen(
+      (final url) {
+        TetaCMS.printWarning(url);
+        Navigator.of(context, rootNavigator: true).pop(url);
+      },
+    );
+    WebViewXController? webViewController;
+    await showDialog<bool>(
       context: context,
       builder: (final ctx) => AlertDialog(
         content: SizedBox(
           width: 200,
           height: 200,
-          child: Center(
-            child: Text(url),
-          ),
+          child: UniversalPlatform.isWindows
+              ? Webview(
+                  windowsController,
+                  width: double.infinity,
+                  height: double.infinity,
+                  permissionRequested: (
+                    final url,
+                    final permissionKind,
+                    final isUserInitiated,
+                  ) =>
+                      _onPermissionRequested(
+                    url,
+                    permissionKind,
+                    isUserInitiated,
+                    context,
+                  ),
+                )
+              : WebViewX(
+                  width: double.maxFinite,
+                  height: double.maxFinite,
+                  onWebViewCreated: (final controller) {
+                    webViewController = controller;
+                    webViewController?.loadContent(
+                      'https://teta.so',
+                      SourceType.url,
+                    );
+                  },
+                  onPageStarted: (final url) {
+                    TetaCMS.printWarning(url);
+                    Navigator.of(context, rootNavigator: true).pop(url);
+                  },
+                ),
         ),
       ),
     );
+  }
+
+  Future<WebviewPermissionDecision> _onPermissionRequested(
+    final String url,
+    final WebviewPermissionKind kind,
+    final bool isUserInitiated,
+    final BuildContext context,
+  ) async {
+    final decision = await showDialog<WebviewPermissionDecision>(
+      context: context,
+      builder: (final BuildContext context) => AlertDialog(
+        backgroundColor: const Color(0xFF181818),
+        title: const Text('WebView permission requested'),
+        content: Text("WebView has requested permission '$kind'"),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () =>
+                Navigator.pop(context, WebviewPermissionDecision.deny),
+            child: const Text('Deny'),
+          ),
+          TextButton(
+            onPressed: () =>
+                Navigator.pop(context, WebviewPermissionDecision.allow),
+            child: const Text('Allow'),
+          ),
+        ],
+      ),
+    );
+
+    return decision ?? WebviewPermissionDecision.none;
   }
 }
