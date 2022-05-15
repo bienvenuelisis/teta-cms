@@ -20,7 +20,7 @@ class TetaAuth {
     final String clientSecret = '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',
   }) async {
     final res = await http.post(
-      Uri.parse('https://auth.teta.so/google/$prjId'),
+      Uri.parse('https://auth.teta.so/auth/google/$prjId'),
       headers: {
         'content-type': 'application/json',
       },
