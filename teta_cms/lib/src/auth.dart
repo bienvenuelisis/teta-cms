@@ -14,12 +14,13 @@ class TetaAuth {
 
   /// This function is cute
   Future<String> signIn({
+    required final int prjId,
     final String clientId =
         '492292088461-8kbvq3eh43atb0en8vcqgshsq5ohco58.apps.googleusercontent.com',
     final String clientSecret = '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',
   }) async {
     final res = await http.post(
-      Uri.parse('https://auth.teta.so/auth/google'),
+      Uri.parse('https://auth.teta.so/google/$prjId'),
       headers: {
         'content-type': 'application/json',
       },
@@ -42,8 +43,9 @@ class TetaAuth {
 
   Future signInWithBrowser(
     final BuildContext context,
+    final int prjId,
   ) async {
-    final url = await signIn();
+    final url = await signIn(prjId: prjId);
     await showDialog<void>(
       context: context,
       builder: (final ctx) => AlertDialog(
