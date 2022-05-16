@@ -58,6 +58,7 @@ class TetaAuth {
     final url = await signIn(prjId: prjId, provider: provider);
     TetaCMS.printWarning('Teta Auth return url: $url');
     final windowsController = WebviewController();
+    await windowsController.loadUrl(url);
     windowsController.url.listen(
       (final url) {
         TetaCMS.printWarning(url);
@@ -106,7 +107,7 @@ class TetaAuth {
                   onWebViewCreated: (final controller) {
                     webViewController = controller;
                     webViewController?.loadContent(
-                      'https://teta.so',
+                      url,
                       SourceType.url,
                     );
                   },
