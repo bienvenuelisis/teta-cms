@@ -1,11 +1,16 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:teta_cms/teta_cms.dart';
 import 'package:universal_platform/universal_platform.dart';
 import 'package:webview_windows/webview_windows.dart';
 import 'package:webviewx/webviewx.dart';
+
+enum TetaProvider {
+  google,
+}
 
 class TetaAuth {
   TetaAuth(
@@ -18,6 +23,7 @@ class TetaAuth {
   /// This function is cute
   Future<String> signIn({
     required final int prjId,
+    required final TetaProvider provider,
     final String clientId =
         '492292088461-8kbvq3eh43atb0en8vcqgshsq5ohco58.apps.googleusercontent.com',
     final String clientSecret = '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',
@@ -44,17 +50,20 @@ class TetaAuth {
     return res.body;
   }
 
-  Future signInWithBrowser(
+  Future<bool> signInWithBrowser(
     final BuildContext context,
-    final int prjId,
-  ) async {
-    final url = await signIn(prjId: prjId);
+    final int prjId, {
+    final TetaProvider provider = TetaProvider.google,
+  }) async {
+    final url = await signIn(prjId: prjId, provider: provider);
     TetaCMS.printWarning('Teta Auth return url: $url');
     final windowsController = WebviewController();
     windowsController.url.listen(
       (final url) {
         TetaCMS.printWarning(url);
-        Navigator.of(context, rootNavigator: true).pop(url);
+        if (url.contains('access_token') && url.contains('refresh_token')) {
+          Navigator.of(context, rootNavigator: true).pop(url);
+        }
       },
     );
     WebViewXController? webViewController;
@@ -103,8 +112,10 @@ class TetaAuth {
                   },
                   onPageStarted: (final url) {
                     TetaCMS.printWarning(url);
-                    const x = 0;
-                    //Navigator.of(context, rootNavigator: true).pop(url);
+                    if (url.contains('access_token') &&
+                        url.contains('refresh_token')) {
+                      Navigator.of(context, rootNavigator: true).pop(url);
+                    }
                   },
                 ),
             ],
@@ -113,6 +124,14 @@ class TetaAuth {
       ),
     );
     TetaCMS.log('result: $result');
+    if (result != null) {
+      final Box box = await Hive.openBox<Box>('Teta Auth');
+      await box.put('access_tkn', '');
+      await box.put('refresh_tkn', '');
+      return true;
+    } else {
+      return false;
+    }
   }
 
   Future<WebviewPermissionDecision> _onPermissionRequested(
