@@ -58,15 +58,18 @@ class TetaAuth {
     final url = await signIn(prjId: prjId, provider: provider);
     TetaCMS.printWarning('Teta Auth return url: $url');
     final windowsController = WebviewController();
-    await windowsController.loadUrl(url);
-    windowsController.url.listen(
-      (final url) {
-        TetaCMS.printWarning(url);
-        if (url.contains('access_token') && url.contains('refresh_token')) {
-          Navigator.of(context, rootNavigator: true).pop(url);
-        }
-      },
-    );
+    if (UniversalPlatform.isWindows) {
+      await windowsController.initialize();
+      await windowsController.loadUrl(url);
+      windowsController.url.listen(
+        (final url) {
+          TetaCMS.printWarning(url);
+          if (url.contains('access_token') && url.contains('refresh_token')) {
+            Navigator.of(context, rootNavigator: true).pop(url);
+          }
+        },
+      );
+    }
     WebViewXController? webViewController;
     final result = await showDialog<String>(
       context: context,
