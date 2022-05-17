@@ -135,11 +135,7 @@ class TetaAuth {
           TetaCMS.printWarning(url);
           if (url.contains('code') &&
               url.contains('state') &&
-              url.contains('teta.so')) {
-            await windowsController.executeScript(
-              'window.location.href = "127.0.0.1:8000?data="+document.body.innerText',
-            );
-          }
+              url.contains('teta.so')) {}
           if (url.contains('access_token') && url.contains('refresh_token')) {
             Navigator.of(context, rootNavigator: true).pop(url);
           }
@@ -194,11 +190,7 @@ class TetaAuth {
                     TetaCMS.printWarning(url);
                     if (url.contains('code') &&
                         url.contains('state') &&
-                        url.contains('teta.so')) {
-                      await webViewController?.evalRawJavascript(
-                        'window.location.href = "127.0.0.1:8000?data="+document.body.innerText',
-                      );
-                    }
+                        url.contains('teta.so')) {}
                     if (url.contains('access_token') &&
                         url.contains('refresh_token')) {
                       Navigator.of(context, rootNavigator: true).pop(url);
