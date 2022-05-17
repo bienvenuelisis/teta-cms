@@ -20,6 +20,31 @@ class TetaAuth {
   final String token;
   final int prjId;
 
+  Future<void> saveCredentials({
+    required final TetaAuthCredentials credentials,
+  }) async {
+    final uri = Uri.parse(
+      'https://public.teta.so:9840/cms/auth/credentials',
+    );
+
+    final res = await http.post(
+      uri,
+      headers: {'authorization': 'Bearer $token'},
+      body: json.encode(
+        <String, dynamic>{
+          'g_client_id': credentials.g_client_id,
+          'g_client_secret': credentials.g_client_secret,
+        },
+      ),
+    );
+
+    TetaCMS.log(res.body);
+
+    if (res.statusCode != 200) {
+      throw Exception('signIn resulted in ${res.statusCode}');
+    }
+  }
+
   /// This function is cute
   Future<String> signIn({
     required final int prjId,
