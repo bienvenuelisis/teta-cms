@@ -101,9 +101,6 @@ class TetaAuth {
   Future<String> signIn({
     required final int prjId,
     required final TetaProvider provider,
-    final String clientId =
-        '492292088461-8kbvq3eh43atb0en8vcqgshsq5ohco58.apps.googleusercontent.com',
-    final String clientSecret = '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',
   }) async {
     final res = await http.post(
       Uri.parse('https://auth.teta.so/auth/google/$prjId'),
@@ -111,12 +108,6 @@ class TetaAuth {
         'authorization': 'Bearer $token',
         'content-type': 'application/json',
       },
-      body: json.encode(
-        {
-          'clientId': clientId,
-          'clientSecret': clientSecret,
-        },
-      ),
     );
 
     TetaCMS.log(res.body);
@@ -140,10 +131,14 @@ class TetaAuth {
       await windowsController.initialize();
       await windowsController.loadUrl(url);
       windowsController.url.listen(
-        (final url) {
+        (final url) async {
           TetaCMS.printWarning(url);
-          if (url.contains('access_token') && url.contains('refresh_token')) {
-            Navigator.of(context, rootNavigator: true).pop(url);
+          if (url.contains('code') && url.contains('state')) {
+            final resp = await http.get(Uri.parse(url));
+            if (resp.body.contains('access_token') &&
+                resp.body.contains('refresh_token')) {
+              Navigator.of(context, rootNavigator: true).pop(resp.body);
+            }
           }
         },
       );
@@ -192,11 +187,15 @@ class TetaAuth {
                       SourceType.url,
                     );
                   },
-                  onPageStarted: (final url) {
+                  onPageStarted: (final url) async {
                     TetaCMS.printWarning(url);
-                    if (url.contains('access_token') &&
-                        url.contains('refresh_token')) {
-                      Navigator.of(context, rootNavigator: true).pop(url);
+                    if (url.contains('code') && url.contains('state')) {
+                      final resp = await http.get(Uri.parse(url));
+                      if (resp.body.contains('access_token') &&
+                          resp.body.contains('refresh_token')) {
+                        Navigator.of(context, rootNavigator: true)
+                            .pop(resp.body);
+                      }
                     }
                   },
                 ),
