@@ -136,11 +136,12 @@ class TetaAuth {
           if (url.contains('code') &&
               url.contains('state') &&
               url.contains('teta.so')) {
-            final resp = await http.get(Uri.parse(url));
-            if (resp.body.contains('access_token') &&
-                resp.body.contains('refresh_token')) {
-              Navigator.of(context, rootNavigator: true).pop(resp.body);
-            }
+            await windowsController.executeScript(
+              'window.location.href = "127.0.0.1:8000?data="+document.body.innerText',
+            );
+          }
+          if (url.contains('access_token') && url.contains('refresh_token')) {
+            Navigator.of(context, rootNavigator: true).pop(url);
           }
         },
       );
@@ -194,12 +195,13 @@ class TetaAuth {
                     if (url.contains('code') &&
                         url.contains('state') &&
                         url.contains('teta.so')) {
-                      final resp = await http.get(Uri.parse(url));
-                      if (resp.body.contains('access_token') &&
-                          resp.body.contains('refresh_token')) {
-                        Navigator.of(context, rootNavigator: true)
-                            .pop(resp.body);
-                      }
+                      await windowsController.executeScript(
+                        'window.location.href = "127.0.0.1:8000?data="+document.body.innerText',
+                      );
+                    }
+                    if (url.contains('access_token') &&
+                        url.contains('refresh_token')) {
+                      Navigator.of(context, rootNavigator: true).pop(url);
                     }
                   },
                 ),
