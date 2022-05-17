@@ -29,7 +29,10 @@ class TetaAuth {
 
     final res = await http.post(
       uri,
-      headers: {'authorization': 'Bearer $token'},
+      headers: {
+        'authorization': 'Bearer $token',
+        'content-type': 'application/json',
+      },
       body: json.encode(
         <String, dynamic>{
           'g_client_id': credentials.g_client_id,
