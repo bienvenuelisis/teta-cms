@@ -195,7 +195,7 @@ class TetaAuth {
                     if (url.contains('code') &&
                         url.contains('state') &&
                         url.contains('teta.so')) {
-                      await windowsController.executeScript(
+                      await webViewController?.evalRawJavascript(
                         'window.location.href = "127.0.0.1:8000?data="+document.body.innerText',
                       );
                     }
