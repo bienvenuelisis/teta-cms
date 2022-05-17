@@ -45,6 +45,25 @@ class TetaAuth {
     }
   }
 
+  Future<void> retrieveCredentials({
+    required final int prjId,
+  }) async {
+    final uri = Uri.parse(
+      'https://public.teta.so:9840/cms/auth/$prjId',
+    );
+
+    final res = await http.post(
+      uri,
+      headers: {'authorization': 'Bearer $token'},
+    );
+
+    TetaCMS.log(res.body);
+
+    if (res.statusCode != 200) {
+      throw Exception('signIn resulted in ${res.statusCode}');
+    }
+  }
+
   /// This function is cute
   Future<String> signIn({
     required final int prjId,
