@@ -133,7 +133,9 @@ class TetaAuth {
       windowsController.url.listen(
         (final url) async {
           TetaCMS.printWarning(url);
-          if (url.contains('code') && url.contains('state')) {
+          if (url.contains('code') &&
+              url.contains('state') &&
+              url.contains('teta.so')) {
             final resp = await http.get(Uri.parse(url));
             if (resp.body.contains('access_token') &&
                 resp.body.contains('refresh_token')) {
@@ -189,7 +191,9 @@ class TetaAuth {
                   },
                   onPageStarted: (final url) async {
                     TetaCMS.printWarning(url);
-                    if (url.contains('code') && url.contains('state')) {
+                    if (url.contains('code') &&
+                        url.contains('state') &&
+                        url.contains('teta.so')) {
                       final resp = await http.get(Uri.parse(url));
                       if (resp.body.contains('access_token') &&
                           resp.body.contains('refresh_token')) {
