@@ -38,7 +38,7 @@ class TetaAuth {
       ),
     );
 
-    TetaCMS.log(res.body);
+    TetaCMS.log('saveCredentials body: ${res.body}');
 
     if (res.statusCode != 200) {
       throw Exception('signIn resulted in ${res.statusCode}');
@@ -52,12 +52,12 @@ class TetaAuth {
       'https://public.teta.so:9840/cms/auth/$prjId',
     );
 
-    final res = await http.post(
+    final res = await http.get(
       uri,
       headers: {'authorization': 'Bearer $token'},
     );
 
-    TetaCMS.log(res.body);
+    TetaCMS.printWarning('retrieveCredentials body: ${res.body}');
 
     if (res.statusCode != 200) {
       throw Exception('signIn resulted in ${res.statusCode}');
