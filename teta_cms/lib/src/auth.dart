@@ -45,7 +45,7 @@ class TetaAuth {
     }
   }
 
-  Future<void> retrieveCredentials({
+  Future<TetaAuthCredentials> retrieveCredentials({
     required final int prjId,
   }) async {
     final uri = Uri.parse(
@@ -62,6 +62,12 @@ class TetaAuth {
     if (res.statusCode != 200) {
       throw Exception('retrieveCredentials resulted in ${res.statusCode}');
     }
+
+    final map = json.decode(res.body) as Map<String, dynamic>;
+    return TetaAuthCredentials(
+      g_client_id: map['client_id'] as String?,
+      g_client_secret: map['client_secret'] as String?,
+    );
   }
 
   Future<void> retrieveUsers({
