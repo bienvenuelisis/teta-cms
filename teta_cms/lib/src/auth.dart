@@ -41,7 +41,7 @@ class TetaAuth {
     TetaCMS.log('saveCredentials body: ${res.body}');
 
     if (res.statusCode != 200) {
-      throw Exception('signIn resulted in ${res.statusCode}');
+      throw Exception('saveCredentials resulted in ${res.statusCode}');
     }
   }
 
@@ -49,7 +49,7 @@ class TetaAuth {
     required final int prjId,
   }) async {
     final uri = Uri.parse(
-      'https://public.teta.so:9840/cms/auth/$prjId',
+      'https://public.teta.so:9840/auth/credentials/google/$prjId',
     );
 
     final res = await http.get(
@@ -60,7 +60,26 @@ class TetaAuth {
     TetaCMS.printWarning('retrieveCredentials body: ${res.body}');
 
     if (res.statusCode != 200) {
-      throw Exception('signIn resulted in ${res.statusCode}');
+      throw Exception('retrieveCredentials resulted in ${res.statusCode}');
+    }
+  }
+
+  Future<void> retrieveUsers({
+    required final int prjId,
+  }) async {
+    final uri = Uri.parse(
+      'https://public.teta.so:9840/auth/users/$prjId',
+    );
+
+    final res = await http.get(
+      uri,
+      headers: {'authorization': 'Bearer $token'},
+    );
+
+    TetaCMS.printWarning('retrieveUsers body: ${res.body}');
+
+    if (res.statusCode != 200) {
+      throw Exception('retrieveUsers resulted in ${res.statusCode}');
     }
   }
 
@@ -75,6 +94,7 @@ class TetaAuth {
     final res = await http.post(
       Uri.parse('https://auth.teta.so/auth/google/$prjId'),
       headers: {
+        'authorization': 'Bearer $token',
         'content-type': 'application/json',
       },
       body: json.encode(
