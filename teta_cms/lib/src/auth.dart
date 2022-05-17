@@ -21,10 +21,11 @@ class TetaAuth {
   final int prjId;
 
   Future<void> saveCredentials({
+    required final int prjId,
     required final TetaAuthCredentials credentials,
   }) async {
     final uri = Uri.parse(
-      'https://public.teta.so:9840/auth/credentials',
+      'https://public.teta.so:9840/auth/credentials/$prjId',
     );
 
     final res = await http.post(
