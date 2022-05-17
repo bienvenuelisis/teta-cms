@@ -24,7 +24,7 @@ class TetaAuth {
     required final TetaAuthCredentials credentials,
   }) async {
     final uri = Uri.parse(
-      'https://public.teta.so:9840/cms/auth/credentials',
+      'https://public.teta.so:9840/auth/credentials',
     );
 
     final res = await http.post(
@@ -57,7 +57,9 @@ class TetaAuth {
 
     final res = await http.get(
       uri,
-      headers: {'authorization': 'Bearer $token'},
+      headers: {
+        'authorization': 'Bearer $token',
+      },
     );
 
     TetaCMS.printWarning('retrieveCredentials body: ${res.body}');
@@ -82,7 +84,9 @@ class TetaAuth {
 
     final res = await http.get(
       uri,
-      headers: {'authorization': 'Bearer $token'},
+      headers: {
+        'authorization': 'Bearer $token',
+      },
     );
 
     TetaCMS.printWarning('retrieveUsers body: ${res.body}');
