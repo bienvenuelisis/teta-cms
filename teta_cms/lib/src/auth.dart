@@ -197,18 +197,11 @@ class TetaAuth {
                       Navigator.of(context, rootNavigator: true).pop(url);
                     }
                   },
-                  jsContent: const {
-                    EmbeddedJsContent(
-                      webJs: 'function abc(url) { P_TetaCallback(url) }',
-                      mobileJs:
-                          'function abc(url) { P_TetaCallback.postMessage(url) }',
-                    ),
-                  },
                   dartCallBacks: {
                     DartCallback(
-                      name: 'P_TetaCallback',
+                      name: 'abc',
                       callBack: (final dynamic url) {
-                        TetaCMS.printWarning('P_TetaCallback: $url');
+                        TetaCMS.printWarning('abc: $url');
                       },
                     ),
                   },
