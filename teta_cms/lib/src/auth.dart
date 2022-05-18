@@ -102,6 +102,7 @@ class TetaAuth {
     required final int prjId,
     required final TetaProvider provider,
   }) async {
+    TetaCMS.log('signIn');
     final res = await http.post(
       Uri.parse('https://auth.teta.so/auth/google/$prjId'),
       headers: {
@@ -195,6 +196,22 @@ class TetaAuth {
                         url.contains('refresh_token')) {
                       Navigator.of(context, rootNavigator: true).pop(url);
                     }
+                  },
+                  jsContent: const {
+                    EmbeddedJsContent(
+                      webJs:
+                          'function sendNavigationEvent(url) { NavigationCallback(url) }',
+                      mobileJs:
+                          'function sendNavigationEvent(url) { NavigationCallback.postMessage(url) }',
+                    ),
+                  },
+                  dartCallBacks: {
+                    DartCallback(
+                      name: 'NavigationCallback',
+                      callBack: (final dynamic url) {
+                        TetaCMS.printWarning('$url');
+                      },
+                    )
                   },
                 ),
             ],
