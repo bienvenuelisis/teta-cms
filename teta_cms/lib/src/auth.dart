@@ -201,7 +201,7 @@ class TetaAuth {
                     DartCallback(
                       name: '_P_TetaCallback',
                       callBack: (final dynamic url) {
-                        TetaCMS.printWarning('$url');
+                        TetaCMS.printWarning('_P_TetaCallback: $url');
                       },
                     ),
                   },
