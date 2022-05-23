@@ -164,11 +164,8 @@ class TetaAuth {
         final data = message.data.toString();
         TetaCMS.printWarning('data: $data');
 
-        final dynamic result = json.decode(data);
-        TetaCMS.printWarning('result: $result');
-
-        final token = result['token'] as String? ?? '';
-        TetaCMS.printWarning(token);
+        final token = data.substring(7, data.length - 1);
+        TetaCMS.printWarning('result: $token');
 
         //await insertUser(token);
 
