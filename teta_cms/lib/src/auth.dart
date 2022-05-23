@@ -78,6 +78,31 @@ class TetaAuth {
     );
   }
 
+  Future<void> insertUser(final String userToken) async {
+    final uri = Uri.parse(
+      'https://public.teta.so:9840/users/$prjId',
+    );
+
+    final res = await http.post(
+      uri,
+      headers: {
+        'authorization': 'Bearer $token',
+        'content-type': 'application/json',
+      },
+      body: json.encode(
+        <String, dynamic>{
+          'token': userToken,
+        },
+      ),
+    );
+
+    TetaCMS.printWarning('insertUser body: ${res.body}');
+
+    if (res.statusCode != 200) {
+      throw Exception('insertUser resulted in ${res.statusCode} ${res.body}');
+    }
+  }
+
   Future<void> retrieveUsers({
     required final int prjId,
   }) async {
@@ -139,6 +164,9 @@ class TetaAuth {
         final result = message.data.toString();
 
         final token = result;
+        TetaCMS.printWarning(token);
+
+        await insertUser(token);
 
         //? Do shits with the token here
 
