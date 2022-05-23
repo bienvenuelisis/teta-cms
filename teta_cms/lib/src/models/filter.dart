@@ -1,4 +1,10 @@
-enum FilterType { equal, like, gt, lt }
+enum FilterType {
+  equal,
+  like,
+  gt,
+  lt,
+  notLike,
+}
 
 class Filter {
   Filter(this.key, this.value, {this.type = FilterType.like});
@@ -14,7 +20,9 @@ class Filter {
             ? 'like'
             : type == FilterType.gt
                 ? 'gt'
-                : 'lt';
+                : type == FilterType.notLike
+                    ? 'notlike'
+                    : 'lt';
     return <String, dynamic>{
       'key': key,
       'type': t,
