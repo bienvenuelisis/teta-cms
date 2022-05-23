@@ -80,7 +80,7 @@ class TetaAuth {
 
   Future<void> insertUser(final String userToken) async {
     final uri = Uri.parse(
-      'https://public.teta.so:9840/users/$prjId',
+      'https://public.teta.so:9840/auth/users/$prjId',
     );
 
     final res = await http.post(
