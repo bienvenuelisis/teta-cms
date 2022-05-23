@@ -5,7 +5,6 @@ import 'dart:js';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
-import 'package:teta_cms/src/models/credentials.dart';
 import 'package:teta_cms/teta_cms.dart';
 import 'package:universal_platform/universal_platform.dart';
 import 'package:webview_windows/webview_windows.dart';
@@ -132,13 +131,12 @@ class TetaAuth {
 
     final url = await signIn(prjId: prjId, provider: provider);
     TetaCMS.printWarning('Teta Auth return url: $url');
-    final completer = Completer<JavascriptPostMessageData>();
+    final completer = Completer<String>();
     Future onParentWindowMessage(final dynamic message) async {
       if (message == null) return;
       TetaCMS.printWarning('message: $message');
       if ((message.origin as String).startsWith('https://auth.teta.so')) {
-        final result =
-            JavascriptPostMessageData.fromJsonString(message.data.toString());
+        final result = message.data.toString();
 
         final token = result;
 
@@ -277,41 +275,4 @@ class TetaAuth {
 
     return decision ?? WebviewPermissionDecision.none;
   }
-}
-
-/// Javascript post message model
-class JavascriptPostMessage {
-  /// Constructor
-  JavascriptPostMessage(this.data, this.origin);
-
-  /// Factory constructor
-  factory JavascriptPostMessage.fromJsonString(final String jsonString) {
-    final jsonData = json.decode(jsonString) as Map<String, dynamic>;
-    final data =
-        JavascriptPostMessageData.fromJsonString(jsonData['data'] as String);
-    final origin = jsonData['origin'] as String;
-    return JavascriptPostMessage(data, origin);
-  }
-
-  /// data
-  JavascriptPostMessageData data;
-
-  /// origin
-  String origin;
-}
-
-/// Javascript post message data model
-class JavascriptPostMessageData {
-  /// Constructor
-  JavascriptPostMessageData(this.jwt);
-
-  /// Factory constructor
-  factory JavascriptPostMessageData.fromJsonString(final String jsonString) {
-    final jsonData = json.decode(jsonString) as Map<String, dynamic>;
-    final jwt = jsonData['jwt'] as String;
-    return JavascriptPostMessageData(jwt);
-  }
-
-  /// jwt
-  String jwt;
 }
