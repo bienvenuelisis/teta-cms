@@ -124,8 +124,10 @@ class TetaAuth {
     }
 
     final list = json.encode(res.body) as List<dynamic>;
+    TetaCMS.log('retrieveUsers list: $list');
     final users =
         (list.first as Map<String, dynamic>)['users'] as List<dynamic>;
+    TetaCMS.log('retrieveUsers users: $users');
     return users;
   }
 
