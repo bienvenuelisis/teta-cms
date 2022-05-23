@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:js';
 
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
+import 'package:teta_cms/src/platform/web.dart';
 import 'package:teta_cms/teta_cms.dart';
 import 'package:universal_platform/universal_platform.dart';
 import 'package:webview_windows/webview_windows.dart';
@@ -103,7 +103,7 @@ class TetaAuth {
     }
   }
 
-  Future<void> retrieveUsers({
+  Future<List<dynamic>> retrieveUsers({
     required final int prjId,
   }) async {
     final uri = Uri.parse(
@@ -122,6 +122,11 @@ class TetaAuth {
     if (res.statusCode != 200) {
       throw Exception('retrieveUsers resulted in ${res.statusCode}');
     }
+
+    final list = json.encode(res.body) as List<dynamic>;
+    final users =
+        (list.first as Map<String, dynamic>)['users'] as List<dynamic>;
+    return users;
   }
 
   /// This function is cute
@@ -152,33 +157,10 @@ class TetaAuth {
     final int prjId, {
     final TetaProvider provider = TetaProvider.google,
   }) async {
-    late final JsObject child;
-
     final url = await signIn(prjId: prjId, provider: provider);
     TetaCMS.printWarning('Teta Auth return url: $url');
-    final completer = Completer<String>();
-    Future onParentWindowMessage(final dynamic message) async {
-      if (message == null) return;
-      TetaCMS.printWarning('message: $message');
-      if ((message.origin as String).startsWith('https://auth.teta.so')) {
-        final data = message.data.toString();
-        TetaCMS.printWarning('data: $data');
 
-        final token = data.substring(7, data.length - 1);
-        TetaCMS.printWarning('result: $token');
-
-        await insertUser(token);
-
-        //? Do shits with the token here
-
-        child.callMethod('close');
-        completer.complete(token);
-      }
-    }
-
-    context['onmessage'] = onParentWindowMessage;
-    final urls = [url];
-    child = context.callMethod('open', urls) as JsObject;
+    await CMSPlatform.login(url, insertUser);
 
     return true;
 
