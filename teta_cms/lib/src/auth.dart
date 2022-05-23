@@ -20,95 +20,25 @@ class TetaAuth {
   final String token;
   final int prjId;
 
-  Future<void> saveCredentials({
-    required final int prjId,
-    required final TetaAuthCredentials credentials,
-  }) async {
-    final uri = Uri.parse(
-      'https://public.teta.so:9840/auth/credentials/$prjId',
-    );
-
-    final res = await http.post(
-      uri,
-      headers: {
-        'authorization': 'Bearer $token',
-        'content-type': 'application/json',
-      },
-      body: json.encode(
-        <String, dynamic>{
-          'g_client_id': credentials.g_client_id,
-          'g_client_secret': credentials.g_client_secret,
-        },
-      ),
-    );
-
-    TetaCMS.log('saveCredentials body: ${res.body}');
-
-    if (res.statusCode != 200) {
-      throw Exception('saveCredentials resulted in ${res.statusCode}');
-    }
-  }
-
-  Future<TetaAuthCredentials> retrieveCredentials({
-    required final int prjId,
-  }) async {
-    final uri = Uri.parse(
-      'https://public.teta.so:9840/auth/credentials/google/$prjId',
-    );
-
-    final res = await http.get(
-      uri,
-      headers: {
-        'authorization': 'Bearer $token',
-      },
-    );
-
-    TetaCMS.printWarning('retrieveCredentials body: ${res.body}');
-
-    if (res.statusCode != 200) {
-      throw Exception('retrieveCredentials resulted in ${res.statusCode}');
-    }
-
-    final map = json.decode(res.body) as Map<String, dynamic>;
-    return TetaAuthCredentials(
-      g_client_id: map['client_id'] as String?,
-      g_client_secret: map['client_secret'] as String?,
-    );
-  }
-
-  Future<void> retrieveUsers({
-    required final int prjId,
-  }) async {
-    final uri = Uri.parse(
-      'https://public.teta.so:9840/auth/users/$prjId',
-    );
-
-    final res = await http.get(
-      uri,
-      headers: {
-        'authorization': 'Bearer $token',
-      },
-    );
-
-    TetaCMS.printWarning('retrieveUsers body: ${res.body}');
-
-    if (res.statusCode != 200) {
-      throw Exception('retrieveUsers resulted in ${res.statusCode}');
-    }
-  }
-
   /// This function is cute
   Future<String> signIn({
     required final int prjId,
     required final TetaProvider provider,
+    final String clientId =
+        '492292088461-8kbvq3eh43atb0en8vcqgshsq5ohco58.apps.googleusercontent.com',
+    final String clientSecret = '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',
   }) async {
-    TetaCMS.log('signIn');
     final res = await http.post(
       Uri.parse('https://auth.teta.so/auth/google/$prjId'),
       headers: {
-        'authorization': 'Bearer $token',
         'content-type': 'application/json',
       },
+      body: json.encode(
+        {
+          'clientId': clientId,
+          'clientSecret': clientSecret,
+        },
+      ),
     );
 
     TetaCMS.log(res.body);
@@ -128,21 +58,14 @@ class TetaAuth {
     final url = await signIn(prjId: prjId, provider: provider);
     TetaCMS.printWarning('Teta Auth return url: $url');
     final windowsController = WebviewController();
-    if (UniversalPlatform.isWindows) {
-      await windowsController.initialize();
-      await windowsController.loadUrl(url);
-      windowsController.url.listen(
-        (final url) async {
-          TetaCMS.printWarning(url);
-          if (url.contains('code') &&
-              url.contains('state') &&
-              url.contains('teta.so')) {}
-          if (url.contains('access_token') && url.contains('refresh_token')) {
-            Navigator.of(context, rootNavigator: true).pop(url);
-          }
-        },
-      );
-    }
+    windowsController.url.listen(
+      (final url) {
+        TetaCMS.printWarning(url);
+        if (url.contains('access_token') && url.contains('refresh_token')) {
+          Navigator.of(context, rootNavigator: true).pop(url);
+        }
+      },
+    );
     WebViewXController? webViewController;
     final result = await showDialog<String>(
       context: context,
@@ -183,27 +106,16 @@ class TetaAuth {
                   onWebViewCreated: (final controller) {
                     webViewController = controller;
                     webViewController?.loadContent(
-                      url,
+                      'https://teta.so',
                       SourceType.url,
                     );
                   },
-                  onPageStarted: (final url) async {
+                  onPageStarted: (final url) {
                     TetaCMS.printWarning(url);
-                    if (url.contains('code') &&
-                        url.contains('state') &&
-                        url.contains('teta.so')) {}
                     if (url.contains('access_token') &&
                         url.contains('refresh_token')) {
                       Navigator.of(context, rootNavigator: true).pop(url);
                     }
-                  },
-                  dartCallBacks: {
-                    DartCallback(
-                      name: 'abc',
-                      callBack: (final dynamic url) {
-                        TetaCMS.printWarning('abc: $url');
-                      },
-                    ),
                   },
                 ),
             ],

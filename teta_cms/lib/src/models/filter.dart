@@ -1,17 +1,11 @@
-enum FilterType {
-  equal,
-  like,
-  gt,
-  lt,
-  notLike,
-}
+enum FilterType { equal, like, gt, lt }
 
 class Filter {
   Filter(this.key, this.value, {this.type = FilterType.like});
 
   String key;
   FilterType? type;
-  String? value;
+  String value;
 
   Map<String, dynamic> toJson() {
     final t = type == FilterType.equal
@@ -20,9 +14,7 @@ class Filter {
             ? 'like'
             : type == FilterType.gt
                 ? 'gt'
-                : type == FilterType.notLike
-                    ? 'notlike'
-                    : 'lt';
+                : 'lt';
     return <String, dynamic>{
       'key': key,
       'type': t,
