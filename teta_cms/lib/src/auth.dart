@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -7,9 +8,47 @@ import 'package:teta_cms/teta_cms.dart';
 import 'package:universal_platform/universal_platform.dart';
 import 'package:webview_windows/webview_windows.dart';
 import 'package:webviewx/webviewx.dart';
+import 'dart:js';
 
 enum TetaProvider {
   google,
+}
+
+/// Javascript post message model
+class JavascriptPostMessage {
+  /// Constructor
+  JavascriptPostMessage(this.data, this.origin);
+
+  /// Factory constructor
+  factory JavascriptPostMessage.fromJsonString(final String jsonString) {
+    final jsonData = json.decode(jsonString) as Map<String, dynamic>;
+    final data =
+        JavascriptPostMessageData.fromJsonString(jsonData['data'] as String);
+    final origin = jsonData['origin'] as String;
+    return JavascriptPostMessage(data, origin);
+  }
+
+  /// data
+  JavascriptPostMessageData data;
+
+  /// origin
+  String origin;
+}
+
+/// Javascript post message data model
+class JavascriptPostMessageData {
+  /// Constructor
+  JavascriptPostMessageData(this.jwt);
+
+  /// Factory constructor
+  factory JavascriptPostMessageData.fromJsonString(final String jsonString) {
+    final jsonData = json.decode(jsonString) as Map<String, dynamic>;
+    final jwt = jsonData['jwt'] as String;
+    return JavascriptPostMessageData(jwt);
+  }
+
+  /// jwt
+  String jwt;
 }
 
 class TetaAuth {
@@ -51,10 +90,12 @@ class TetaAuth {
   }
 
   Future<bool> signInWithBrowser(
-    final BuildContext context,
+    final BuildContext ctx,
     final int prjId, {
     final TetaProvider provider = TetaProvider.google,
   }) async {
+    late final JsObject child;
+
     final url = await signIn(prjId: prjId, provider: provider);
     TetaCMS.printWarning('Teta Auth return url: $url');
     final windowsController = WebviewController();
@@ -62,21 +103,19 @@ class TetaAuth {
       (final url) {
         TetaCMS.printWarning(url);
         if (url.contains('access_token') && url.contains('refresh_token')) {
-          Navigator.of(context, rootNavigator: true).pop(url);
+          Navigator.of(ctx, rootNavigator: true).pop(url);
         }
       },
     );
     WebViewXController? webViewController;
     final result = await showDialog<String>(
-      context: context,
+      context: ctx,
       builder: (final ctx) => AlertDialog(
         backgroundColor: const Color(0xFF181818),
         contentPadding: EdgeInsets.zero,
         content: SizedBox(
-          width:
-              MediaQuery.of(context).size.width >= 600 ? 400 : double.maxFinite,
-          height:
-              MediaQuery.of(context).size.width >= 600 ? 400 : double.maxFinite,
+          width: MediaQuery.of(ctx).size.width >= 600 ? 400 : double.maxFinite,
+          height: MediaQuery.of(ctx).size.width >= 600 ? 400 : double.maxFinite,
           child: Stack(
             children: [
               const Center(
@@ -85,18 +124,14 @@ class TetaAuth {
               if (UniversalPlatform.isWindows)
                 Webview(
                   windowsController,
-                  width: double.infinity,
                   height: double.infinity,
-                  permissionRequested: (
-                    final url,
-                    final permissionKind,
                     final isUserInitiated,
                   ) =>
                       _onPermissionRequested(
                     url,
                     permissionKind,
                     isUserInitiated,
-                    context,
+                    ctx,
                   ),
                 )
               else
@@ -114,7 +149,7 @@ class TetaAuth {
                     TetaCMS.printWarning(url);
                     if (url.contains('access_token') &&
                         url.contains('refresh_token')) {
-                      Navigator.of(context, rootNavigator: true).pop(url);
+                      Navigator.of(ctx, rootNavigator: true).pop(url);
                     }
                   },
                 ),
