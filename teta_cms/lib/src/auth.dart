@@ -123,7 +123,7 @@ class TetaAuth {
       throw Exception('retrieveUsers resulted in ${res.statusCode}');
     }
 
-    final list = json.encode(res.body) as List<dynamic>;
+    final list = json.decode(res.body) as List<dynamic>;
     TetaCMS.log('retrieveUsers list: $list');
     final users =
         (list.first as Map<String, dynamic>)['users'] as List<dynamic>;
