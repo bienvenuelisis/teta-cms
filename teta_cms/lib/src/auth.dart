@@ -163,10 +163,10 @@ class TetaAuth {
       if ((message.origin as String).startsWith('https://auth.teta.so')) {
         final result = message.data.toString();
 
-        final token = result;
-        TetaCMS.printWarning(token);
+        final dynamic token = json.decode(result);
+        TetaCMS.printWarning('$token');
 
-        await insertUser(token);
+        //await insertUser(token);
 
         //? Do shits with the token here
 
