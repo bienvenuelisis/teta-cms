@@ -1,54 +1,16 @@
-import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
+import 'package:teta_cms/src/models/credentials.dart';
 import 'package:teta_cms/teta_cms.dart';
 import 'package:universal_platform/universal_platform.dart';
 import 'package:webview_windows/webview_windows.dart';
 import 'package:webviewx/webviewx.dart';
-import 'dart:js';
 
 enum TetaProvider {
   google,
-}
-
-/// Javascript post message model
-class JavascriptPostMessage {
-  /// Constructor
-  JavascriptPostMessage(this.data, this.origin);
-
-  /// Factory constructor
-  factory JavascriptPostMessage.fromJsonString(final String jsonString) {
-    final jsonData = json.decode(jsonString) as Map<String, dynamic>;
-    final data =
-        JavascriptPostMessageData.fromJsonString(jsonData['data'] as String);
-    final origin = jsonData['origin'] as String;
-    return JavascriptPostMessage(data, origin);
-  }
-
-  /// data
-  JavascriptPostMessageData data;
-
-  /// origin
-  String origin;
-}
-
-/// Javascript post message data model
-class JavascriptPostMessageData {
-  /// Constructor
-  JavascriptPostMessageData(this.jwt);
-
-  /// Factory constructor
-  factory JavascriptPostMessageData.fromJsonString(final String jsonString) {
-    final jsonData = json.decode(jsonString) as Map<String, dynamic>;
-    final jwt = jsonData['jwt'] as String;
-    return JavascriptPostMessageData(jwt);
-  }
-
-  /// jwt
-  String jwt;
 }
 
 class TetaAuth {
@@ -59,25 +21,95 @@ class TetaAuth {
   final String token;
   final int prjId;
 
+  Future<void> saveCredentials({
+    required final int prjId,
+    required final TetaAuthCredentials credentials,
+  }) async {
+    final uri = Uri.parse(
+      'https://public.teta.so:9840/auth/credentials/$prjId',
+    );
+
+    final res = await http.post(
+      uri,
+      headers: {
+        'authorization': 'Bearer $token',
+        'content-type': 'application/json',
+      },
+      body: json.encode(
+        <String, dynamic>{
+          'g_client_id': credentials.g_client_id,
+          'g_client_secret': credentials.g_client_secret,
+        },
+      ),
+    );
+
+    TetaCMS.log('saveCredentials body: ${res.body}');
+
+    if (res.statusCode != 200) {
+      throw Exception('saveCredentials resulted in ${res.statusCode}');
+    }
+  }
+
+  Future<TetaAuthCredentials> retrieveCredentials({
+    required final int prjId,
+  }) async {
+    final uri = Uri.parse(
+      'https://public.teta.so:9840/auth/credentials/google/$prjId',
+    );
+
+    final res = await http.get(
+      uri,
+      headers: {
+        'authorization': 'Bearer $token',
+      },
+    );
+
+    TetaCMS.printWarning('retrieveCredentials body: ${res.body}');
+
+    if (res.statusCode != 200) {
+      throw Exception('retrieveCredentials resulted in ${res.statusCode}');
+    }
+
+    final map = json.decode(res.body) as Map<String, dynamic>;
+    return TetaAuthCredentials(
+      g_client_id: map['client_id'] as String?,
+      g_client_secret: map['client_secret'] as String?,
+    );
+  }
+
+  Future<void> retrieveUsers({
+    required final int prjId,
+  }) async {
+    final uri = Uri.parse(
+      'https://public.teta.so:9840/auth/users/$prjId',
+    );
+
+    final res = await http.get(
+      uri,
+      headers: {
+        'authorization': 'Bearer $token',
+      },
+    );
+
+    TetaCMS.printWarning('retrieveUsers body: ${res.body}');
+
+    if (res.statusCode != 200) {
+      throw Exception('retrieveUsers resulted in ${res.statusCode}');
+    }
+  }
+
   /// This function is cute
   Future<String> signIn({
     required final int prjId,
     required final TetaProvider provider,
-    final String clientId =
-        '492292088461-8kbvq3eh43atb0en8vcqgshsq5ohco58.apps.googleusercontent.com',
-    final String clientSecret = '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',
   }) async {
+    TetaCMS.log('signIn');
     final res = await http.post(
       Uri.parse('https://auth.teta.so/auth/google/$prjId'),
       headers: {
+        'authorization': 'Bearer $token',
         'content-type': 'application/json',
       },
-      body: json.encode(
-        {
-          'clientId': clientId,
-          'clientSecret': clientSecret,
-        },
-      ),
     );
 
     TetaCMS.log(res.body);
@@ -90,32 +122,39 @@ class TetaAuth {
   }
 
   Future<bool> signInWithBrowser(
-    final BuildContext ctx,
+    final BuildContext context,
     final int prjId, {
     final TetaProvider provider = TetaProvider.google,
   }) async {
-    late final JsObject child;
-
     final url = await signIn(prjId: prjId, provider: provider);
     TetaCMS.printWarning('Teta Auth return url: $url');
     final windowsController = WebviewController();
-    windowsController.url.listen(
-      (final url) {
-        TetaCMS.printWarning(url);
-        if (url.contains('access_token') && url.contains('refresh_token')) {
-          Navigator.of(ctx, rootNavigator: true).pop(url);
-        }
-      },
-    );
+    if (UniversalPlatform.isWindows) {
+      await windowsController.initialize();
+      await windowsController.loadUrl(url);
+      windowsController.url.listen(
+        (final url) async {
+          TetaCMS.printWarning(url);
+          if (url.contains('code') &&
+              url.contains('state') &&
+              url.contains('teta.so')) {}
+          if (url.contains('access_token') && url.contains('refresh_token')) {
+            Navigator.of(context, rootNavigator: true).pop(url);
+          }
+        },
+      );
+    }
     WebViewXController? webViewController;
     final result = await showDialog<String>(
-      context: ctx,
+      context: context,
       builder: (final ctx) => AlertDialog(
         backgroundColor: const Color(0xFF181818),
         contentPadding: EdgeInsets.zero,
         content: SizedBox(
-          width: MediaQuery.of(ctx).size.width >= 600 ? 400 : double.maxFinite,
-          height: MediaQuery.of(ctx).size.width >= 600 ? 400 : double.maxFinite,
+          width:
+              MediaQuery.of(context).size.width >= 600 ? 400 : double.maxFinite,
+          height:
+              MediaQuery.of(context).size.width >= 600 ? 400 : double.maxFinite,
           child: Stack(
             children: [
               const Center(
@@ -124,14 +163,18 @@ class TetaAuth {
               if (UniversalPlatform.isWindows)
                 Webview(
                   windowsController,
+                  width: double.infinity,
                   height: double.infinity,
+                  permissionRequested: (
+                    final url,
+                    final permissionKind,
                     final isUserInitiated,
                   ) =>
                       _onPermissionRequested(
                     url,
                     permissionKind,
                     isUserInitiated,
-                    ctx,
+                    context,
                   ),
                 )
               else
@@ -141,16 +184,27 @@ class TetaAuth {
                   onWebViewCreated: (final controller) {
                     webViewController = controller;
                     webViewController?.loadContent(
-                      'https://teta.so',
+                      url,
                       SourceType.url,
                     );
                   },
-                  onPageStarted: (final url) {
+                  onPageStarted: (final url) async {
                     TetaCMS.printWarning(url);
+                    if (url.contains('code') &&
+                        url.contains('state') &&
+                        url.contains('teta.so')) {}
                     if (url.contains('access_token') &&
                         url.contains('refresh_token')) {
-                      Navigator.of(ctx, rootNavigator: true).pop(url);
+                      Navigator.of(context, rootNavigator: true).pop(url);
                     }
+                  },
+                  dartCallBacks: {
+                    DartCallback(
+                      name: 'abc',
+                      callBack: (final dynamic url) {
+                        TetaCMS.printWarning('abc: $url');
+                      },
+                    ),
                   },
                 ),
             ],
