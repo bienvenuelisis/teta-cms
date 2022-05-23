@@ -161,10 +161,11 @@ class TetaAuth {
       if (message == null) return;
       TetaCMS.printWarning('message: $message');
       if ((message.origin as String).startsWith('https://auth.teta.so')) {
-        final data = json.encode(message.data);
+        final data =
+            json.decode(message.data.toString()) as Map<String, dynamic>;
         TetaCMS.printWarning('data: $data');
 
-        final dynamic result = json.decode(data);
+        final dynamic result = data['token'];
         TetaCMS.printWarning('result: $result');
 
         final token = '$result';
