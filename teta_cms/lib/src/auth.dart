@@ -167,7 +167,7 @@ class TetaAuth {
         final token = data.substring(7, data.length - 1);
         TetaCMS.printWarning('result: $token');
 
-        //await insertUser(token);
+        await insertUser(token);
 
         //? Do shits with the token here
 
