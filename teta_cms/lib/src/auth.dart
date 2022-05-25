@@ -158,7 +158,7 @@ class TetaAuth {
     final url = await signIn(prjId: prjId, provider: provider);
     TetaCMS.printWarning('Teta Auth return url: $url');
 
-    await CMSPlatform.login(url, insertUser);
+    await CMSPlatform.login(url, ctx, insertUser);
 
     return true;
   }
