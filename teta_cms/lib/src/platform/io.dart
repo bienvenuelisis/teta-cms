@@ -87,8 +87,8 @@ class CMSPlatform {
                     if (url.contains('code') &&
                         url.contains('state') &&
                         url.contains('teta.so')) {
-                      final webScraper = WebScraper(url);
-                      if (await webScraper.loadWebPage('')) {
+                      final webScraper = WebScraper();
+                      if (await webScraper.loadFullURL(url)) {
                         final elements = webScraper.getPageContent();
                         print(elements);
                       }
