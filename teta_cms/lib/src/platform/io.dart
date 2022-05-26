@@ -74,7 +74,17 @@ class CMSPlatform {
                       SourceType.url,
                     );
                   },
-                  onPageStarted: (final url) async {
+                  navigationDelegate: (final NavigationRequest request) {
+                    print('allowing navigation to $request');
+                    return NavigationDecision.navigate;
+                  },
+                  onPageStarted: (final String url) {
+                    print('Page started loading: $url');
+                  },
+                  onPageFinished: (final String url) {
+                    print('Page finished loading: $url');
+                  },
+                  /*onPageStarted: (final url) async {
                     TetaCMS.printWarning(url);
                     if (url.contains('code') &&
                         url.contains('state') &&
@@ -83,7 +93,7 @@ class CMSPlatform {
                         url.contains('refresh_token')) {
                       Navigator.of(ctx, rootNavigator: true).pop(url);
                     }
-                  },
+                  },*/
                   dartCallBacks: {
                     DartCallback(
                       name: 'abc',
