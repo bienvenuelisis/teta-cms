@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:teta_cms/teta_cms.dart';
 import 'package:universal_platform/universal_platform.dart';
+import 'package:web_scraper/web_scraper.dart';
 import 'package:webview_windows/webview_windows.dart';
 import 'package:webviewx/webviewx.dart';
 
@@ -81,12 +82,17 @@ class CMSPlatform {
                   onPageStarted: (final String url) {
                     print('Page started loading: $url');
                   },
-                  onPageFinished: (final String url) {
+                  onPageFinished: (final String url) async {
                     print('Page finished loading: $url');
                     if (url.contains('code') &&
                         url.contains('state') &&
                         url.contains('teta.so')) {
-                      Navigator.of(ctx, rootNavigator: true).pop(url);
+                      final webScraper = WebScraper(url);
+                      if (await webScraper.loadWebPage('')) {
+                        final elements = webScraper.getPageContent();
+                        print(elements);
+                      }
+                      //Navigator.of(ctx, rootNavigator: true).pop(url);
                     }
                   },
                   /*onPageStarted: (final url) async {
@@ -115,7 +121,7 @@ class CMSPlatform {
     );
     TetaCMS.log('result: $result');
     if (result != null) {
-      final Box box = await Hive.openBox<Box>('Teta Auth');
+      final box = await Hive.openBox<dynamic>('Teta Auth');
       await box.put('access_tkn', '');
       await box.put('refresh_tkn', '');
       return true;

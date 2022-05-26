@@ -19,6 +19,7 @@ dependencies:
   universal_platform: ^1.0.0+1
   webviewx:
   webview_windows:
+  web_scraper: ^0.1.4
 
 dev_dependencies:
   flutter_test:
