@@ -14,6 +14,9 @@ class CMSPlatform {
     final windowsController = WebviewController();
     if (UniversalPlatform.isWindows) {
       await windowsController.initialize();
+      await windowsController.setUserAgent(
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36 OPR/85.0.4341.71',
+      );
       await windowsController.loadUrl(url);
       windowsController.url.listen(
         (final url) async {
@@ -60,6 +63,8 @@ class CMSPlatform {
                 )
               else
                 WebViewX(
+                  userAgent:
+                      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36 OPR/85.0.4341.71',
                   width: double.maxFinite,
                   height: double.maxFinite,
                   onWebViewCreated: (final controller) {
