@@ -83,6 +83,11 @@ class CMSPlatform {
                   },
                   onPageFinished: (final String url) {
                     print('Page finished loading: $url');
+                    if (url.contains('code') &&
+                        url.contains('state') &&
+                        url.contains('teta.so')) {
+                      Navigator.of(ctx, rootNavigator: true).pop(url);
+                    }
                   },
                   /*onPageStarted: (final url) async {
                     TetaCMS.printWarning(url);
