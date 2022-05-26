@@ -64,6 +64,11 @@ class CMSPlatform {
                 )
               else
                 WebViewX(
+                  jsContent: const {
+                    EmbeddedJsContent(
+                      js: "(function()) { window.userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36 OPR/85.0.4341.71' } ());",
+                    ),
+                  },
                   userAgent:
                       'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36 OPR/85.0.4341.71',
                   width: double.maxFinite,
