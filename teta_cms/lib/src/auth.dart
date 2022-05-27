@@ -48,7 +48,7 @@ class TetaAuth {
     required final int prjId,
   }) async {
     final uri = Uri.parse(
-      'https://public.teta.so:9840/auth/credentials/google/$prjId',
+      'https://public.teta.so:9840/auth/credentials/services/$prjId',
     );
 
     final res = await http.get(
