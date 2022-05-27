@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:teta_cms/src/models/provider.dart';
 import 'package:teta_cms/src/platform/index.dart';
 import 'package:teta_cms/teta_cms.dart';
 
@@ -125,7 +124,7 @@ class TetaAuth {
   }) async {
     TetaCMS.log('signIn');
     final res = await http.post(
-      Uri.parse('https://auth.teta.so/auth/google/$prjId'),
+      Uri.parse('https://auth.teta.so/auth/github/$prjId'),
       headers: {
         'authorization': 'Bearer $token',
         'content-type': 'application/json',
