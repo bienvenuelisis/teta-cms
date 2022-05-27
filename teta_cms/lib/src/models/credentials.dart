@@ -20,7 +20,7 @@ class TetaAuthCredentials {
   Map<String, dynamic> toJson() => <String, dynamic>{
         'g_client_id': g_client_id,
         'g_client_secret': g_client_secret,
-        'gh_client_secret': gh_client_secret,
+        'gh_client_id': gh_client_id,
         'gh_client_secret': gh_client_secret,
       };
   @override
