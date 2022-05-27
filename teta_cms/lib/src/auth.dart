@@ -33,10 +33,7 @@ class TetaAuth {
         'content-type': 'application/json',
       },
       body: json.encode(
-        <String, dynamic>{
-          'g_client_id': credentials.g_client_id,
-          'g_client_secret': credentials.g_client_secret,
-        },
+        credentials.toJson(),
       ),
     );
 
@@ -68,10 +65,7 @@ class TetaAuth {
     }
 
     final map = json.decode(res.body) as Map<String, dynamic>;
-    return TetaAuthCredentials(
-      g_client_id: map['client_id'] as String?,
-      g_client_secret: map['client_secret'] as String?,
-    );
+    return TetaAuthCredentials.fromJson(map);
   }
 
   Future<void> insertUser(final String userToken) async {
