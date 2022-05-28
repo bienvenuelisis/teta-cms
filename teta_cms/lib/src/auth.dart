@@ -123,8 +123,9 @@ class TetaAuth {
     required final TetaProvider provider,
   }) async {
     TetaCMS.log('signIn');
+    final param = provider == TetaProvider.google ? 'google' : 'github';
     final res = await http.post(
-      Uri.parse('https://auth.teta.so/auth/github/$prjId'),
+      Uri.parse('https://auth.teta.so/auth/$param/$prjId'),
       headers: {
         'authorization': 'Bearer $token',
         'content-type': 'application/json',
