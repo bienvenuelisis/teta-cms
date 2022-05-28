@@ -20,6 +20,7 @@ dependencies:
   webviewx:
   webview_windows:
   web_scraper: ^0.1.4
+  url_launcher: ^6.1.2
 
 dev_dependencies:
   flutter_test:

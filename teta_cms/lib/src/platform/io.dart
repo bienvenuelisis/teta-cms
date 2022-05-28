@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:teta_cms/teta_cms.dart';
-import 'package:universal_platform/universal_platform.dart';
-import 'package:web_scraper/web_scraper.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import 'package:webview_windows/webview_windows.dart';
-import 'package:webviewx/webviewx.dart';
 
 class CMSPlatform {
   static Future login(
@@ -12,6 +8,10 @@ class CMSPlatform {
     final BuildContext ctx,
     final Function(String) callback,
   ) async {
+    if (await canLaunchUrlString(url)) {
+      await launchUrlString(url);
+    }
+    /*
     final windowsController = WebviewController();
     if (UniversalPlatform.isWindows) {
       await windowsController.initialize();
@@ -132,7 +132,7 @@ class CMSPlatform {
       return true;
     } else {
       return false;
-    }
+    }*/
   }
 
   static Future<WebviewPermissionDecision> _onPermissionRequested(
