@@ -4,65 +4,19 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:teta_cms/src/platform/index.dart';
+import 'package:teta_cms/src/users/users.dart';
 import 'package:teta_cms/teta_cms.dart';
 
 class TetaAuth {
   TetaAuth(
     this.token,
     this.prjId,
-  );
+  ) {
+    project = TetaProjectSettings(token, prjId);
+  }
   final String token;
   final int prjId;
-
-  Future<void> saveCredentials({
-    required final int prjId,
-    required final TetaAuthCredentials credentials,
-  }) async {
-    final uri = Uri.parse(
-      'https://public.teta.so:9840/auth/credentials/$prjId',
-    );
-
-    final res = await http.post(
-      uri,
-      headers: {
-        'authorization': 'Bearer $token',
-        'content-type': 'application/json',
-      },
-      body: json.encode(
-        credentials.toJson(),
-      ),
-    );
-
-    TetaCMS.log('saveCredentials body: ${res.body}');
-
-    if (res.statusCode != 200) {
-      throw Exception('saveCredentials resulted in ${res.statusCode}');
-    }
-  }
-
-  Future<TetaAuthCredentials> retrieveCredentials({
-    required final int prjId,
-  }) async {
-    final uri = Uri.parse(
-      'https://public.teta.so:9840/auth/credentials/services/$prjId',
-    );
-
-    final res = await http.get(
-      uri,
-      headers: {
-        'authorization': 'Bearer $token',
-      },
-    );
-
-    TetaCMS.printWarning('retrieveCredentials body: ${res.body}');
-
-    if (res.statusCode != 200) {
-      throw Exception('retrieveCredentials resulted in ${res.statusCode}');
-    }
-
-    final map = json.decode(res.body) as Map<String, dynamic>;
-    return TetaAuthCredentials.fromJson(map);
-  }
+  late TetaProjectSettings project;
 
   Future<void> insertUser(final String userToken) async {
     final uri = Uri.parse(
@@ -117,8 +71,8 @@ class TetaAuth {
     return users;
   }
 
-  /// This function is cute
-  Future<String> signIn({
+  /// Returns auth url from specific provider
+  Future<String> _signIn({
     required final int prjId,
     required final TetaProvider provider,
   }) async {
@@ -146,7 +100,7 @@ class TetaAuth {
     final int prjId, {
     final TetaProvider provider = TetaProvider.google,
   }) async {
-    final url = await signIn(prjId: prjId, provider: provider);
+    final url = await _signIn(prjId: prjId, provider: provider);
     TetaCMS.printWarning('Teta Auth return url: $url');
 
     await CMSPlatform.login(url, ctx, insertUser);

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:teta_cms/teta_cms.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:webview_windows/webview_windows.dart';
 
@@ -8,9 +9,32 @@ class CMSPlatform {
     final BuildContext ctx,
     final Function(String) callback,
   ) async {
+    TetaCMS.log('CMSPlatform.login io.dart');
     if (await canLaunchUrlString(url)) {
+      TetaCMS.log(url);
       await launchUrlString(url);
     }
+    //! Follow this:
+    /*String url = "https://github.com/login/oauth/authorize" +
+                  "?client_id=" +
+                  "a5a424aaff18f66eb07a" +
+                  "&scope=public_repo%20read:user%20user:email";
+
+              if (await canLaunchUrlString(url)) {
+                await launchUrlString(
+                  url,
+                );
+
+                getLinksStream().listen((link) async {
+                  if (link != null) {
+                    String code =
+                        link.substring(link.indexOf(RegExp('code=')) + 5);
+                    print(code);
+                    closeInAppWebView();
+                  }
+                }, cancelOnError: true);
+              }*/
+
     /*
     final windowsController = WebviewController();
     if (UniversalPlatform.isWindows) {
