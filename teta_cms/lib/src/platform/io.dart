@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:teta_cms/teta_cms.dart';
+import 'package:uni_links/uni_links.dart';
+import 'package:universal_platform/universal_platform.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:webview_windows/webview_windows.dart';
 
@@ -13,6 +16,26 @@ class CMSPlatform {
     if (await canLaunchUrlString(url)) {
       TetaCMS.log(url);
       await launchUrlString(url);
+
+      if (!UniversalPlatform.isWeb) {
+        uriLinkStream.listen(
+          (final Uri? uri) async {
+            debugPrint('uri: ${uri.toString()}');
+            if (uri != null) {
+              if (uri.queryParameters['access_token'] != null) {
+                if (uri.queryParameters['access_token'] is String) {
+                  // ignore: cast_nullable_to_non_nullable
+                  await callback(uri.queryParameters['access_token'] as String);
+                  await closeInAppWebView();
+                }
+              }
+            }
+          },
+          onError: (final Object err) {
+            throw Exception('got err: $err');
+          },
+        );
+      }
     }
     //! Follow this:
     /*String url = "https://github.com/login/oauth/authorize" +
