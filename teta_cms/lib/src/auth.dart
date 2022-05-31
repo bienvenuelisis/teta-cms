@@ -7,6 +7,9 @@ import 'package:http/http.dart' as http;
 import 'package:teta_cms/src/platform/index.dart';
 import 'package:teta_cms/src/users/settings.dart';
 import 'package:teta_cms/teta_cms.dart';
+import 'package:uni_links/uni_links.dart';
+import 'package:universal_platform/universal_platform.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TetaAuth {
   TetaAuth(
@@ -42,6 +45,8 @@ class TetaAuth {
     if (res.statusCode != 200) {
       throw Exception('insertUser resulted in ${res.statusCode} ${res.body}');
     }
+
+    await _persistentLogin(userToken);
   }
 
   Future<List<dynamic>> retrieveUsers({
@@ -98,17 +103,37 @@ class TetaAuth {
 
   /// Performs login in mobile and web platforms
   Future<bool> signInWithBrowser(
-    final BuildContext ctx,
-    final int prjId, {
+    final BuildContext ctx, {
+    required final Function() callback,
     final TetaProvider provider = TetaProvider.google,
   }) async {
     final url = await _signIn(prjId: prjId, provider: provider);
     await CMSPlatform.login(url, ctx, insertUser);
+    if (!UniversalPlatform.isWeb) {
+      uriLinkStream.listen(
+        (final Uri? uri) async {
+          if (uri != null) {
+            if (uri.queryParameters['access_token'] != null &&
+                uri.queryParameters['access_token'] is String) {
+              await closeInAppWebView();
+              await TetaCMS.instance.auth.insertUser(
+                // ignore: cast_nullable_to_non_nullable
+                uri.queryParameters['access_token'] as String,
+              );
+              callback();
+            }
+          }
+        },
+        onError: (final Object err) {
+          throw Exception(r'got err: $err');
+        },
+      );
+    }
     return true;
   }
 
   /// Set access_token for persistent login
-  Future persistentLogin(final String token) async {
+  Future _persistentLogin(final String token) async {
     final box = await Hive.openBox<dynamic>('Teta Auth');
     await box.put('access_tkn', token);
   }
@@ -117,5 +142,10 @@ class TetaAuth {
   Future<bool> hasAccessToken() async {
     final box = await Hive.openBox<dynamic>('Teta Auth');
     return await box.get('access_tkn') != null;
+  }
+
+  Future logout() async {
+    final box = await Hive.openBox<dynamic>('Teta Auth');
+    await box.delete('access_tkn');
   }
 }
