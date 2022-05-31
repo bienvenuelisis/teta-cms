@@ -12,7 +12,11 @@ class CMSPlatform {
     TetaCMS.log('CMSPlatform.login io.dart');
     if (await canLaunchUrlString(url)) {
       TetaCMS.log('launching url');
-      await launchUrlString(url);
+      try {
+        await launchUrlString(url);
+      } catch (e) {
+        print(e);
+      }
       TetaCMS.log('launching callback');
       await callback('');
     }

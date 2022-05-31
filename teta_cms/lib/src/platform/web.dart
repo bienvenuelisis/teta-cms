@@ -21,13 +21,12 @@ class CMSPlatform {
 
         final token = data.substring(7, data.length - 1);
         TetaCMS.printWarning('result: $token');
-
-        await callback(token);
-
         //? Do shits with the token here
 
         child.callMethod('close');
         completer.complete(token);
+
+        return token;
       }
     }
 
