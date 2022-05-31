@@ -2,9 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:teta_cms/src/platform/index.dart';
-import 'package:teta_cms/src/users/users.dart';
+import 'package:teta_cms/src/users/settings.dart';
 import 'package:teta_cms/teta_cms.dart';
 
 class TetaAuth {
@@ -95,16 +96,26 @@ class TetaAuth {
     return res.body;
   }
 
+  /// Performs login in mobile and web platforms
   Future<bool> signInWithBrowser(
     final BuildContext ctx,
     final int prjId, {
     final TetaProvider provider = TetaProvider.google,
   }) async {
     final url = await _signIn(prjId: prjId, provider: provider);
-    TetaCMS.printWarning('Teta Auth return url: $url');
-
     await CMSPlatform.login(url, ctx, insertUser);
-
     return true;
+  }
+
+  /// Set access_token for persistent login
+  Future persistentLogin(final String token) async {
+    final box = await Hive.openBox<dynamic>('Teta Auth');
+    await box.put('access_tkn', token);
+  }
+
+  /// Check if users is logged in
+  Future<bool> hasAccessToken() async {
+    final box = await Hive.openBox<dynamic>('Teta Auth');
+    return await box.get('access_tkn') != null;
   }
 }
