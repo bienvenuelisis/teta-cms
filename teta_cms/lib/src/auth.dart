@@ -102,18 +102,21 @@ class TetaAuth {
   }
 
   /// Performs login in mobile and web platforms
-  Future<bool> signInWithBrowser(
-    final BuildContext ctx, {
-    required final Function() callback,
+  Future<bool> signIn(
+    /// required for future updates
+    final BuildContext context, {
+
+    /// Performs a function on success
+    required final Function() onSuccess,
+
+    /// The external provider
     final TetaProvider provider = TetaProvider.google,
   }) async {
     final url = await _signIn(prjId: prjId, provider: provider);
-    await CMSPlatform.login(url, ctx, (final userToken) async {
+    await CMSPlatform.login(url, context, (final userToken) async {
       if (!UniversalPlatform.isWeb) {
-        TetaCMS.log('is not web');
         uriLinkStream.listen(
           (final Uri? uri) async {
-            TetaCMS.log('listining uriLinkStream');
             if (uri != null) {
               TetaCMS.log('uri:${uri.toString()}');
               if (uri.queryParameters['access_token'] != null &&
@@ -123,7 +126,7 @@ class TetaAuth {
                   // ignore: cast_nullable_to_non_nullable
                   uri.queryParameters['access_token'] as String,
                 );
-                callback();
+                onSuccess();
               }
             }
           },
@@ -133,7 +136,7 @@ class TetaAuth {
         );
       } else {
         await insertUser(userToken);
-        callback();
+        onSuccess();
       }
     });
 

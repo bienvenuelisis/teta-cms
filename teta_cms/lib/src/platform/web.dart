@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:js';
 
 import 'package:flutter/material.dart';
-import 'package:teta_cms/teta_cms.dart';
 
 class CMSPlatform {
   static Future login(
@@ -14,18 +13,12 @@ class CMSPlatform {
     final completer = Completer<String>();
     Future onParentWindowMessage(final dynamic message) async {
       if (message == null) return;
-      TetaCMS.printWarning('message: $message');
       if ((message.origin as String).startsWith('https://auth.teta.so')) {
         final data = message.data.toString();
-        TetaCMS.printWarning('data: $data');
-
         final token = data.substring(7, data.length - 1);
-        TetaCMS.printWarning('result: $token');
-        //? Do shits with the token here
-
+        callback(token);
         child.callMethod('close');
         completer.complete(token);
-
         return token;
       }
     }

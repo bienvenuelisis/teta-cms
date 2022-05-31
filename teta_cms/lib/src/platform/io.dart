@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:teta_cms/teta_cms.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:webview_windows/webview_windows.dart';
 
@@ -9,15 +8,12 @@ class CMSPlatform {
     final BuildContext ctx,
     final Function(String) callback,
   ) async {
-    TetaCMS.log('CMSPlatform.login io.dart');
     final encodedUrl = Uri.encodeFull(url);
     if (await canLaunchUrlString(encodedUrl)) {
-      TetaCMS.log('launching url');
       await launchUrlString(
         encodedUrl,
         mode: LaunchMode.externalApplication,
       );
-      TetaCMS.log('launching callback');
       await callback('');
     }
     //! Follow this:
