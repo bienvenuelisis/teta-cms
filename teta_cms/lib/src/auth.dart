@@ -113,6 +113,7 @@ class TetaAuth {
         uriLinkStream.listen(
           (final Uri? uri) async {
             if (uri != null) {
+              TetaCMS.log(uri.toString());
               if (uri.queryParameters['access_token'] != null &&
                   uri.queryParameters['access_token'] is String) {
                 await closeInAppWebView();
