@@ -110,8 +110,10 @@ class TetaAuth {
     final url = await _signIn(prjId: prjId, provider: provider);
     await CMSPlatform.login(url, ctx, (final userToken) async {
       if (!UniversalPlatform.isWeb) {
+        TetaCMS.log('is not web');
         uriLinkStream.listen(
           (final Uri? uri) async {
+            TetaCMS.log('listining uriLinkStream');
             if (uri != null) {
               TetaCMS.log('uri:${uri.toString()}');
               if (uri.queryParameters['access_token'] != null &&
