@@ -13,7 +13,7 @@ class CMSPlatform {
     if (await canLaunchUrlString(url)) {
       TetaCMS.log(url);
       await launchUrlString(url);
-      callback('');
+      await callback('');
     }
     //! Follow this:
     /*String url = "https://github.com/login/oauth/authorize" +
