@@ -13,11 +13,10 @@ class CMSPlatform {
     final encodedUrl = Uri.encodeFull(url);
     if (await canLaunchUrlString(encodedUrl)) {
       TetaCMS.log('launching url');
-      try {
-        await launchUrlString(encodedUrl);
-      } catch (e) {
-        print(e);
-      }
+      await launchUrlString(
+        encodedUrl,
+        mode: LaunchMode.externalApplication,
+      );
       TetaCMS.log('launching callback');
       await callback('');
     }
