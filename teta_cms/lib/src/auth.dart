@@ -108,27 +108,32 @@ class TetaAuth {
     final TetaProvider provider = TetaProvider.google,
   }) async {
     final url = await _signIn(prjId: prjId, provider: provider);
-    await CMSPlatform.login(url, ctx, insertUser);
-    if (!UniversalPlatform.isWeb) {
-      uriLinkStream.listen(
-        (final Uri? uri) async {
-          if (uri != null) {
-            if (uri.queryParameters['access_token'] != null &&
-                uri.queryParameters['access_token'] is String) {
-              await closeInAppWebView();
-              await TetaCMS.instance.auth.insertUser(
-                // ignore: cast_nullable_to_non_nullable
-                uri.queryParameters['access_token'] as String,
-              );
-              callback();
+    await CMSPlatform.login(url, ctx, (final userToken) async {
+      if (!UniversalPlatform.isWeb) {
+        uriLinkStream.listen(
+          (final Uri? uri) async {
+            if (uri != null) {
+              if (uri.queryParameters['access_token'] != null &&
+                  uri.queryParameters['access_token'] is String) {
+                await closeInAppWebView();
+                await TetaCMS.instance.auth.insertUser(
+                  // ignore: cast_nullable_to_non_nullable
+                  uri.queryParameters['access_token'] as String,
+                );
+                callback();
+              }
             }
-          }
-        },
-        onError: (final Object err) {
-          throw Exception(r'got err: $err');
-        },
-      );
-    }
+          },
+          onError: (final Object err) {
+            throw Exception(r'got err: $err');
+          },
+        );
+      } else {
+        await insertUser(userToken);
+        callback();
+      }
+    });
+
     return true;
   }
 
