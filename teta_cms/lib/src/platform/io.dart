@@ -10,10 +10,11 @@ class CMSPlatform {
     final Function(String) callback,
   ) async {
     TetaCMS.log('CMSPlatform.login io.dart');
-    if (await canLaunchUrlString(url)) {
+    final encodedUrl = Uri.encodeFull(url);
+    if (await canLaunchUrlString(encodedUrl)) {
       TetaCMS.log('launching url');
       try {
-        await launchUrlString(url);
+        await launchUrlString(encodedUrl);
       } catch (e) {
         print(e);
       }
