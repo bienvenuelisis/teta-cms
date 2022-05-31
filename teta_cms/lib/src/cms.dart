@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 import 'package:teta_cms/src/auth.dart';
 import 'package:teta_cms/src/client.dart';
 import 'package:teta_cms/teta_cms.dart';
+import 'package:universal_platform/universal_platform.dart';
 
 /// TetaCMS instance.
 ///
@@ -77,10 +79,10 @@ class TetaCMS {
     _initialized = false;
   }
 
-  void _init(
+  Future<void> _init(
     final String token,
     final int prjId,
-  ) {
+  ) async {
     client = TetaClient(
       token,
       prjId,
@@ -93,6 +95,9 @@ class TetaCMS {
       token,
       prjId,
     );
+    if (!UniversalPlatform.isWeb && !Hive.isBoxOpen('Teta Auth')) {
+      Hive.init((await getApplicationDocumentsDirectory()).path);
+    }
     _initialized = true;
   }
 
