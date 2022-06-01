@@ -35,7 +35,7 @@ class TetaUserUtils {
         throw Exception('insertUser resulted in ${res.statusCode} ${res.body}');
       }
 
-      return json.encode(res.body) as Map<String, dynamic>? ??
+      return json.decode(res.body) as Map<String, dynamic>? ??
           <String, dynamic>{};
     }
     return <String, dynamic>{};
