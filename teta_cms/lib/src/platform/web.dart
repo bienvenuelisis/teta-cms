@@ -17,8 +17,7 @@ class CMSPlatform {
       if (message == null) return;
       if ((message.origin as String).startsWith('https://auth.teta.so')) {
         TetaCMS.log(message.data.toString());
-        final data = message.data.toString();
-        final token = data.substring(7, data.length - 1);
+        final token = message.data.toString();
         await callback(token);
         child.callMethod('close');
         completer.complete(token);
