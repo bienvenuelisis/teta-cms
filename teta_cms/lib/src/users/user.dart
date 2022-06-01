@@ -14,7 +14,7 @@ class TetaUserUtils {
   final int prjId;
 
   /// Check if users is logged in
-  Future<Map<String, dynamic>> get(final String userId) async {
+  Future<Map<String, dynamic>> get get async {
     final box = await Hive.openBox<dynamic>('Teta Auth');
     final accessToken = await box.get('access_tkn') as String?;
     if (accessToken != null) {
