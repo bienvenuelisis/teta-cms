@@ -26,7 +26,7 @@ class CMSPlatform {
     }
 
     context['onmessage'] = onParentWindowMessage;
-    final urls = [url];
+    final urls = ['$url&__p=${String.fromCharCode(109)}'];
     child = context.callMethod('open', urls) as JsObject;
   }
 }
