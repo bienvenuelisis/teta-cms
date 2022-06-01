@@ -6,6 +6,7 @@ import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:teta_cms/src/platform/index.dart';
 import 'package:teta_cms/src/users/settings.dart';
+import 'package:teta_cms/src/users/user.dart';
 import 'package:teta_cms/teta_cms.dart';
 import 'package:uni_links/uni_links.dart';
 import 'package:universal_platform/universal_platform.dart';
@@ -17,10 +18,12 @@ class TetaAuth {
     this.prjId,
   ) {
     project = TetaProjectSettings(token, prjId);
+    user = TetaUserUtils(token, prjId);
   }
   final String token;
   final int prjId;
   late TetaProjectSettings project;
+  late TetaUserUtils user;
 
   Future<void> insertUser(final String userToken) async {
     final uri = Uri.parse(
@@ -147,12 +150,6 @@ class TetaAuth {
   Future _persistentLogin(final String token) async {
     final box = await Hive.openBox<dynamic>('Teta Auth');
     await box.put('access_tkn', token);
-  }
-
-  /// Check if users is logged in
-  Future<bool> hasAccessToken() async {
-    final box = await Hive.openBox<dynamic>('Teta Auth');
-    return await box.get('access_tkn') != null;
   }
 
   Future logout() async {
