@@ -18,7 +18,7 @@ class CMSPlatform {
         TetaCMS.log(message.data.toString());
         final data = message.data.toString();
         final token = data.substring(7, data.length - 1);
-        callback(token);
+        await callback(token);
         child.callMethod('close');
         completer.complete(token);
         return token;
