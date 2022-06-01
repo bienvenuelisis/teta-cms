@@ -138,6 +138,7 @@ class TetaAuth {
           },
         );
       } else {
+        TetaCMS.log('Callback on web');
         await insertUser(userToken);
         onSuccess();
       }

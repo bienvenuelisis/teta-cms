@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:js';
 
 import 'package:flutter/material.dart';
+import 'package:teta_cms/teta_cms.dart';
 
 class CMSPlatform {
   static Future login(
@@ -14,6 +15,7 @@ class CMSPlatform {
     Future onParentWindowMessage(final dynamic message) async {
       if (message == null) return;
       if ((message.origin as String).startsWith('https://auth.teta.so')) {
+        TetaCMS.log(message.data.toString());
         final data = message.data.toString();
         final token = data.substring(7, data.length - 1);
         callback(token);
