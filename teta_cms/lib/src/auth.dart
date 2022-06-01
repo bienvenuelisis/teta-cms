@@ -87,8 +87,9 @@ class TetaAuth {
   }) async {
     TetaCMS.log('signIn');
     final param = provider == TetaProvider.google ? 'google' : 'github';
+    final device = UniversalPlatform.isWeb ? 'web' : 'mobile';
     final res = await http.post(
-      Uri.parse('https://auth.teta.so/auth/$param/$prjId'),
+      Uri.parse('https://auth.teta.so/auth/$param/$prjId/$device'),
       headers: {
         'authorization': 'Bearer $token',
         'content-type': 'application/json',
