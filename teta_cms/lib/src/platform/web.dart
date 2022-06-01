@@ -13,6 +13,7 @@ class CMSPlatform {
     late final JsObject child;
     final completer = Completer<String>();
     Future onParentWindowMessage(final dynamic message) async {
+      TetaCMS.log('message');
       if (message == null) return;
       if ((message.origin as String).startsWith('https://auth.teta.so')) {
         TetaCMS.log(message.data.toString());
@@ -26,7 +27,7 @@ class CMSPlatform {
     }
 
     context['onmessage'] = onParentWindowMessage;
-    final urls = ['$url&__p=${String.fromCharCode(109)}'];
+    final urls = [url];
     child = context.callMethod('open', urls) as JsObject;
   }
 }
