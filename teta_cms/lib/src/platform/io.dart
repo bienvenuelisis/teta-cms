@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:teta_cms/teta_cms.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:webview_windows/webview_windows.dart';
 
@@ -9,6 +10,7 @@ class CMSPlatform {
     final Function(String) callback,
   ) async {
     final encodedUrl = Uri.encodeFull(url);
+    TetaCMS.log(encodedUrl);
     if (await canLaunchUrlString(encodedUrl)) {
       await launchUrlString(
         encodedUrl,
