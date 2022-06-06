@@ -3,4 +3,5 @@ enum TetaProvider {
   github,
   twitter,
   facebook,
+  apple,
 }

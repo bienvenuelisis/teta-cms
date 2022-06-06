@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
@@ -86,7 +87,7 @@ class TetaAuth {
     required final TetaProvider provider,
   }) async {
     TetaCMS.log('signIn');
-    final param = provider == TetaProvider.google ? 'google' : 'github';
+    final param = EnumToString.convertToString(provider);
     final device = UniversalPlatform.isWeb ? 'web' : 'mobile';
     final res = await http.post(
       Uri.parse('https://auth.teta.so/auth/$param/$prjId/$device'),

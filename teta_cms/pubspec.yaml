@@ -24,6 +24,7 @@ dependencies:
   uni_links: ^0.5.1
   dart_jsonwebtoken: ^2.4.1
   path_provider:
+  enum_to_string: ^2.0.1
 
 dev_dependencies:
   flutter_test:
