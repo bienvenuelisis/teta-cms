@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:teta_cms/src/platform/index.dart';
 import 'package:teta_cms/src/users/settings.dart';
 import 'package:teta_cms/src/users/user.dart';
+import 'package:teta_cms/src/utils.dart';
 import 'package:teta_cms/teta_cms.dart';
 import 'package:uni_links/uni_links.dart';
 import 'package:universal_platform/universal_platform.dart';
@@ -28,7 +29,7 @@ class TetaAuth {
 
   Future<void> insertUser(final String userToken) async {
     final uri = Uri.parse(
-      'https://public.teta.so:9840/auth/users/$prjId',
+      '${U.baseUrl}/auth/users/$prjId',
     );
 
     final res = await http.post(
@@ -57,7 +58,7 @@ class TetaAuth {
     required final int prjId,
   }) async {
     final uri = Uri.parse(
-      'https://public.teta.so:9840/auth/users/$prjId',
+      '${U.baseUrl}/auth/users/$prjId',
     );
 
     final res = await http.get(

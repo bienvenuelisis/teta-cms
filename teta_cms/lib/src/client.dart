@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:teta_cms/src/models/filter.dart';
+import 'package:teta_cms/src/utils.dart';
 import 'package:teta_cms/teta_cms.dart';
 
 class TetaClient {
@@ -21,7 +21,7 @@ class TetaClient {
     final String collectionName,
   ) async {
     final uri = Uri.parse(
-      'https://public.teta.so:9840/cms/$prjId/$collectionName',
+      '${U.baseUrl}cms/$prjId/$collectionName',
     );
 
     final res = await http.post(
@@ -49,7 +49,7 @@ class TetaClient {
     final String collectionId,
   ) async {
     final uri = Uri.parse(
-      'https://public.teta.so:9840/cms/$prjId/$collectionId',
+      '${U.baseUrl}cms/$prjId/$collectionId',
     );
 
     final res = await http.delete(
@@ -78,7 +78,7 @@ class TetaClient {
     final Map<String, dynamic> document,
   ) async {
     final uri = Uri.parse(
-      'https://public.teta.so:9840/cms/$prjId/$collectionId',
+      '${U.baseUrl}cms/$prjId/$collectionId',
     );
 
     final res = await http.put(
@@ -109,7 +109,7 @@ class TetaClient {
     final String documentId,
   ) async {
     final uri = Uri.parse(
-      'https://public.teta.so:9840/cms/$prjId/$collectionId/$documentId',
+      '${U.baseUrl}cms/$prjId/$collectionId/$documentId',
     );
 
     final res = await http.delete(
@@ -139,8 +139,7 @@ class TetaClient {
     final int page = 0,
     final int limit = 20,
   }) async {
-    final uri =
-        Uri.parse('https://public.teta.so:9840/cms/$prjId/$collectionId');
+    final uri = Uri.parse('${U.baseUrl}cms/$prjId/$collectionId');
 
     final res = await http.get(
       uri,
@@ -173,7 +172,7 @@ class TetaClient {
   ///
   /// Returns the collections as `List<Map<String,dynamic>>` without `docs`
   Future<List<CollectionObject>> getCollections() async {
-    final uri = Uri.parse('https://public.teta.so:9840/cms/$prjId');
+    final uri = Uri.parse('${U.baseUrl}cms/$prjId');
 
     final res = await http.get(
       uri,
@@ -214,7 +213,7 @@ class TetaClient {
     final String name,
   ) async {
     final uri = Uri.parse(
-      'https://public.teta.so:9840/cms/$prjId/$collectionId',
+      '${U.baseUrl}cms/$prjId/$collectionId',
     );
 
     final res = await http.patch(
@@ -248,7 +247,7 @@ class TetaClient {
     final Map<String, dynamic> content,
   ) async {
     final uri = Uri.parse(
-      'https://public.teta.so:9840/cms/$prjId/$collectionId/$documentId',
+      '${U.baseUrl}cms/$prjId/$collectionId/$documentId',
     );
 
     final res = await http.put(
