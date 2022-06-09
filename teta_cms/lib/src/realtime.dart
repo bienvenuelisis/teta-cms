@@ -146,10 +146,11 @@ class TetaRealtime {
     final List<Filter> filters = const [],
     final int page = 0,
     final int limit = 20,
+    final bool showDrafts = false,
   }) {
     final finalFilters = [
       ...filters,
-      Filter('_vis', 'public'),
+      if (!showDrafts) Filter('_vis', 'public'),
     ];
     late final StreamController<List<dynamic>> streamController;
     streamController = StreamController<List<dynamic>>.broadcast(

@@ -138,10 +138,11 @@ class TetaClient {
     final List<Filter> filters = const [],
     final int page = 0,
     final int limit = 20,
+    final bool showDrafts = false,
   }) async {
     final finalFilters = [
       ...filters,
-      Filter('_vis', 'public'),
+      if (!showDrafts) Filter('_vis', 'public'),
     ];
     final uri = Uri.parse('${U.baseUrl}cms/$prjId/$collectionId');
 
