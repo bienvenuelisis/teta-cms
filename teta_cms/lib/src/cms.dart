@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:teta_cms/src/auth.dart';
 import 'package:teta_cms/src/client.dart';
+import 'package:teta_cms/src/store.dart';
 import 'package:teta_cms/teta_cms.dart';
 import 'package:universal_platform/universal_platform.dart';
 
@@ -74,6 +75,9 @@ class TetaCMS {
   /// The TetaAuth instance
   late TetaAuth auth;
 
+  /// The TetaStore instance
+  late TetaStore store;
+
   /// Dispose the instance to free up resources.
   void dispose() {
     _initialized = false;
@@ -92,6 +96,10 @@ class TetaCMS {
       prjId,
     );
     auth = TetaAuth(
+      token,
+      prjId,
+    );
+    store = TetaStore(
       token,
       prjId,
     );

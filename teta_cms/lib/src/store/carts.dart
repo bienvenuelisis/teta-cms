@@ -3,31 +3,29 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:teta_cms/src/models/response.dart';
-import 'package:teta_cms/src/store/products.dart';
+import 'package:teta_cms/src/models/store/cart.dart';
+import 'package:teta_cms/src/models/store/product.dart';
 import 'package:teta_cms/src/utils.dart';
+import 'package:teta_cms/teta_cms.dart';
 
-class TetaStore {
-  TetaStore(
+class TetaStoreCarts {
+  TetaStoreCarts(
     this.token,
     this.prjId,
-  ) {
-    products = TetaStoreProducts(token, prjId);
-  }
+  );
 
   final String token;
   final int prjId;
-
-  late final TetaStoreProducts products;
 
   Map<String, String> get headers => <String, String>{
         'authorization': 'Bearer $token',
         'x-teta-prj-id': '$prjId',
       };
 
-  /// Gets all the store's transactions
-  Future<TetaResponse> transactions(final String userToken) async {
+  /// Gets a cart by [userId]
+  Future<TetaResponse> get(final String userId) async {
     final uri = Uri.parse(
-      '${U.storeUrl}transactions',
+      '${U.storeCartUrl}$userId',
     );
 
     final res = await http.get(
@@ -48,23 +46,33 @@ class TetaStore {
     }
 
     return TetaResponse(
-      data: json.decode(res.body),
+      data: TetaCart.fromJson(
+        json.decode(res.body) as Map<String, dynamic>,
+      ),
     );
   }
 
-  /// Delete a store
-  Future<TetaResponse> delete() async {
+  /// Adds the [product] to the cart of the given [userId]
+  Future<TetaResponse> insert(
+    final String userId,
+    final TetaProduct product,
+  ) async {
     final uri = Uri.parse(
-      U.storeUrl,
+      '${U.storeCartUrl}$userId/${product.id}',
     );
 
-    final res = await http.delete(
+    final res = await http.post(
       uri,
       headers: {
         ...headers,
         'content-type': 'application/json',
       },
+      body: json.encode(
+        product.toJson(),
+      ),
     );
+
+    TetaCMS.printWarning('insert product body: ${res.body}');
 
     if (res.statusCode != 200) {
       return TetaResponse(
@@ -78,12 +86,13 @@ class TetaStore {
     return TetaResponse(data: json.encode(res.body));
   }
 
-  Future<TetaResponse> setCurrency(final String currency) async {
+  /// Deletes a product by id
+  Future<TetaResponse> delete(final String userId, final String prodId) async {
     final uri = Uri.parse(
-      '${U.storeUrl}currency/$currency',
+      '${U.storeProductUrl}$userId/$prodId',
     );
 
-    final res = await http.put(
+    final res = await http.post(
       uri,
       headers: {
         ...headers,
