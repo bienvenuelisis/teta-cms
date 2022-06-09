@@ -1,13 +1,11 @@
 import 'dart:async';
 import 'dart:js';
 
-import 'package:flutter/material.dart';
 import 'package:teta_cms/teta_cms.dart';
 
 class CMSPlatform {
   static Future login(
     final String url,
-    final BuildContext ctx,
     final Function(String) callback,
   ) async {
     late final JsObject child;

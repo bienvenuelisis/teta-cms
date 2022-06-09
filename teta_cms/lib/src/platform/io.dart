@@ -6,7 +6,6 @@ import 'package:webview_windows/webview_windows.dart';
 class CMSPlatform {
   static Future login(
     final String url,
-    final BuildContext ctx,
     final Function(String) callback,
   ) async {
     final encodedUrl = Uri.encodeFull(url);

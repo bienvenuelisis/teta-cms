@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:enum_to_string/enum_to_string.dart';
-import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:teta_cms/src/platform/index.dart';
@@ -108,10 +107,7 @@ class TetaAuth {
   }
 
   /// Performs login in mobile and web platforms
-  Future<bool> signIn(
-    /// required for future updates
-    final BuildContext context, {
-
+  Future signIn({
     /// Performs a function on success
     required final Function() onSuccess,
 
@@ -119,12 +115,11 @@ class TetaAuth {
     final TetaProvider provider = TetaProvider.google,
   }) async {
     final url = await _signIn(prjId: prjId, provider: provider);
-    await CMSPlatform.login(url, context, (final userToken) async {
+    await CMSPlatform.login(url, (final userToken) async {
       if (!UniversalPlatform.isWeb) {
         uriLinkStream.listen(
           (final Uri? uri) async {
             if (uri != null) {
-              TetaCMS.log('uri:${uri.toString()}');
               if (uri.queryParameters['access_token'] != null &&
                   uri.queryParameters['access_token'] is String) {
                 await closeInAppWebView();
@@ -146,8 +141,6 @@ class TetaAuth {
         onSuccess();
       }
     });
-
-    return true;
   }
 
   /// Set access_token for persistent login
