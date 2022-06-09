@@ -147,6 +147,10 @@ class TetaRealtime {
     final int page = 0,
     final int limit = 20,
   }) {
+    final finalFilters = [
+      ...filters,
+      Filter('_vis', 'public'),
+    ];
     late final StreamController<List<dynamic>> streamController;
     streamController = StreamController<List<dynamic>>.broadcast(
       onCancel: () {
@@ -158,7 +162,7 @@ class TetaRealtime {
     TetaCMS.instance.client
         .getCollection(
           collectionId,
-          filters: filters,
+          filters: finalFilters,
           limit: limit,
           page: page,
         )
@@ -169,7 +173,7 @@ class TetaRealtime {
         TetaCMS.printWarning('$filters, $limit, $page');
         final resp = await TetaCMS.instance.client.getCollection(
           collectionId,
-          filters: filters,
+          filters: finalFilters,
           limit: limit,
           page: page,
         );

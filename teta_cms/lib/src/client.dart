@@ -139,17 +139,22 @@ class TetaClient {
     final int page = 0,
     final int limit = 20,
   }) async {
+    final finalFilters = [
+      ...filters,
+      Filter('_vis', 'public'),
+    ];
     final uri = Uri.parse('${U.baseUrl}cms/$prjId/$collectionId');
 
     final res = await http.get(
       uri,
       headers: {
         'authorization': 'Bearer $token',
-        'cms-filters': filters.isEmpty
-            ? ''
-            : json.encode(filters.map((final e) => e.toJson()).toList()),
-        'cms-pagination':
-            json.encode(<String, dynamic>{'page': page, 'pageElems': limit}),
+        'cms-filters':
+            json.encode(finalFilters.map((final e) => e.toJson()).toList()),
+        'cms-pagination': json.encode(<String, dynamic>{
+          'page': page,
+          'pageElems': limit,
+        }),
       },
     );
 
