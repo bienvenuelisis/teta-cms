@@ -65,7 +65,6 @@ class TetaCMS {
   static final TetaCMS _instance = TetaCMS._();
 
   bool _initialized = false;
-  bool _diInitialized = false;
 
   /// The TetaCMS client for this instance
   ///
