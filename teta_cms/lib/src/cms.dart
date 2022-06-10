@@ -6,6 +6,8 @@ import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:teta_cms/src/auth.dart';
 import 'package:teta_cms/src/client.dart';
+import 'package:teta_cms/src/data_stores/local/server_request_metadata_store.dart';
+import 'package:teta_cms/src/di/injection_container.dart';
 import 'package:teta_cms/src/store.dart';
 import 'package:teta_cms/teta_cms.dart';
 import 'package:universal_platform/universal_platform.dart';
@@ -87,6 +89,12 @@ class TetaCMS {
     final String token,
     final int prjId,
   ) async {
+    if(!diInitialized) {
+    initGetIt();
+    diInitialized = true;
+    }
+
+    sl.get<ServerRequestMetadataStore>().updateMetadata(token: token, prjId: prjId);
     client = TetaClient(
       token,
       prjId,
@@ -99,10 +107,7 @@ class TetaCMS {
       token,
       prjId,
     );
-    store = TetaStore(
-      token,
-      prjId,
-    );
+    store = sl.get<TetaStore>();
     if (!UniversalPlatform.isWeb && !Hive.isBoxOpen('Teta Auth')) {
       Hive.init((await getApplicationDocumentsDirectory()).path);
     }

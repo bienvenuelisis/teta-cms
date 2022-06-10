@@ -3,26 +3,19 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:teta_cms/src/models/response.dart';
-import 'package:teta_cms/src/store/products.dart';
+import 'package:teta_cms/src/store/products_api.dart';
+import 'package:teta_cms/src/use_cases/get_server_request_headers/get_server_request_headers.dart';
 import 'package:teta_cms/src/utils.dart';
 
 class TetaStore {
   TetaStore(
-    this.token,
-    this.prjId,
-  ) {
-    products = TetaStoreProducts(token, prjId);
-  }
+    this.getServerRequestHeaders,
+      this.products,
+  );
 
-  final String token;
-  final int prjId;
+  final GetServerRequestHeaders getServerRequestHeaders;
 
-  late final TetaStoreProducts products;
-
-  Map<String, String> get headers => <String, String>{
-        'authorization': 'Bearer $token',
-        'x-teta-prj-id': '$prjId',
-      };
+  final TetaStoreProductsApi products;
 
   /// Gets all the store's transactions
   Future<TetaResponse> transactions(final String userToken) async {
@@ -32,23 +25,20 @@ class TetaStore {
 
     final res = await http.get(
       uri,
-      headers: {
-        ...headers,
-        'content-type': 'application/json',
-      },
+      headers: getServerRequestHeaders.execute(),
     );
 
     if (res.statusCode != 200) {
-      return TetaResponse(
+      return TetaResponse<dynamic, TetaErrorResponse>(
         error: TetaErrorResponse(
           code: res.statusCode,
           message: res.body,
-        ),
+        ), data: null,
       );
     }
 
-    return TetaResponse(
-      data: json.decode(res.body),
+    return TetaResponse<dynamic, dynamic>(
+      data: json.decode(res.body), error: null,
     );
   }
 
@@ -60,22 +50,19 @@ class TetaStore {
 
     final res = await http.delete(
       uri,
-      headers: {
-        ...headers,
-        'content-type': 'application/json',
-      },
+      headers: getServerRequestHeaders.execute(),
     );
 
     if (res.statusCode != 200) {
-      return TetaResponse(
+      return TetaResponse<dynamic, TetaErrorResponse>(
         error: TetaErrorResponse(
           code: res.statusCode,
           message: res.body,
-        ),
+        ), data: null,
       );
     }
 
-    return TetaResponse(data: json.encode(res.body));
+    return TetaResponse<String, dynamic>(data: json.encode(res.body), error: null);
   }
 
   Future<TetaResponse> setCurrency(final String currency) async {
@@ -85,21 +72,18 @@ class TetaStore {
 
     final res = await http.put(
       uri,
-      headers: {
-        ...headers,
-        'content-type': 'application/json',
-      },
+      headers: getServerRequestHeaders.execute(),
     );
 
     if (res.statusCode != 200) {
-      return TetaResponse(
+      return TetaResponse<dynamic, TetaErrorResponse>(
         error: TetaErrorResponse(
           code: res.statusCode,
           message: res.body,
-        ),
+        ), data: null,
       );
     }
 
-    return TetaResponse(data: json.encode(res.body));
+    return TetaResponse<String, dynamic>(data: json.encode(res.body), error: null);
   }
 }

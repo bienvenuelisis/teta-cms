@@ -1,11 +1,13 @@
-class TetaResponse {
+import 'package:teta_cms/src/models/store/product.dart';
+
+class TetaResponse<DATA, ERROR> {
   TetaResponse({
-    this.data,
-    this.error,
+    required this.data,
+    required this.error,
   });
 
-  final dynamic data;
-  final dynamic error;
+  final DATA data;
+  final ERROR error;
 }
 
 class TetaErrorResponse {
@@ -16,4 +18,18 @@ class TetaErrorResponse {
 
   final String? message;
   final int? code;
+}
+
+class TetaProductResponse extends TetaResponse<TetaProduct?, TetaErrorResponse?> {
+  TetaProductResponse(
+      {final TetaProduct? data, final TetaErrorResponse? error,})
+      : super(data: data, error: error);
+}
+
+class TetaProductsResponse
+    extends TetaResponse<List<TetaProduct>?, TetaErrorResponse?> {
+  TetaProductsResponse({
+    final List<TetaProduct>? data,
+    final TetaErrorResponse? error,
+  }) : super(data: data, error: error);
 }
