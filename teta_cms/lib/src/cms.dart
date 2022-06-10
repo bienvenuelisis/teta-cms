@@ -90,9 +90,9 @@ class TetaCMS {
     final String token,
     final int prjId,
   ) async {
-    if(!_diInitialized) {
+    if(!diInitialized) {
     initGetIt();
-    _diInitialized = true;
+    diInitialized = true;
     }
 
     sl.get<ServerRequestMetadataStore>().updateMetadata(token: token, prjId: prjId);
