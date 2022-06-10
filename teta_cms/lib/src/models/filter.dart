@@ -6,6 +6,7 @@ class Filter {
   String key;
   FilterType? type;
   String value;
+  // String orValue; // Made to make an OR filter request
 
   Map<String, dynamic> toJson() {
     final t = type == FilterType.equal
