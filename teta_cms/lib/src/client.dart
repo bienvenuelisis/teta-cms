@@ -12,6 +12,8 @@ class TetaClient {
   final String token;
   final int prjId;
 
+  Map<String, String> get countHeader => {'cms-count-only': '1'};
+
   /// Creates a new collection with name [collectionName] and prj_id [prjId].
   ///
   /// Throws an exception on request error ( statusCode != 200 )
@@ -170,6 +172,49 @@ class TetaClient {
     final docs = data['docs'] as List<dynamic>;
 
     return docs;
+  }
+
+  /// Gets the collection with id [collectionId] if prj_id is [prjId].
+  ///
+  /// Throws an exception on request error ( statusCode != 200 )
+  ///
+  /// Returns the collection as `Map<String,dynamic>`
+  Future<int> getCollectionCount(
+    final String collectionId, {
+    final List<Filter> filters = const [],
+    final int page = 0,
+    final int limit = 20,
+    final bool showDrafts = false,
+  }) async {
+    final finalFilters = [
+      ...filters,
+      if (!showDrafts) Filter('_vis', 'public'),
+    ];
+    final uri = Uri.parse('${U.baseUrl}cms/$prjId/$collectionId');
+
+    final res = await http.get(
+      uri,
+      headers: {
+        'authorization': 'Bearer $token',
+        'cms-filters':
+            json.encode(finalFilters.map((final e) => e.toJson()).toList()),
+        'cms-pagination': json.encode(<String, dynamic>{
+          'page': page,
+          'pageElems': limit,
+        }),
+        ...countHeader,
+      },
+    );
+
+    if (res.statusCode != 200) {
+      throw Exception('getCollection returned status ${res.statusCode}');
+    }
+
+    final data = json.decode(res.body) as Map<String, dynamic>;
+
+    final count = data['count'] as int? ?? 0;
+
+    return count;
   }
 
   /// Gets all collection where prj_id is [prjId].
