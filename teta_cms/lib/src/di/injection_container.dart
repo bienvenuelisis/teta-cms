@@ -6,7 +6,7 @@ import 'package:teta_cms/src/mappers/shop_mapper.dart';
 import 'package:teta_cms/src/store.dart';
 import 'package:teta_cms/src/use_cases/get_server_request_headers/get_server_request_headers.dart';
 
-final sl = GetIt.asNewInstance();
+final sl = GetIt.instance;
 bool diInitialized = false;
 
 void initGetIt() {
