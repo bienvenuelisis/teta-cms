@@ -4,6 +4,7 @@ import 'package:teta_cms/src/mappers/cart_mapper.dart';
 import 'package:teta_cms/src/mappers/product_mapper.dart';
 import 'package:teta_cms/src/mappers/shop_mapper.dart';
 import 'package:teta_cms/src/store.dart';
+import 'package:teta_cms/src/store/products_api.dart';
 import 'package:teta_cms/src/use_cases/get_server_request_headers/get_server_request_headers.dart';
 
 final sl = GetIt.instance;
@@ -22,5 +23,6 @@ void initGetIt() {
   sl.registerLazySingleton(() => GetServerRequestHeaders(sl()));
 
   // API
+  sl.registerLazySingleton(() => TetaStoreProductsApi(sl(), sl()));
   sl.registerLazySingleton(() => TetaStore(sl(), sl()));
 }
