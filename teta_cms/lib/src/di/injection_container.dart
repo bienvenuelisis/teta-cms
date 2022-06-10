@@ -7,6 +7,7 @@ import 'package:teta_cms/src/store.dart';
 import 'package:teta_cms/src/use_cases/get_server_request_headers/get_server_request_headers.dart';
 
 final sl = GetIt.asNewInstance();
+bool diInitialized = false;
 
 void initGetIt() {
   //Data Stores
