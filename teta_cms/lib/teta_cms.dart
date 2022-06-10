@@ -11,7 +11,3 @@ export 'src/models/row.dart';
 export 'src/models/store/cart.dart';
 export 'src/models/store/product.dart';
 export 'src/models/store/shop.dart';
-export 'src/models/row.dart';
-export 'src/models/store/cart.dart';
-export 'src/models/store/product.dart';
-export 'src/models/store/shop.dart';
