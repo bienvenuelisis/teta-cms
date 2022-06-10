@@ -65,6 +65,7 @@ class TetaCMS {
   static final TetaCMS _instance = TetaCMS._();
 
   bool _initialized = false;
+  bool _diInitialized = false;
 
   /// The TetaCMS client for this instance
   ///
@@ -89,7 +90,10 @@ class TetaCMS {
     final String token,
     final int prjId,
   ) async {
+    if(!_diInitialized) {
     initGetIt();
+    _diInitialized = true;
+    }
 
     sl.get<ServerRequestMetadataStore>().updateMetadata(token: token, prjId: prjId);
     client = TetaClient(
