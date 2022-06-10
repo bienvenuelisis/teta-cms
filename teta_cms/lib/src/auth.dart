@@ -28,7 +28,7 @@ class TetaAuth {
 
   Future<void> insertUser(final String userToken) async {
     final uri = Uri.parse(
-      '${U.baseUrl}/auth/users/$prjId',
+      '${U.baseUrl}auth/users/$prjId',
     );
 
     final res = await http.post(
@@ -57,7 +57,7 @@ class TetaAuth {
     required final int prjId,
   }) async {
     final uri = Uri.parse(
-      '${U.baseUrl}/auth/users/$prjId',
+      '${U.baseUrl}auth/users/$prjId',
     );
 
     final res = await http.get(
