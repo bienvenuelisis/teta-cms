@@ -2,25 +2,22 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:teta_cms/src/mappers/cart_mapper.dart';
 import 'package:teta_cms/src/models/response.dart';
 import 'package:teta_cms/src/models/store/cart.dart';
 import 'package:teta_cms/src/models/store/product.dart';
+import 'package:teta_cms/src/use_cases/get_server_request_headers/get_server_request_headers.dart';
 import 'package:teta_cms/src/utils.dart';
 import 'package:teta_cms/teta_cms.dart';
 
-class TetaStoreCarts {
-  TetaStoreCarts(
-    this.token,
-    this.prjId,
+class TetaStoreCartsApi {
+  TetaStoreCartsApi(
+    this.cartMapper,
+    this.getServerRequestHeaders,
   );
 
-  final String token;
-  final int prjId;
-
-  Map<String, String> get headers => <String, String>{
-        'authorization': 'Bearer $token',
-        'x-teta-prj-id': '$prjId',
-      };
+  final CartMapper cartMapper;
+  final GetServerRequestHeaders getServerRequestHeaders;
 
   /// Gets a cart by [userId]
   Future<TetaResponse> get(final String userId) async {
@@ -30,25 +27,24 @@ class TetaStoreCarts {
 
     final res = await http.get(
       uri,
-      headers: {
-        ...headers,
-        'content-type': 'application/json',
-      },
+      headers: getServerRequestHeaders.execute(),
     );
 
     if (res.statusCode != 200) {
-      return TetaResponse(
+      return TetaResponse<dynamic, TetaErrorResponse>(
         error: TetaErrorResponse(
           code: res.statusCode,
           message: res.body,
         ),
+        data: null,
       );
     }
 
-    return TetaResponse(
-      data: TetaCart.fromJson(
+    return TetaResponse<TetaCart, dynamic>(
+      data: cartMapper.mapCart(
         json.decode(res.body) as Map<String, dynamic>,
       ),
+      error: null,
     );
   }
 
@@ -63,10 +59,7 @@ class TetaStoreCarts {
 
     final res = await http.post(
       uri,
-      headers: {
-        ...headers,
-        'content-type': 'application/json',
-      },
+      headers: getServerRequestHeaders.execute(),
       body: json.encode(
         product.toJson(),
       ),
@@ -75,15 +68,19 @@ class TetaStoreCarts {
     TetaCMS.printWarning('insert product body: ${res.body}');
 
     if (res.statusCode != 200) {
-      return TetaResponse(
+      return TetaResponse<dynamic, TetaErrorResponse>(
         error: TetaErrorResponse(
           code: res.statusCode,
           message: res.body,
         ),
+        data: null,
       );
     }
 
-    return TetaResponse(data: json.encode(res.body));
+    return TetaResponse<String, dynamic>(
+      data: json.encode(res.body),
+      error: null,
+    );
   }
 
   /// Deletes a product by id
@@ -94,21 +91,20 @@ class TetaStoreCarts {
 
     final res = await http.post(
       uri,
-      headers: {
-        ...headers,
-        'content-type': 'application/json',
-      },
+      headers: getServerRequestHeaders.execute(),
     );
 
     if (res.statusCode != 200) {
-      return TetaResponse(
+      return TetaResponse<dynamic, TetaErrorResponse>(
         error: TetaErrorResponse(
           code: res.statusCode,
           message: res.body,
         ),
+        data: null,
       );
     }
 
-    return TetaResponse(data: json.encode(res.body));
+    return TetaResponse<String, dynamic>(
+        data: json.encode(res.body), error: null);
   }
 }
