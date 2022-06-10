@@ -9,21 +9,6 @@ class TetaShop {
     required this.carts,
   });
 
-  TetaShop.fromJson(final Map<String, dynamic> map)
-      : id = map['id'] as String,
-        currency = map['currency'] as String,
-        products = (map['products'] as List<dynamic>? ?? <dynamic>[])
-            .map(
-              (final dynamic e) =>
-                  TetaProduct.fromJson(e as Map<String, dynamic>),
-            )
-            .toList(),
-        carts = (map['carts'] as List<dynamic>? ?? <dynamic>[])
-            .map(
-              (final dynamic e) => TetaCart.fromJson(e as Map<String, dynamic>),
-            )
-            .toList();
-
   final String id;
   final String currency;
   final List<TetaProduct> products;
