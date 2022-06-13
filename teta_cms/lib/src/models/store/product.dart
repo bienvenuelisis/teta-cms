@@ -20,7 +20,7 @@ class TetaProduct {
   final Map<String, dynamic>? metadata;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'id': id,
+        '_id': id,
         'name': name,
         'description': description,
         'price': price,
