@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:teta_cms/src/data_stores/local/server_request_metadata_store.dart';
 import 'package:teta_cms/src/mappers/cart_mapper.dart';
@@ -11,6 +12,9 @@ final sl = GetIt.instance;
 bool diInitialized = false;
 
 void initGetIt() {
+  // 3-rd party libraries
+  sl.registerLazySingleton(Dio.new);
+
   //Data Stores
   sl.registerLazySingleton(ServerRequestMetadataStore.new);
 
@@ -23,6 +27,6 @@ void initGetIt() {
   sl.registerLazySingleton(() => GetServerRequestHeaders(sl()));
 
   // API
-  sl.registerLazySingleton(() => TetaStoreProductsApi(sl(), sl()));
+  sl.registerLazySingleton(() => TetaStoreProductsApi(sl(), sl(), sl()));
   sl.registerLazySingleton(() => TetaStore(sl(), sl()));
 }
