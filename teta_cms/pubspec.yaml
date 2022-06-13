@@ -26,6 +26,7 @@ dependencies:
   path_provider:
   enum_to_string: ^2.0.1
   get_it: ^7.2.0
+  dio: ^4.0.6
 
 dev_dependencies:
   flutter_test:

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:teta_cms/src/mappers/product_mapper.dart';
 import 'package:teta_cms/src/models/response.dart';
@@ -13,36 +14,47 @@ class TetaStoreProductsApi {
   TetaStoreProductsApi(
     this.productMapper,
     this.getServerRequestHeaders,
+    this.dio,
   );
 
   final ProductMapper productMapper;
   final GetServerRequestHeaders getServerRequestHeaders;
+  final Dio dio;
 
   /// Gets all the products.
   /// The products are taken by the project's shop.
   Future<TetaProductsResponse> all() async {
-    final uri = Uri.parse(
-      '${U.storeProductUrl}list',
-    );
+    try {
+      final res = await dio.get<String>(
+        '${U.storeProductUrl}list',
+        options: Options(
+          headers: getServerRequestHeaders.execute(),
+        ),
+      );
 
-    final res = await http.get(
-      uri,
-      headers: getServerRequestHeaders.execute(),
-    );
+      if (res.statusCode != 200) {
+        return TetaProductsResponse(
+          error: TetaErrorResponse(
+            code: res.statusCode,
+            message: res.data,
+          ),
+        );
+      }
+      final decodedList = (jsonDecode(res.data!) as List<dynamic>)
+          .map((final dynamic e) => e as Map<String, dynamic>)
+          .toList(growable: false);
 
-    if (res.statusCode != 200) {
+      return TetaProductsResponse(
+        data: productMapper.mapProducts(decodedList),
+      );
+    } catch (e) {
       return TetaProductsResponse(
         error: TetaErrorResponse(
-          code: res.statusCode,
-          message: res.body,
+          code: 403,
+          message: '$e',
         ),
       );
     }
-
-    return TetaProductsResponse(
-      data: productMapper
-          .mapProducts(json.decode(res.body) as List<Map<String, dynamic>>),
-    );
   }
 
   /// Gets a single product by id.
