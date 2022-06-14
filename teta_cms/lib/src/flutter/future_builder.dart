@@ -8,21 +8,19 @@ class TetaFutureBuilder<T> extends StatefulWidget {
   }) : super(key: key);
 
   final Future<T> future;
-  final Function(BuildContext, AsyncSnapshot<T>) builder;
+  final Widget Function(BuildContext, AsyncSnapshot<T>) builder;
 
   @override
-  State<FutureBuilder<T>> createState() => _FutureBuilderState<T>();
+  State<TetaFutureBuilder<T>> createState() => _TetaFutureBuilderState<T>();
 }
 
-class _FutureBuilderState<T> extends State<FutureBuilder<T>> {
+class _TetaFutureBuilderState<T> extends State<TetaFutureBuilder<T>> {
   late Future<T> _future;
 
   @override
   void initState() {
-    if (widget.future != null) {
-      _future = widget.future!;
-    }
     super.initState();
+    _future = widget.future;
   }
 
   @override
