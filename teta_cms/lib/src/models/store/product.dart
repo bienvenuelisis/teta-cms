@@ -19,7 +19,7 @@ class TetaProduct {
   final bool isPublic;
   final Map<String, dynamic>? metadata;
 
-  TetaProduct fromSchema(final Map<String, String> json) => TetaProduct(
+  static TetaProduct fromSchema(final Map<String, String> json) => TetaProduct(
         id: json['id'] ?? '',
         name: json['name'] ?? '',
         price: double.tryParse(json['price'] ?? '') ?? 0,
