@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:teta_cms/src/models/response.dart';
+import 'package:teta_cms/src/store/carts_api.dart';
 import 'package:teta_cms/src/store/products_api.dart';
 import 'package:teta_cms/src/use_cases/get_server_request_headers/get_server_request_headers.dart';
 import 'package:teta_cms/src/utils.dart';
@@ -11,11 +12,14 @@ class TetaStore {
   TetaStore(
     this.getServerRequestHeaders,
       this.products,
+      this.cart,
   );
 
   final GetServerRequestHeaders getServerRequestHeaders;
 
   final TetaStoreProductsApi products;
+
+  final TetaStoreCartsApi cart;
 
   /// Gets all the store's transactions
   Future<TetaResponse> transactions(final String userToken) async {

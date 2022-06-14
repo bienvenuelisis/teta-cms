@@ -50,19 +50,17 @@ class TetaStoreCartsApi {
 
   /// Adds the [product] to the cart of the given [userId]
   Future<TetaResponse> insert(
-    final String userId,
-    final TetaProduct product,
+    final String productId,
   ) async {
+    final userId = (await TetaCMS.instance.auth.user.get)['uid'] as String?;
+
     final uri = Uri.parse(
-      '${U.storeCartUrl}$userId/${product.id}',
+      '${U.storeCartUrl}$userId/$productId',
     );
 
     final res = await http.post(
       uri,
       headers: getServerRequestHeaders.execute(),
-      body: json.encode(
-        product.toJson(),
-      ),
     );
 
     TetaCMS.printWarning('insert product body: ${res.body}');
