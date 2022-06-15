@@ -13,8 +13,8 @@ class TetaProduct {
   final String id;
   final String name;
   final String? description;
-  final double price;
-  final int count;
+  final num price;
+  final num count;
   final String? image;
   final bool isPublic;
   final Map<String, dynamic>? metadata;
