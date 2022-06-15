@@ -67,7 +67,7 @@ class TetaAuth {
       headers: {
         'authorization': 'Bearer $token',
         'page': '$page',
-        'pageElems': '$limit',
+        'page-elems': '$limit',
       },
     );
 
