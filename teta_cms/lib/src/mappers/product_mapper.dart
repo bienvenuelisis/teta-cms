@@ -10,8 +10,8 @@ class ProductMapper {
   TetaProduct mapProduct(final Map<String, dynamic> json) => TetaProduct(
         id: json['_id'] as String,
         name: json['name'] as String? ?? '',
-        price: json['price'] as double? ?? 0,
-        count: json['count'] as int? ?? 0,
+        price: json['price'] as num? ?? 0,
+        count: json['count'] as num? ?? 0,
         isPublic: json['isPublic'] as bool? ?? false,
         description: json['description'] as String?,
         image: json['image'] as String?,
