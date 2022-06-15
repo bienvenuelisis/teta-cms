@@ -42,7 +42,6 @@ class TetaProjectSettings {
         TetaAnalyticsType.auth,
         'Teta Auth: save credentials request',
         <String, dynamic>{
-          'prj_id': prjId,
           'weight': res.bodyBytes.lengthInBytes,
         },
       ),
@@ -74,7 +73,6 @@ class TetaProjectSettings {
         TetaAnalyticsType.auth,
         'Teta Auth: retrieve credentials request',
         <String, dynamic>{
-          'prj_id': prjId,
           'weight': res.bodyBytes.lengthInBytes,
         },
       ),

@@ -41,7 +41,6 @@ class TetaUserUtils {
           TetaAnalyticsType.auth,
           'Teta Auth: get current user request',
           <String, dynamic>{
-            'prj_id': prjId,
             'weight': res.bodyBytes.lengthInBytes,
           },
         ),
