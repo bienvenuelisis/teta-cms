@@ -39,6 +39,14 @@ class TetaClient {
 
     final data = json.decode(res.body) as Map<String, dynamic>;
 
+    await TetaCMS.instance.analytics.insertEvent(
+      TetaAnalyticsType.db,
+      'Teta CMS: create collection request',
+      <String, dynamic>{
+        'prj_id': prjId,
+      },
+    );
+
     return data;
   }
 
@@ -66,6 +74,14 @@ class TetaClient {
     if (res.statusCode != 200) {
       throw Exception('deleteDocument returned status ${res.statusCode}');
     }
+
+    await TetaCMS.instance.analytics.insertEvent(
+      TetaAnalyticsType.db,
+      'Teta CMS: delete collection request',
+      <String, dynamic>{
+        'prj_id': prjId,
+      },
+    );
 
     return true;
   }
@@ -98,6 +114,15 @@ class TetaClient {
       throw Exception('insertDocument returned status ${res.statusCode}');
     }
 
+    await TetaCMS.instance.analytics.insertEvent(
+      TetaAnalyticsType.db,
+      'Teta CMS: insert document request',
+      <String, dynamic>{
+        'prj_id': prjId,
+        'weight': utf8.encode(json.encode(document)).length
+      },
+    );
+
     return true;
   }
 
@@ -126,6 +151,14 @@ class TetaClient {
     if (res.statusCode != 200) {
       throw Exception('deleteDocument returned status ${res.statusCode}');
     }
+
+    await TetaCMS.instance.analytics.insertEvent(
+      TetaAnalyticsType.db,
+      'Teta CMS: delete document request',
+      <String, dynamic>{
+        'prj_id': prjId,
+      },
+    );
 
     return true;
   }
@@ -166,6 +199,15 @@ class TetaClient {
     if (res.statusCode != 200) {
       throw Exception('getCollection returned status ${res.statusCode}');
     }
+
+    await TetaCMS.instance.analytics.insertEvent(
+      TetaAnalyticsType.db,
+      'Teta CMS: cms request',
+      <String, dynamic>{
+        'prj_id': prjId,
+        'weight': res.bodyBytes.lengthInBytes,
+      },
+    );
 
     final data = json.decode(res.body) as Map<String, dynamic>;
 
@@ -214,6 +256,14 @@ class TetaClient {
 
     final count = data['count'] as int? ?? 0;
 
+    await TetaCMS.instance.analytics.insertEvent(
+      TetaAnalyticsType.db,
+      'Teta CMS: count request',
+      <String, dynamic>{
+        'prj_id': prjId,
+      },
+    );
+
     return count;
   }
 
@@ -239,6 +289,15 @@ class TetaClient {
     }
 
     final data = json.decode(res.body) as List<dynamic>;
+
+    await TetaCMS.instance.analytics.insertEvent(
+      TetaAnalyticsType.db,
+      'Teta CMS: get collections request',
+      <String, dynamic>{
+        'prj_id': prjId,
+        'weight': res.bodyBytes.lengthInBytes,
+      },
+    );
 
     TetaCMS.log('getCollections data: $data');
 
@@ -280,6 +339,15 @@ class TetaClient {
 
     TetaCMS.log(res.body);
 
+    await TetaCMS.instance.analytics.insertEvent(
+      TetaAnalyticsType.db,
+      'Teta CMS: update collection request',
+      <String, dynamic>{
+        'prj_id': prjId,
+        'weight': res.bodyBytes.lengthInBytes,
+      },
+    );
+
     if (res.statusCode != 200) {
       throw Exception('updateCollection returned status ${res.statusCode}');
     }
@@ -312,6 +380,15 @@ class TetaClient {
 
     TetaCMS.log(res.body);
 
+    await TetaCMS.instance.analytics.insertEvent(
+      TetaAnalyticsType.db,
+      'Teta CMS: update document request',
+      <String, dynamic>{
+        'prj_id': prjId,
+        'weight': res.bodyBytes.lengthInBytes,
+      },
+    );
+
     if (res.statusCode != 200) {
       throw Exception('updateDocument returned status ${res.statusCode}');
     }
@@ -339,6 +416,15 @@ class TetaClient {
     if (res.statusCode != 200) {
       throw Exception('getCollection returned status ${res.statusCode}');
     }
+
+    await TetaCMS.instance.analytics.insertEvent(
+      TetaAnalyticsType.db,
+      'Teta CMS: custom queries request',
+      <String, dynamic>{
+        'prj_id': prjId,
+        'weight': res.bodyBytes.lengthInBytes,
+      },
+    );
 
     final data = json.decode(res.body) as Map<String, dynamic>;
 

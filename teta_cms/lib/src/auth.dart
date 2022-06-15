@@ -26,7 +26,7 @@ class TetaAuth {
   late TetaProjectSettings project;
   late TetaUserUtils user;
 
-  Future<void> insertUser(final String userToken) async {
+  Future<bool> insertUser(final String userToken) async {
     final uri = Uri.parse(
       '${U.baseUrl}auth/users/$prjId',
     );
@@ -50,7 +50,18 @@ class TetaAuth {
       throw Exception('insertUser resulted in ${res.statusCode} ${res.body}');
     }
 
+    if (res.body != '{"warn":"User already registered"}') {
+      await TetaCMS.instance.analytics.insertEvent(
+        TetaAnalyticsType.auth,
+        'Teta Auth: signup request',
+        <String, dynamic>{
+          'prj_id': prjId,
+        },
+      );
+      return false;
+    }
     await _persistentLogin(userToken);
+    return true;
   }
 
   Future<List<dynamic>> retrieveUsers({
@@ -82,6 +93,16 @@ class TetaAuth {
     final users =
         (list.first as Map<String, dynamic>)['users'] as List<dynamic>;
     TetaCMS.log('retrieveUsers users: $users');
+
+    await TetaCMS.instance.analytics.insertEvent(
+      TetaAnalyticsType.auth,
+      'Teta Auth: retrieve users request',
+      <String, dynamic>{
+        'prj_id': prjId,
+        'weight': res.bodyBytes.lengthInBytes,
+      },
+    );
+
     return users;
   }
 
@@ -127,9 +148,20 @@ class TetaAuth {
               if (uri.queryParameters['access_token'] != null &&
                   uri.queryParameters['access_token'] is String) {
                 await closeInAppWebView();
-                await TetaCMS.instance.auth.insertUser(
+                final isFirstTime = await TetaCMS.instance.auth.insertUser(
                   // ignore: cast_nullable_to_non_nullable
                   uri.queryParameters['access_token'] as String,
+                );
+                unawaited(
+                  TetaCMS.instance.analytics.insertEvent(
+                    TetaAnalyticsType.auth,
+                    'Teta Auth: login request',
+                    <String, dynamic>{
+                      'prj_id': prjId,
+                      'device': 'mobile',
+                      'provider': EnumToString.convertToString(provider),
+                    },
+                  ),
                 );
                 onSuccess();
               }
@@ -141,7 +173,18 @@ class TetaAuth {
         );
       } else {
         TetaCMS.log('Callback on web');
-        await insertUser(userToken);
+        final isFirstTime = await insertUser(userToken);
+        unawaited(
+          TetaCMS.instance.analytics.insertEvent(
+            TetaAnalyticsType.auth,
+            'Teta Auth: login request',
+            <String, dynamic>{
+              'prj_id': prjId,
+              'device': 'web',
+              'provider': EnumToString.convertToString(provider),
+            },
+          ),
+        );
         onSuccess();
       }
     });
