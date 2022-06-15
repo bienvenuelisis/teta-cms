@@ -62,13 +62,12 @@ class TetaAuth {
       '${U.baseUrl}auth/users/$prjId',
     );
 
-    TetaCMS.printWarning('$limit, $page');
     final res = await http.get(
       uri,
       headers: {
         'authorization': 'Bearer $token',
         'page': '$page',
-        'pageElems': '1',
+        'pageElems': '$limit',
       },
     );
 
