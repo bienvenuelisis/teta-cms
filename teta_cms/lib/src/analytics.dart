@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:http/http.dart' as http;
-import 'package:teta_cms/src/models/teta_analytics_type.dart';
 import 'package:teta_cms/src/utils.dart';
 import 'package:teta_cms/teta_cms.dart';
 
@@ -27,6 +26,7 @@ class TetaAnalytics {
     final res = await http.post(
       uri,
       headers: {
+        'content-type': 'application/json',
         'authorization': 'Bearer $token',
         'x-identifier': '$prjId',
       },
