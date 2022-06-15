@@ -55,6 +55,8 @@ class TetaAuth {
 
   Future<List<dynamic>> retrieveUsers({
     required final int prjId,
+    final int limit = 10,
+    final int page = 0,
   }) async {
     final uri = Uri.parse(
       '${U.baseUrl}auth/users/$prjId',
@@ -64,6 +66,8 @@ class TetaAuth {
       uri,
       headers: {
         'authorization': 'Bearer $token',
+        'page': '$page',
+        'pageElems': '$limit',
       },
     );
 
