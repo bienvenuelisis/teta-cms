@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
+import 'package:teta_cms/src/analytics.dart';
 import 'package:teta_cms/src/auth.dart';
 import 'package:teta_cms/src/client.dart';
 import 'package:teta_cms/src/data_stores/local/server_request_metadata_store.dart';
@@ -80,6 +81,9 @@ class TetaCMS {
   /// The TetaStore instance
   late TetaStore store;
 
+  /// The TetaStore instance
+  late TetaAnalytics analytics;
+
   /// Dispose the instance to free up resources.
   void dispose() {
     _initialized = false;
@@ -89,12 +93,14 @@ class TetaCMS {
     final String token,
     final int prjId,
   ) async {
-    if(!diInitialized) {
-    initGetIt();
-    diInitialized = true;
+    if (!diInitialized) {
+      initGetIt();
+      diInitialized = true;
     }
 
-    sl.get<ServerRequestMetadataStore>().updateMetadata(token: token, prjId: prjId);
+    sl
+        .get<ServerRequestMetadataStore>()
+        .updateMetadata(token: token, prjId: prjId);
     client = TetaClient(
       token,
       prjId,
@@ -104,6 +110,10 @@ class TetaCMS {
       prjId,
     );
     auth = TetaAuth(
+      token,
+      prjId,
+    );
+    analytics = TetaAnalytics(
       token,
       prjId,
     );

@@ -318,4 +318,32 @@ class TetaClient {
 
     return true;
   }
+
+  Future customQuery(
+    final String collectionId, {
+    required final String query,
+  }) async {
+    final uri = Uri.parse('${U.baseUrl}cms/$prjId/$collectionId/raw');
+
+    final res = await http.post(
+      uri,
+      headers: {
+        'authorization': 'Bearer $token',
+        'content-type': 'application/json',
+      },
+      body: query,
+    );
+
+    TetaCMS.log('getCollection: ${res.body}');
+
+    if (res.statusCode != 200) {
+      throw Exception('getCollection returned status ${res.statusCode}');
+    }
+
+    final data = json.decode(res.body) as Map<String, dynamic>;
+
+    final docs = data['docs'] as List<dynamic>;
+
+    return docs;
+  }
 }
