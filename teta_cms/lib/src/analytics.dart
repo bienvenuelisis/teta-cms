@@ -2,16 +2,9 @@ import 'dart:convert';
 
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:http/http.dart' as http;
+import 'package:teta_cms/src/models/teta_analytics_type.dart';
 import 'package:teta_cms/src/utils.dart';
 import 'package:teta_cms/teta_cms.dart';
-
-enum TetaAnalyticsEnum {
-  teta,
-  auth,
-  db,
-  store,
-  usage,
-}
 
 class TetaAnalytics {
   TetaAnalytics(
@@ -23,7 +16,7 @@ class TetaAnalytics {
 
   /// Creates a new event
   Future<TetaResponse> insertEvent(
-    final TetaAnalyticsEnum type,
+    final TetaAnalyticsType type,
     final String name,
     final Map<String, dynamic> properties,
   ) async {
@@ -61,7 +54,7 @@ class TetaAnalytics {
 
   /// Creates a new event
   Future<TetaResponse> get(
-    final TetaAnalyticsEnum group,
+    final TetaAnalyticsType group,
     final String name,
     final Map<String, dynamic> properties,
   ) async {
