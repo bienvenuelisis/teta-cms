@@ -54,9 +54,7 @@ class TetaAuth {
       await TetaCMS.instance.analytics.insertEvent(
         TetaAnalyticsType.auth,
         'Teta Auth: signup request',
-        <String, dynamic>{
-          'prj_id': prjId,
-        },
+        <String, dynamic>{},
       );
       return false;
     }
@@ -98,7 +96,6 @@ class TetaAuth {
       TetaAnalyticsType.auth,
       'Teta Auth: retrieve users request',
       <String, dynamic>{
-        'prj_id': prjId,
         'weight': res.bodyBytes.lengthInBytes,
       },
     );
@@ -157,7 +154,6 @@ class TetaAuth {
                     TetaAnalyticsType.auth,
                     'Teta Auth: login request',
                     <String, dynamic>{
-                      'prj_id': prjId,
                       'device': 'mobile',
                       'provider': EnumToString.convertToString(provider),
                     },
@@ -179,7 +175,6 @@ class TetaAuth {
             TetaAnalyticsType.auth,
             'Teta Auth: login request',
             <String, dynamic>{
-              'prj_id': prjId,
               'device': 'web',
               'provider': EnumToString.convertToString(provider),
             },

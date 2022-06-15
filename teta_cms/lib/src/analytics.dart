@@ -32,6 +32,7 @@ class TetaAnalytics {
       },
       body: json.encode(<String, dynamic>{
         'name': name,
+        'prj_id': prjId,
         ...properties,
       }),
     );

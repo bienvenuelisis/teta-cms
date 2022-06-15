@@ -159,9 +159,7 @@ class TetaRealtime {
     TetaCMS.instance.analytics.insertEvent(
       TetaAnalyticsType.db,
       'Teta CMS: realtime request',
-      <String, dynamic>{
-        'prj_id': prjId,
-      },
+      <String, dynamic>{},
     );
     TetaCMS.instance.client
         .getCollection(
@@ -178,9 +176,7 @@ class TetaRealtime {
         await TetaCMS.instance.analytics.insertEvent(
           TetaAnalyticsType.db,
           'Teta CMS: realtime request',
-          <String, dynamic>{
-            'prj_id': prjId,
-          },
+          <String, dynamic>{},
         );
         TetaCMS.printWarning('$filters, $limit, $page');
         final resp = await TetaCMS.instance.client.getCollection(

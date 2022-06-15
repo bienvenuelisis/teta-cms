@@ -42,9 +42,7 @@ class TetaClient {
     await TetaCMS.instance.analytics.insertEvent(
       TetaAnalyticsType.db,
       'Teta CMS: create collection request',
-      <String, dynamic>{
-        'prj_id': prjId,
-      },
+      <String, dynamic>{},
     );
 
     return data;
@@ -78,9 +76,7 @@ class TetaClient {
     await TetaCMS.instance.analytics.insertEvent(
       TetaAnalyticsType.db,
       'Teta CMS: delete collection request',
-      <String, dynamic>{
-        'prj_id': prjId,
-      },
+      <String, dynamic>{},
     );
 
     return true;
@@ -117,10 +113,7 @@ class TetaClient {
     await TetaCMS.instance.analytics.insertEvent(
       TetaAnalyticsType.db,
       'Teta CMS: insert document request',
-      <String, dynamic>{
-        'prj_id': prjId,
-        'weight': utf8.encode(json.encode(document)).length
-      },
+      <String, dynamic>{'weight': utf8.encode(json.encode(document)).length},
     );
 
     return true;
@@ -155,9 +148,7 @@ class TetaClient {
     await TetaCMS.instance.analytics.insertEvent(
       TetaAnalyticsType.db,
       'Teta CMS: delete document request',
-      <String, dynamic>{
-        'prj_id': prjId,
-      },
+      <String, dynamic>{},
     );
 
     return true;
@@ -204,7 +195,6 @@ class TetaClient {
       TetaAnalyticsType.db,
       'Teta CMS: cms request',
       <String, dynamic>{
-        'prj_id': prjId,
         'weight': res.bodyBytes.lengthInBytes,
       },
     );
@@ -259,9 +249,7 @@ class TetaClient {
     await TetaCMS.instance.analytics.insertEvent(
       TetaAnalyticsType.db,
       'Teta CMS: count request',
-      <String, dynamic>{
-        'prj_id': prjId,
-      },
+      <String, dynamic>{},
     );
 
     return count;
@@ -294,7 +282,6 @@ class TetaClient {
       TetaAnalyticsType.db,
       'Teta CMS: get collections request',
       <String, dynamic>{
-        'prj_id': prjId,
         'weight': res.bodyBytes.lengthInBytes,
       },
     );
@@ -343,7 +330,6 @@ class TetaClient {
       TetaAnalyticsType.db,
       'Teta CMS: update collection request',
       <String, dynamic>{
-        'prj_id': prjId,
         'weight': res.bodyBytes.lengthInBytes,
       },
     );
@@ -384,7 +370,6 @@ class TetaClient {
       TetaAnalyticsType.db,
       'Teta CMS: update document request',
       <String, dynamic>{
-        'prj_id': prjId,
         'weight': res.bodyBytes.lengthInBytes,
       },
     );
@@ -421,7 +406,6 @@ class TetaClient {
       TetaAnalyticsType.db,
       'Teta CMS: custom queries request',
       <String, dynamic>{
-        'prj_id': prjId,
         'weight': res.bodyBytes.lengthInBytes,
       },
     );
