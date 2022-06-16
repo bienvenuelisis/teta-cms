@@ -7,6 +7,7 @@ import 'package:teta_cms/src/store/carts_api.dart';
 import 'package:teta_cms/src/store/products_api.dart';
 import 'package:teta_cms/src/use_cases/get_server_request_headers/get_server_request_headers.dart';
 import 'package:teta_cms/src/utils.dart';
+import 'package:teta_cms/teta_cms.dart';
 
 class TetaStore {
   TetaStore(
@@ -20,6 +21,26 @@ class TetaStore {
   final TetaStoreProductsApi products;
 
   final TetaStoreCartsApi cart;
+
+  Future<TetaProductsResponse> getCartProducts() async {
+    try {
+      final cartResponse = await cart.get();
+      final cartProducts = <TetaProduct>[];
+      for (final element in cartResponse.data!.content) {
+        cartProducts.add((await products.get(element.id)).data!);
+      }
+      return TetaProductsResponse(
+        data: cartProducts,
+      );
+    } catch (e){
+      return TetaProductsResponse(
+        error: TetaErrorResponse(
+          code: 403,
+          message: e.toString(),
+        ),
+      );
+    }
+  }
 
   /// Gets all the store's transactions
   Future<TetaResponse> transactions(final String userToken) async {

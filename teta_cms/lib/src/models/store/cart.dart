@@ -10,8 +10,8 @@ class TetaCart {
   final List<TetaCartContent> content;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'id': id,
-        'userId': userId,
+        '_id': id,
+        'user_id': userId,
         'content': content.map((final e) => e.toJson()).toList(),
       };
 }
@@ -28,8 +28,8 @@ class TetaCartContent {
   final DateTime? addedAt;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'id': id,
-        'prodId': prodId,
-        'addedAt': addedAt?.toIso8601String(),
+        '_id': id,
+        'product_id': prodId,
+        'added_at': addedAt?.toIso8601String(),
       };
 }
