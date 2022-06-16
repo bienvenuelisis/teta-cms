@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:hive/hive.dart';
@@ -34,6 +35,16 @@ class TetaUserUtils {
       if (res.statusCode != 200) {
         throw Exception('insertUser resulted in ${res.statusCode} ${res.body}');
       }
+
+      unawaited(
+        TetaCMS.instance.analytics.insertEvent(
+          TetaAnalyticsType.auth,
+          'Teta Auth: get current user request',
+          <String, dynamic>{
+            'weight': res.bodyBytes.lengthInBytes,
+          },
+        ),
+      );
 
       return json.decode(res.body) as Map<String, dynamic>? ??
           <String, dynamic>{};

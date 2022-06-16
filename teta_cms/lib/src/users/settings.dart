@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
@@ -35,6 +36,16 @@ class TetaProjectSettings {
     if (res.statusCode != 200) {
       throw Exception('saveCredentials resulted in ${res.statusCode}');
     }
+
+    unawaited(
+      TetaCMS.instance.analytics.insertEvent(
+        TetaAnalyticsType.auth,
+        'Teta Auth: save credentials request',
+        <String, dynamic>{
+          'weight': res.bodyBytes.lengthInBytes,
+        },
+      ),
+    );
   }
 
   Future<TetaAuthCredentials> retrieveCredentials({
@@ -56,6 +67,16 @@ class TetaProjectSettings {
     if (res.statusCode != 200) {
       throw Exception('retrieveCredentials resulted in ${res.statusCode}');
     }
+
+    unawaited(
+      TetaCMS.instance.analytics.insertEvent(
+        TetaAnalyticsType.auth,
+        'Teta Auth: retrieve credentials request',
+        <String, dynamic>{
+          'weight': res.bodyBytes.lengthInBytes,
+        },
+      ),
+    );
 
     final map = json.decode(res.body) as Map<String, dynamic>;
     return TetaAuthCredentials.fromJson(map);
