@@ -1,3 +1,4 @@
+import 'package:teta_cms/src/models/store/cart.dart';
 import 'package:teta_cms/src/models/store/product.dart';
 
 class TetaResponse<DATA, ERROR> {
@@ -32,4 +33,10 @@ class TetaProductsResponse
     final List<TetaProduct>? data,
     final TetaErrorResponse? error,
   }) : super(data: data, error: error);
+}
+
+class TetaCartResponse extends TetaResponse<TetaCart?, TetaErrorResponse?> {
+  TetaCartResponse(
+      {final TetaCart? data, final TetaErrorResponse? error,})
+      : super(data: data, error: error);
 }

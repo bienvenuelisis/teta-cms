@@ -3,9 +3,6 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:teta_cms/src/mappers/cart_mapper.dart';
-import 'package:teta_cms/src/models/response.dart';
-import 'package:teta_cms/src/models/store/cart.dart';
-import 'package:teta_cms/src/models/store/product.dart';
 import 'package:teta_cms/src/use_cases/get_server_request_headers/get_server_request_headers.dart';
 import 'package:teta_cms/src/utils.dart';
 import 'package:teta_cms/teta_cms.dart';
@@ -20,9 +17,12 @@ class TetaStoreCartsApi {
   final GetServerRequestHeaders getServerRequestHeaders;
 
   /// Gets a cart by [userId]
-  Future<TetaResponse> get(final String userId) async {
+  Future<TetaCartResponse> get() async {
+
+    final cmsUserId = ((await TetaCMS.instance.auth.user.get)['uid'] ?? '') as String;
+
     final uri = Uri.parse(
-      '${U.storeCartUrl}$userId',
+      '${U.storeCartUrl}$cmsUserId',
     );
 
     final res = await http.get(
@@ -31,20 +31,18 @@ class TetaStoreCartsApi {
     );
 
     if (res.statusCode != 200) {
-      return TetaResponse<dynamic, TetaErrorResponse>(
+      return TetaCartResponse(
         error: TetaErrorResponse(
           code: res.statusCode,
           message: res.body,
         ),
-        data: null,
       );
     }
 
-    return TetaResponse<TetaCart, dynamic>(
+    return TetaCartResponse(
       data: cartMapper.mapCart(
         json.decode(res.body) as Map<String, dynamic>,
       ),
-      error: null,
     );
   }
 
@@ -82,7 +80,9 @@ class TetaStoreCartsApi {
   }
 
   /// Deletes a product by id
-  Future<TetaResponse> delete(final String userId, final String prodId) async {
+  Future<TetaResponse> delete(final String prodId) async {
+    final userId = (await TetaCMS.instance.auth.user.get)['uid'] as String?;
+
     final uri = Uri.parse(
       '${U.storeProductUrl}$userId/$prodId',
     );
