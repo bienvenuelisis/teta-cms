@@ -9,18 +9,28 @@ class TetaAnalytics {
   TetaAnalytics(
     this.token,
     this.prjId,
-  );
+  ) {
+    init();
+  }
+
   final String token;
   final int prjId;
+  String? _currentUserId;
+
+  Future init({final String? userId}) async {
+    _currentUserId =
+        userId ?? (await TetaCMS.instance.auth.user.get)['id'] as String?;
+  }
 
   /// Creates a new event
   Future<TetaResponse> insertEvent(
     final TetaAnalyticsType type,
     final String name,
-    final Map<String, dynamic> properties,
-  ) async {
+    final Map<String, dynamic> properties, {
+    required final bool isUserIdPreferableIfExists,
+  }) async {
     final uri = Uri.parse(
-      '${U.analyticsUrl}events/${EnumToString.convertToString(type)}',
+      '${U.analyticsUrl}events/add/${EnumToString.convertToString(type)}',
     );
 
     final res = await http.post(
@@ -33,6 +43,8 @@ class TetaAnalytics {
       body: json.encode(<String, dynamic>{
         'name': name,
         'prj_id': prjId,
+        if (isUserIdPreferableIfExists && _currentUserId != null)
+          'user_id': _currentUserId,
         ...properties,
       }),
     );
@@ -60,10 +72,10 @@ class TetaAnalytics {
     final Map<String, dynamic> properties,
   ) async {
     final uri = Uri.parse(
-      '${U.analyticsUrl}events',
+      '${U.analyticsUrl}events/query',
     );
 
-    final res = await http.get(
+    final res = await http.post(
       uri,
       headers: {
         'authorization': 'Bearer $token',

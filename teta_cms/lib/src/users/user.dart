@@ -43,11 +43,14 @@ class TetaUserUtils {
           <String, dynamic>{
             'weight': res.bodyBytes.lengthInBytes,
           },
+          isUserIdPreferableIfExists: false,
         ),
       );
 
-      return json.decode(res.body) as Map<String, dynamic>? ??
-          <String, dynamic>{};
+      final user =
+          json.decode(res.body) as Map<String, dynamic>? ?? <String, dynamic>{};
+      await TetaCMS.instance.analytics.init(userId: user['uid'] as String?);
+      return user;
     }
     return <String, dynamic>{};
   }

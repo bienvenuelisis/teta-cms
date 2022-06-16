@@ -160,6 +160,7 @@ class TetaRealtime {
       TetaAnalyticsType.db,
       'Teta CMS: realtime request',
       <String, dynamic>{},
+      isUserIdPreferableIfExists: true,
     );
     TetaCMS.instance.client
         .getCollection(
@@ -177,6 +178,7 @@ class TetaRealtime {
           TetaAnalyticsType.db,
           'Teta CMS: realtime request',
           <String, dynamic>{},
+          isUserIdPreferableIfExists: true,
         );
         TetaCMS.printWarning('$filters, $limit, $page');
         final resp = await TetaCMS.instance.client.getCollection(

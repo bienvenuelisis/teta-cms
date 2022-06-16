@@ -44,6 +44,7 @@ class TetaProjectSettings {
         <String, dynamic>{
           'weight': res.bodyBytes.lengthInBytes,
         },
+        isUserIdPreferableIfExists: false,
       ),
     );
   }
@@ -75,6 +76,7 @@ class TetaProjectSettings {
         <String, dynamic>{
           'weight': res.bodyBytes.lengthInBytes,
         },
+        isUserIdPreferableIfExists: false,
       ),
     );
 

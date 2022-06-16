@@ -101,10 +101,6 @@ class TetaCMS {
     sl
         .get<ServerRequestMetadataStore>()
         .updateMetadata(token: token, prjId: prjId);
-    client = TetaClient(
-      token,
-      prjId,
-    );
     realtime = TetaRealtime(
       token,
       prjId,
@@ -113,7 +109,7 @@ class TetaCMS {
       token,
       prjId,
     );
-    analytics = TetaAnalytics(
+    client = TetaClient(
       token,
       prjId,
     );
@@ -122,6 +118,10 @@ class TetaCMS {
       Hive.init((await getApplicationDocumentsDirectory()).path);
     }
     _initialized = true;
+    analytics = TetaAnalytics(
+      token,
+      prjId,
+    );
   }
 
   static String _getToken() {

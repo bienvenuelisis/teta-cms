@@ -55,6 +55,7 @@ class TetaAuth {
         TetaAnalyticsType.auth,
         'Teta Auth: signup request',
         <String, dynamic>{},
+        isUserIdPreferableIfExists: false,
       );
       return false;
     }
@@ -98,6 +99,7 @@ class TetaAuth {
       <String, dynamic>{
         'weight': res.bodyBytes.lengthInBytes,
       },
+      isUserIdPreferableIfExists: false,
     );
 
     return users;
@@ -157,6 +159,7 @@ class TetaAuth {
                       'device': 'mobile',
                       'provider': EnumToString.convertToString(provider),
                     },
+                    isUserIdPreferableIfExists: false,
                   ),
                 );
                 onSuccess();
@@ -178,6 +181,7 @@ class TetaAuth {
               'device': 'web',
               'provider': EnumToString.convertToString(provider),
             },
+            isUserIdPreferableIfExists: false,
           ),
         );
         onSuccess();

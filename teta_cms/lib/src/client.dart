@@ -43,6 +43,7 @@ class TetaClient {
       TetaAnalyticsType.db,
       'Teta CMS: create collection request',
       <String, dynamic>{},
+      isUserIdPreferableIfExists: false,
     );
 
     return data;
@@ -77,6 +78,7 @@ class TetaClient {
       TetaAnalyticsType.db,
       'Teta CMS: delete collection request',
       <String, dynamic>{},
+      isUserIdPreferableIfExists: false,
     );
 
     return true;
@@ -114,6 +116,7 @@ class TetaClient {
       TetaAnalyticsType.db,
       'Teta CMS: insert document request',
       <String, dynamic>{'weight': utf8.encode(json.encode(document)).length},
+      isUserIdPreferableIfExists: true,
     );
 
     return true;
@@ -149,6 +152,7 @@ class TetaClient {
       TetaAnalyticsType.db,
       'Teta CMS: delete document request',
       <String, dynamic>{},
+      isUserIdPreferableIfExists: true,
     );
 
     return true;
@@ -197,6 +201,7 @@ class TetaClient {
       <String, dynamic>{
         'weight': res.bodyBytes.lengthInBytes,
       },
+      isUserIdPreferableIfExists: true,
     );
 
     final data = json.decode(res.body) as Map<String, dynamic>;
@@ -250,6 +255,7 @@ class TetaClient {
       TetaAnalyticsType.db,
       'Teta CMS: count request',
       <String, dynamic>{},
+      isUserIdPreferableIfExists: true,
     );
 
     return count;
@@ -284,6 +290,7 @@ class TetaClient {
       <String, dynamic>{
         'weight': res.bodyBytes.lengthInBytes,
       },
+      isUserIdPreferableIfExists: false,
     );
 
     TetaCMS.log('getCollections data: $data');
@@ -332,6 +339,7 @@ class TetaClient {
       <String, dynamic>{
         'weight': res.bodyBytes.lengthInBytes,
       },
+      isUserIdPreferableIfExists: true,
     );
 
     if (res.statusCode != 200) {
@@ -372,6 +380,7 @@ class TetaClient {
       <String, dynamic>{
         'weight': res.bodyBytes.lengthInBytes,
       },
+      isUserIdPreferableIfExists: true,
     );
 
     if (res.statusCode != 200) {
@@ -408,6 +417,7 @@ class TetaClient {
       <String, dynamic>{
         'weight': res.bodyBytes.lengthInBytes,
       },
+      isUserIdPreferableIfExists: false,
     );
 
     final data = json.decode(res.body) as Map<String, dynamic>;
