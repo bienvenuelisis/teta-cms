@@ -315,6 +315,7 @@ class TetaClient {
   Future<bool> updateCollection(
     final String collectionId,
     final String name,
+    final Map<String, dynamic>? attributes,
   ) async {
     final uri = Uri.parse(
       '${U.baseUrl}cms/$prjId/$collectionId',
@@ -328,6 +329,7 @@ class TetaClient {
       },
       body: json.encode(<String, dynamic>{
         'name': name,
+        if (attributes != null) ...attributes,
       }),
     );
 
