@@ -392,7 +392,8 @@ class TetaClient {
     return true;
   }
 
-  Future customQuery(
+  Future<List<dynamic>> customQuery(
+    final int prjId,
     final String query,
   ) async {
     final uri = Uri.parse('${U.baseUrl}cms/aya');
@@ -402,7 +403,10 @@ class TetaClient {
       headers: {
         'authorization': 'Bearer $token',
       },
-      body: query,
+      body: '''
+      ON prjId* $prjId;
+      $query
+      ''',
     );
 
     TetaCMS.log('custom query: ${res.body}');
@@ -422,7 +426,7 @@ class TetaClient {
 
     final data = json.decode(res.body) as Map<String, dynamic>;
 
-    final docs = data['docs'] as List<dynamic>;
+    final docs = data['data'] as List<dynamic>;
 
     return docs;
   }
