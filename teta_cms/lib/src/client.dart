@@ -401,7 +401,6 @@ class TetaClient {
       uri,
       headers: {
         'authorization': 'Bearer $token',
-        'content-type': 'application/json',
       },
       body: query,
     );
