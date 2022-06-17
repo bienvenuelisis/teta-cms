@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:teta_cms/src/mappers/cart_mapper.dart';
 import 'package:teta_cms/src/use_cases/get_server_request_headers/get_server_request_headers.dart';
@@ -11,10 +12,12 @@ class TetaStoreCartsApi {
   TetaStoreCartsApi(
     this.cartMapper,
     this.getServerRequestHeaders,
+    this.dio,
   );
 
   final CartMapper cartMapper;
   final GetServerRequestHeaders getServerRequestHeaders;
+  final Dio dio;
 
   /// Gets a cart by [userId]
   Future<TetaCartResponse> get() async {
@@ -104,5 +107,36 @@ class TetaStoreCartsApi {
 
     return TetaResponse<String, dynamic>(
         data: json.encode(res.body), error: null);
+  }
+
+  Future<TetaPaymentIntentResponse> getPaymentIntent() async {
+    final userId = (await TetaCMS.instance.auth.user.get)['uid'] as String?;
+
+    try {
+
+      final res = await dio.get<String>(
+        '${U.storeCartUrl}$userId/buy',
+        options: Options(
+          headers: getServerRequestHeaders.execute(),
+        ),
+      );
+
+      if(200 != res.statusCode) {
+        return TetaPaymentIntentResponse(
+          error: TetaErrorResponse(
+            code: res.statusCode,
+            message: res.data,
+          ),
+        );
+      }
+
+      return TetaPaymentIntentResponse(
+        data: res.data ?? '',
+      );
+
+    } catch (e) {
+      return TetaPaymentIntentResponse(
+          error: TetaErrorResponse(message: e.toString(), code: 403),);
+    }
   }
 }
