@@ -393,10 +393,9 @@ class TetaClient {
   }
 
   Future customQuery(
-    final String collectionId, {
-    required final String query,
-  }) async {
-    final uri = Uri.parse('${U.baseUrl}cms/$prjId/$collectionId/raw');
+    final String query,
+  ) async {
+    final uri = Uri.parse('${U.baseUrl}cms/aya');
 
     final res = await http.post(
       uri,
@@ -407,17 +406,17 @@ class TetaClient {
       body: query,
     );
 
-    TetaCMS.log('getCollection: ${res.body}');
+    TetaCMS.log('custom query: ${res.body}');
 
     if (res.statusCode != 200) {
-      throw Exception('getCollection returned status ${res.statusCode}');
+      throw Exception('custom query returned status ${res.statusCode}');
     }
 
     await TetaCMS.instance.analytics.insertEvent(
       TetaAnalyticsType.db,
       'Teta CMS: custom queries request',
       <String, dynamic>{
-        'weight': res.bodyBytes.lengthInBytes,
+        'weight': res.bodyBytes.lengthInBytes + utf8.encode(query).length,
       },
       isUserIdPreferableIfExists: false,
     );
