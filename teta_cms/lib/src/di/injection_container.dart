@@ -28,7 +28,7 @@ void initGetIt() {
   sl.registerLazySingleton(() => GetServerRequestHeaders(sl()));
 
   // API
-  sl.registerLazySingleton(() => TetaStoreCartsApi(sl(), sl()));
+  sl.registerLazySingleton(() => TetaStoreCartsApi(sl(), sl(), sl()));
   sl.registerLazySingleton(() => TetaStoreProductsApi(sl(), sl(), sl()));
   sl.registerLazySingleton(() => TetaStore(sl(), sl(), sl()));
 }

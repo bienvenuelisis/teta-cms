@@ -40,3 +40,9 @@ class TetaCartResponse extends TetaResponse<TetaCart?, TetaErrorResponse?> {
       {final TetaCart? data, final TetaErrorResponse? error,})
       : super(data: data, error: error);
 }
+
+class TetaPaymentIntentResponse extends TetaResponse<String?, TetaErrorResponse?> {
+  TetaPaymentIntentResponse(
+      {final String? data, final TetaErrorResponse? error,})
+      : super(data: data, error: error);
+}
