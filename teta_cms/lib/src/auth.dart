@@ -52,7 +52,7 @@ class TetaAuth {
 
     if (res.body != '{"warn":"User already registered"}') {
       await TetaCMS.instance.analytics.insertEvent(
-        TetaAnalyticsType.auth,
+        TetaAnalyticsType.tetaAuthSignUp,
         'Teta Auth: signup request',
         <String, dynamic>{},
         isUserIdPreferableIfExists: false,
@@ -94,7 +94,7 @@ class TetaAuth {
     TetaCMS.log('retrieveUsers users: $users');
 
     await TetaCMS.instance.analytics.insertEvent(
-      TetaAnalyticsType.auth,
+      TetaAnalyticsType.tetaAuthRetrieveUsers,
       'Teta Auth: retrieve users request',
       <String, dynamic>{
         'weight': res.bodyBytes.lengthInBytes,
@@ -153,8 +153,8 @@ class TetaAuth {
                 );
                 unawaited(
                   TetaCMS.instance.analytics.insertEvent(
-                    TetaAnalyticsType.auth,
-                    'Teta Auth: login request',
+                    TetaAnalyticsType.tetaAuthSignIn,
+                    'Teta Auth: signIn request',
                     <String, dynamic>{
                       'device': 'mobile',
                       'provider': EnumToString.convertToString(provider),
@@ -175,8 +175,8 @@ class TetaAuth {
         final isFirstTime = await insertUser(userToken);
         unawaited(
           TetaCMS.instance.analytics.insertEvent(
-            TetaAnalyticsType.auth,
-            'Teta Auth: login request',
+            TetaAnalyticsType.tetaAuthSignOut,
+            'Teta Auth: signOut request',
             <String, dynamic>{
               'device': 'web',
               'provider': EnumToString.convertToString(provider),

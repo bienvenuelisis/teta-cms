@@ -404,7 +404,7 @@ class TetaClient {
         'authorization': 'Bearer $token',
       },
       body: '''
-      ON prjId* $prjId;
+      ON prj_id* $prjId;
       $query
       ''',
     );
@@ -424,9 +424,7 @@ class TetaClient {
       isUserIdPreferableIfExists: false,
     );
 
-    final data = json.decode(res.body) as Map<String, dynamic>;
-
-    final docs = data['data'] as List<dynamic>;
+    final docs = json.decode(res.body) as List<dynamic>;
 
     return docs;
   }

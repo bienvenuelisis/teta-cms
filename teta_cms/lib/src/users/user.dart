@@ -38,7 +38,7 @@ class TetaUserUtils {
 
       unawaited(
         TetaCMS.instance.analytics.insertEvent(
-          TetaAnalyticsType.auth,
+          TetaAnalyticsType.tetaAuthGetCurrentUser,
           'Teta Auth: get current user request',
           <String, dynamic>{
             'weight': res.bodyBytes.lengthInBytes,

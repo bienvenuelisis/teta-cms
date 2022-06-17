@@ -25,7 +25,7 @@ class TetaAnalytics {
   /// Creates a new event
   Future<TetaResponse> insertEvent(
     final TetaAnalyticsType type,
-    final String name,
+    final String description,
     final Map<String, dynamic> properties, {
     required final bool isUserIdPreferableIfExists,
   }) async {
@@ -41,7 +41,7 @@ class TetaAnalytics {
         'x-identifier': '$prjId',
       },
       body: json.encode(<String, dynamic>{
-        'name': name,
+        'description': description,
         'prj_id': prjId,
         if (isUserIdPreferableIfExists && _currentUserId != null)
           'user_id': _currentUserId,

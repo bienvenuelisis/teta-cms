@@ -39,7 +39,7 @@ class TetaProjectSettings {
 
     unawaited(
       TetaCMS.instance.analytics.insertEvent(
-        TetaAnalyticsType.auth,
+        TetaAnalyticsType.tetaAuthSaveCredentials,
         'Teta Auth: save credentials request',
         <String, dynamic>{
           'weight': res.bodyBytes.lengthInBytes,
@@ -71,7 +71,7 @@ class TetaProjectSettings {
 
     unawaited(
       TetaCMS.instance.analytics.insertEvent(
-        TetaAnalyticsType.auth,
+        TetaAnalyticsType.tetaAuthRetrieveCredentials,
         'Teta Auth: retrieve credentials request',
         <String, dynamic>{
           'weight': res.bodyBytes.lengthInBytes,
