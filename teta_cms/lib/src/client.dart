@@ -392,7 +392,7 @@ class TetaClient {
     return true;
   }
 
-  Future<TetaResponse> customQuery(
+  Future<TetaResponse<List<dynamic>?, TetaErrorResponse?>> customQuery(
     final int prjId,
     final String query,
   ) async {
@@ -412,7 +412,7 @@ class TetaClient {
     TetaCMS.log('custom query: ${res.body}');
 
     if (res.statusCode != 200) {
-      return TetaResponse<dynamic, TetaErrorResponse>(
+      return TetaResponse<List<dynamic>?, TetaErrorResponse>(
         data: null,
         error: TetaErrorResponse(
           code: res.statusCode,
