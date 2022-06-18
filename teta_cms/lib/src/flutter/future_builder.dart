@@ -19,8 +19,8 @@ class _TetaFutureBuilderState<T> extends State<TetaFutureBuilder<T>> {
 
   @override
   void initState() {
-    super.initState();
     _future = widget.future;
+    super.initState();
   }
 
   @override
