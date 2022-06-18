@@ -392,7 +392,7 @@ class TetaClient {
     return true;
   }
 
-  Future<List<dynamic>> customQuery(
+  Future<TetaResponse> customQuery(
     final int prjId,
     final String query,
   ) async {
@@ -412,7 +412,13 @@ class TetaClient {
     TetaCMS.log('custom query: ${res.body}');
 
     if (res.statusCode != 200) {
-      throw Exception('custom query returned status ${res.statusCode}');
+      return TetaResponse<dynamic, TetaErrorResponse>(
+        data: null,
+        error: TetaErrorResponse(
+          code: res.statusCode,
+          message: res.body,
+        ),
+      );
     }
 
     await TetaCMS.instance.analytics.insertEvent(
@@ -426,6 +432,9 @@ class TetaClient {
 
     final docs = json.decode(res.body) as List<dynamic>;
 
-    return docs;
+    return TetaResponse<dynamic, TetaErrorResponse?>(
+      data: docs,
+      error: null,
+    );
   }
 }

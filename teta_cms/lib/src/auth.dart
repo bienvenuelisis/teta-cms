@@ -175,8 +175,8 @@ class TetaAuth {
         final isFirstTime = await insertUser(userToken);
         unawaited(
           TetaCMS.instance.analytics.insertEvent(
-            TetaAnalyticsType.tetaAuthSignOut,
-            'Teta Auth: signOut request',
+            TetaAnalyticsType.tetaAuthSignIn,
+            'Teta Auth: signIn request',
             <String, dynamic>{
               'device': 'web',
               'provider': EnumToString.convertToString(provider),
