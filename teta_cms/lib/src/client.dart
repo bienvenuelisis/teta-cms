@@ -432,7 +432,7 @@ class TetaClient {
 
     final docs = json.decode(res.body) as List<dynamic>;
 
-    return TetaResponse<dynamic, TetaErrorResponse?>(
+    return TetaResponse<List<dynamic>, TetaErrorResponse?>(
       data: docs,
       error: null,
     );
