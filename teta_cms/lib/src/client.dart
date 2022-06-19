@@ -393,7 +393,6 @@ class TetaClient {
   }
 
   Future<TetaResponse<List<dynamic>?, TetaErrorResponse?>> customQuery(
-    final int prjId,
     final String query,
   ) async {
     final uri = Uri.parse('${U.baseUrl}cms/aya');
