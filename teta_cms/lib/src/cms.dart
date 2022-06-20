@@ -1,9 +1,13 @@
 import 'dart:convert';
+import 'dart:io';
+import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
+import 'package:path_provider_android/path_provider_android.dart';
+import 'package:path_provider_ios/path_provider_ios.dart';
 import 'package:teta_cms/src/analytics.dart';
 import 'package:teta_cms/src/auth.dart';
 import 'package:teta_cms/src/client.dart';
@@ -93,6 +97,9 @@ class TetaCMS {
     final String token,
     final int prjId,
   ) async {
+    //https://github.com/flutter/flutter/issues/99155#issuecomment-1052023743
+    DartPluginRegistrant.ensureInitialized();
+    
     if (!diInitialized) {
       initGetIt();
       diInitialized = true;
@@ -114,6 +121,8 @@ class TetaCMS {
       prjId,
     );
     store = sl.get<TetaStore>();
+
+
     if (!UniversalPlatform.isWeb && !Hive.isBoxOpen('Teta Auth')) {
       Hive.init((await getApplicationDocumentsDirectory()).path);
     }
