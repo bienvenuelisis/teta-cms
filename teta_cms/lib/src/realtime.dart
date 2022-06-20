@@ -157,7 +157,7 @@ class TetaRealtime {
       },
     );
     TetaCMS.instance.analytics.insertEvent(
-      TetaAnalyticsType.db,
+      TetaAnalyticsType.streamCollection,
       'Teta CMS: realtime request',
       <String, dynamic>{},
       isUserIdPreferableIfExists: true,
@@ -175,7 +175,7 @@ class TetaRealtime {
       collectionId: collectionId,
       callback: (final e) async {
         await TetaCMS.instance.analytics.insertEvent(
-          TetaAnalyticsType.db,
+          TetaAnalyticsType.streamCollection,
           'Teta CMS: realtime request',
           <String, dynamic>{},
           isUserIdPreferableIfExists: true,

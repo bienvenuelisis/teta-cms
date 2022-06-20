@@ -40,7 +40,7 @@ class TetaClient {
     final data = json.decode(res.body) as Map<String, dynamic>;
 
     await TetaCMS.instance.analytics.insertEvent(
-      TetaAnalyticsType.db,
+      TetaAnalyticsType.createCollection,
       'Teta CMS: create collection request',
       <String, dynamic>{},
       isUserIdPreferableIfExists: false,
@@ -75,7 +75,7 @@ class TetaClient {
     }
 
     await TetaCMS.instance.analytics.insertEvent(
-      TetaAnalyticsType.db,
+      TetaAnalyticsType.deleteCollection,
       'Teta CMS: delete collection request',
       <String, dynamic>{},
       isUserIdPreferableIfExists: false,
@@ -113,7 +113,7 @@ class TetaClient {
     }
 
     await TetaCMS.instance.analytics.insertEvent(
-      TetaAnalyticsType.db,
+      TetaAnalyticsType.insertDocument,
       'Teta CMS: insert document request',
       <String, dynamic>{'weight': utf8.encode(json.encode(document)).length},
       isUserIdPreferableIfExists: true,
@@ -149,7 +149,7 @@ class TetaClient {
     }
 
     await TetaCMS.instance.analytics.insertEvent(
-      TetaAnalyticsType.db,
+      TetaAnalyticsType.deleteDocument,
       'Teta CMS: delete document request',
       <String, dynamic>{},
       isUserIdPreferableIfExists: true,
@@ -196,7 +196,7 @@ class TetaClient {
     }
 
     await TetaCMS.instance.analytics.insertEvent(
-      TetaAnalyticsType.db,
+      TetaAnalyticsType.getCollection,
       'Teta CMS: cms request',
       <String, dynamic>{
         'weight': res.bodyBytes.lengthInBytes,
@@ -252,7 +252,7 @@ class TetaClient {
     final count = data['count'] as int? ?? 0;
 
     await TetaCMS.instance.analytics.insertEvent(
-      TetaAnalyticsType.db,
+      TetaAnalyticsType.getCollectionCount,
       'Teta CMS: count request',
       <String, dynamic>{},
       isUserIdPreferableIfExists: true,
@@ -285,7 +285,7 @@ class TetaClient {
     final data = json.decode(res.body) as List<dynamic>;
 
     await TetaCMS.instance.analytics.insertEvent(
-      TetaAnalyticsType.db,
+      TetaAnalyticsType.getCollections,
       'Teta CMS: get collections request',
       <String, dynamic>{
         'weight': res.bodyBytes.lengthInBytes,
@@ -336,7 +336,7 @@ class TetaClient {
     TetaCMS.log(res.body);
 
     await TetaCMS.instance.analytics.insertEvent(
-      TetaAnalyticsType.db,
+      TetaAnalyticsType.updateCollection,
       'Teta CMS: update collection request',
       <String, dynamic>{
         'weight': res.bodyBytes.lengthInBytes,
@@ -377,7 +377,7 @@ class TetaClient {
     TetaCMS.log(res.body);
 
     await TetaCMS.instance.analytics.insertEvent(
-      TetaAnalyticsType.db,
+      TetaAnalyticsType.updateDocument,
       'Teta CMS: update document request',
       <String, dynamic>{
         'weight': res.bodyBytes.lengthInBytes,
@@ -421,7 +421,7 @@ class TetaClient {
     }
 
     await TetaCMS.instance.analytics.insertEvent(
-      TetaAnalyticsType.db,
+      TetaAnalyticsType.customQuery,
       'Teta CMS: custom queries request',
       <String, dynamic>{
         'weight': res.bodyBytes.lengthInBytes + utf8.encode(query).length,
