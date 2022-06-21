@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
@@ -98,7 +99,7 @@ class TetaCMS {
     final int prjId,
   ) async {
     //https://github.com/flutter/flutter/issues/99155#issuecomment-1052023743
-    DartPluginRegistrant.ensureInitialized();
+    WidgetsFlutterBinding.ensureInitialized();
     if (Platform.isAndroid) PathProviderAndroid.registerWith();
     if (Platform.isIOS) PathProviderIOS.registerWith();
     
