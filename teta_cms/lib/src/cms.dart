@@ -99,6 +99,8 @@ class TetaCMS {
   ) async {
     //https://github.com/flutter/flutter/issues/99155#issuecomment-1052023743
     DartPluginRegistrant.ensureInitialized();
+    if (Platform.isAndroid) PathProviderAndroid.registerWith();
+    if (Platform.isIOS) PathProviderIOS.registerWith();
     
     if (!diInitialized) {
       initGetIt();

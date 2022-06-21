@@ -28,6 +28,8 @@ dependencies:
   get_it: ^7.2.0
   dio: ^4.0.6
   uuid: 3.0.6
+  path_provider_android: 2.0.15
+  path_provider_ios: 2.0.10
 
 dev_dependencies:
   flutter_test:
