@@ -23,11 +23,13 @@ dependencies:
   url_launcher: ^6.1.2
   uni_links: ^0.5.1
   dart_jsonwebtoken: ^2.4.1
-  path_provider:
+  path_provider: 2.0.11
   enum_to_string: ^2.0.1
   get_it: ^7.2.0
   dio: ^4.0.6
-  uuid:
+  uuid: 3.0.6
+  path_provider_android: 2.0.15
+  path_provider_ios: 2.0.10
 
 dev_dependencies:
   flutter_test:
