@@ -66,7 +66,7 @@ class TetaAnalytics {
   }
 
   /// Creates a new event
-  Future<TetaResponse> get(
+  Future<TetaResponse<List<dynamic>, TetaErrorResponse?>> get(
     final String ayayaQuery,
   ) async {
     final uri = Uri.parse(
@@ -83,8 +83,8 @@ class TetaAnalytics {
     );
 
     if (res.statusCode != 200) {
-      return TetaResponse<dynamic, TetaErrorResponse>(
-        data: null,
+      return TetaResponse<List<dynamic>, TetaErrorResponse>(
+        data: <dynamic>[],
         error: TetaErrorResponse(
           code: res.statusCode,
           message: res.body,
