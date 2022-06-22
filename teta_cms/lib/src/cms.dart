@@ -101,11 +101,11 @@ class TetaCMS {
     //https://github.com/flutter/flutter/issues/99155#issuecomment-1052023743
     try {
       WidgetsFlutterBinding.ensureInitialized();
+      DartPluginRegistrant.ensureInitialized();
     } catch (e) {
       //This can throw unimplemented error on some platforms.
       print('Info: $e');
     }
-    DartPluginRegistrant.ensureInitialized();
     if (Platform.isAndroid) {
       PathProviderAndroid.registerWith();
     }
