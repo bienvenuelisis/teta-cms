@@ -106,11 +106,11 @@ class TetaCMS {
       //This can throw unimplemented error on some platforms.
       print('Info: $e');
     }
-    if (Platform.isAndroid) {
+    if (UniversalPlatform.isAndroid) {
       PathProviderAndroid.registerWith();
     }
 
-    if (Platform.isIOS) {
+    if (UniversalPlatform.isIOS) {
       PathProviderIOS.registerWith();
     }
 
