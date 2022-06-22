@@ -27,7 +27,7 @@ class TetaStore {
       final cartResponse = await cart.get();
       final cartProducts = <TetaProduct>[];
       for (final element in cartResponse.data!.content) {
-        cartProducts.add((await products.get(element.id)).data!);
+        cartProducts.add((await products.get(element.prodId)).data!);
       }
       return TetaProductsResponse(
         data: cartProducts,
