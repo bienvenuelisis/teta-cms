@@ -67,12 +67,10 @@ class TetaAnalytics {
 
   /// Creates a new event
   Future<TetaResponse> get(
-    final TetaAnalyticsType group,
-    final String name,
-    final Map<String, dynamic> properties,
+    final String ayayaQuery,
   ) async {
     final uri = Uri.parse(
-      '${U.analyticsUrl}events/query',
+      '${U.analyticsUrl}events/aya',
     );
 
     final res = await http.post(
@@ -81,6 +79,7 @@ class TetaAnalytics {
         'authorization': 'Bearer $token',
         'x-identifier': '$prjId',
       },
+      body: ayayaQuery,
     );
 
     if (res.statusCode != 200) {
@@ -93,8 +92,10 @@ class TetaAnalytics {
       );
     }
 
-    return TetaResponse<dynamic, TetaErrorResponse?>(
-      data: res.body,
+    return TetaResponse<List<dynamic>, TetaErrorResponse?>(
+      data: ((res.body as List<dynamic>?)?.first
+              as Map<String, dynamic>?)?['data'] as List<dynamic>? ??
+          <dynamic>[],
       error: null,
     );
   }
