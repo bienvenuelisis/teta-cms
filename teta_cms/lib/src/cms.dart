@@ -99,11 +99,21 @@ class TetaCMS {
     final int prjId,
   ) async {
     //https://github.com/flutter/flutter/issues/99155#issuecomment-1052023743
-    WidgetsFlutterBinding.ensureInitialized();
+    try {
+      WidgetsFlutterBinding.ensureInitialized();
+    } catch (e) {
+      //This can throw unimplemented error on some platforms.
+      print('Info: $e');
+    }
     DartPluginRegistrant.ensureInitialized();
-    if (Platform.isAndroid) PathProviderAndroid.registerWith();
-    if (Platform.isIOS) PathProviderIOS.registerWith();
-    
+    if (Platform.isAndroid) {
+      PathProviderAndroid.registerWith();
+    }
+
+    if (Platform.isIOS) {
+      PathProviderIOS.registerWith();
+    }
+
     if (!diInitialized) {
       initGetIt();
       diInitialized = true;
@@ -125,7 +135,6 @@ class TetaCMS {
       prjId,
     );
     store = sl.get<TetaStore>();
-
 
     if (!UniversalPlatform.isWeb && !Hive.isBoxOpen('Teta Auth')) {
       Hive.init((await getApplicationDocumentsDirectory()).path);
