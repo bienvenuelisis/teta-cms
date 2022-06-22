@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:teta_cms/src/models/store/cart.dart';
 
 class CartMapper {
@@ -7,7 +9,9 @@ class CartMapper {
         content: json['content'] == null
             ? <TetaCartContent>[]
             : mapCartContentList(
-                json['content'] as List<Map<String, dynamic>>,
+                (json['content'] as List<dynamic>)
+                    .map((final dynamic e) => jsonDecode(e as String) as Map<String, dynamic>)
+                    .toList(growable: true),
               ),
       );
 
