@@ -125,13 +125,13 @@ class TetaStoreCartsApi {
         return TetaPaymentIntentResponse(
           error: TetaErrorResponse(
             code: res.statusCode,
-            message: (jsonDecode(res.data!) as Map<String, dynamic>)['key'] as String,
+            message: res.data,
           ),
         );
       }
 
       return TetaPaymentIntentResponse(
-        data: res.data ?? '',
+        data: (jsonDecode(res.data!) as Map<String, dynamic>)['key'] as String,
       );
 
     } catch (e) {
