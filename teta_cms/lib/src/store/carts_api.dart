@@ -114,7 +114,7 @@ class TetaStoreCartsApi {
 
     try {
 
-      final res = await dio.get<String>(
+      final res = await dio.post<String>(
         '${U.storeCartUrl}$userId/buy',
         options: Options(
           headers: getServerRequestHeaders.execute(),
@@ -131,7 +131,7 @@ class TetaStoreCartsApi {
       }
 
       return TetaPaymentIntentResponse(
-        data: res.data ?? '',
+        data: (jsonDecode(res.data!) as Map<String, dynamic>)['key'] as String,
       );
 
     } catch (e) {
