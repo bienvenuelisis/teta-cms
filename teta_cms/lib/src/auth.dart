@@ -239,6 +239,8 @@ class TetaAuth {
       isUserIdPreferableIfExists: false,
     );
 
+    TetaCMS.printWarning(res.body);
+
     return TetaResponse<List<dynamic>, TetaErrorResponse?>(
       data: ((json.decode(res.body) as List<dynamic>?)?.first
               as Map<String, dynamic>?)?['data'] as List<dynamic>? ??
