@@ -201,7 +201,7 @@ class TetaAuth {
   }
 
   /// Make a query with Ayaya
-  Future<TetaResponse<List<dynamic>, TetaErrorResponse?>> get(
+  Future<TetaResponse<dynamic, TetaErrorResponse?>> get(
     final String ayayaQuery,
   ) async {
     final uri = Uri.parse(
@@ -248,11 +248,14 @@ class TetaAuth {
             as Map<String, dynamic>?)?['count'] !=
         null;
 
-    return TetaResponse<List<dynamic>, TetaErrorResponse?>(
-      data: ((json.decode(res.body) as List<dynamic>?)?.first
-                  as Map<String, dynamic>?)?[isCount ? 'count' : 'data']
-              as List<dynamic>? ??
-          <dynamic>[],
+    return TetaResponse<dynamic, TetaErrorResponse?>(
+      data: isCount
+          ? (((json.decode(res.body) as List<dynamic>?)?.first
+                  as Map<String, dynamic>?)?['data'] as List<dynamic>? ??
+              <dynamic>[])
+          : (((json.decode(res.body) as List<dynamic>?)?.first
+                  as Map<String, dynamic>?)?['count'] as int? ??
+              0),
       error: null,
     );
   }
