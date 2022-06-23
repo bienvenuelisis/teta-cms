@@ -8,6 +8,7 @@ enum TetaAnalyticsType {
   tetaAuthGetCurrentUser,
   tetaAuthRetrieveUsers,
   tetaAuthDeleteUser,
+  tetaAuthQueryAyaya,
   createCollection,
   deleteCollection,
   insertDocument,

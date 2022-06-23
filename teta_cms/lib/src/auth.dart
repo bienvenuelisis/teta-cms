@@ -200,7 +200,7 @@ class TetaAuth {
     await box.delete('access_tkn');
   }
 
-  /// Creates a new event
+  /// Make a query with Ayaya
   Future<TetaResponse<List<dynamic>, TetaErrorResponse?>> get(
     final String ayayaQuery,
   ) async {
@@ -226,6 +226,15 @@ class TetaAuth {
         ),
       );
     }
+
+    await TetaCMS.instance.analytics.insertEvent(
+      TetaAnalyticsType.tetaAuthQueryAyaya,
+      'Teta Auth: custom Query with Ayaya',
+      <String, dynamic>{
+        'weight': res.bodyBytes.lengthInBytes + utf8.encode(ayayaQuery).length,
+      },
+      isUserIdPreferableIfExists: false,
+    );
 
     return TetaResponse<List<dynamic>, TetaErrorResponse?>(
       data: ((json.decode(res.body) as List<dynamic>?)?.first
