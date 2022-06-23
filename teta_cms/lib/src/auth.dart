@@ -230,20 +230,28 @@ class TetaAuth {
       );
     }
 
-    await TetaCMS.instance.analytics.insertEvent(
-      TetaAnalyticsType.tetaAuthQueryAyaya,
-      'Teta Auth: custom Query with Ayaya',
-      <String, dynamic>{
-        'weight': res.bodyBytes.lengthInBytes + utf8.encode(ayayaQuery).length,
-      },
-      isUserIdPreferableIfExists: false,
+    unawaited(
+      TetaCMS.instance.analytics.insertEvent(
+        TetaAnalyticsType.tetaAuthQueryAyaya,
+        'Teta Auth: custom Query with Ayaya',
+        <String, dynamic>{
+          'weight':
+              res.bodyBytes.lengthInBytes + utf8.encode(ayayaQuery).length,
+        },
+        isUserIdPreferableIfExists: false,
+      ),
     );
 
     TetaCMS.printWarning(res.body);
 
+    final isCount = ((json.decode(res.body) as List<dynamic>?)?.first
+            as Map<String, dynamic>?)?['count'] !=
+        null;
+
     return TetaResponse<List<dynamic>, TetaErrorResponse?>(
       data: ((json.decode(res.body) as List<dynamic>?)?.first
-              as Map<String, dynamic>?)?['data'] as List<dynamic>? ??
+                  as Map<String, dynamic>?)?[isCount ? 'count' : 'data']
+              as List<dynamic>? ??
           <dynamic>[],
       error: null,
     );
