@@ -199,4 +199,39 @@ class TetaAuth {
     final box = await Hive.openBox<dynamic>('Teta Auth');
     await box.delete('access_tkn');
   }
+
+  /// Creates a new event
+  Future<TetaResponse<List<dynamic>, TetaErrorResponse?>> get(
+    final String ayayaQuery,
+  ) async {
+    final uri = Uri.parse(
+      '${U.baseUrl}auth/aya',
+    );
+
+    final res = await http.post(
+      uri,
+      headers: {
+        'authorization': 'Bearer $token',
+        'x-identifier': '$prjId',
+      },
+      body: ayayaQuery,
+    );
+
+    if (res.statusCode != 200) {
+      return TetaResponse<List<dynamic>, TetaErrorResponse>(
+        data: <dynamic>[],
+        error: TetaErrorResponse(
+          code: res.statusCode,
+          message: res.body,
+        ),
+      );
+    }
+
+    return TetaResponse<List<dynamic>, TetaErrorResponse?>(
+      data: ((json.decode(res.body) as List<dynamic>?)?.first
+              as Map<String, dynamic>?)?['data'] as List<dynamic>? ??
+          <dynamic>[],
+      error: null,
+    );
+  }
 }

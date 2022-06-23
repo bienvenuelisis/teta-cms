@@ -93,7 +93,7 @@ class TetaAnalytics {
     }
 
     return TetaResponse<List<dynamic>, TetaErrorResponse?>(
-      data: ((res.body as List<dynamic>?)?.first
+      data: ((json.decode(res.body) as List<dynamic>?)?.first
               as Map<String, dynamic>?)?['data'] as List<dynamic>? ??
           <dynamic>[],
       error: null,
