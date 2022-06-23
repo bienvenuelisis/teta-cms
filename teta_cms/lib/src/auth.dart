@@ -214,7 +214,10 @@ class TetaAuth {
         'authorization': 'Bearer $token',
         'x-identifier': '$prjId',
       },
-      body: ayayaQuery,
+      body: '''
+      ON prj_id* $prjId;
+      $ayayaQuery
+      ''',
     );
 
     if (res.statusCode != 200) {
