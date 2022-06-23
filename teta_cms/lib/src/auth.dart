@@ -242,14 +242,16 @@ class TetaAuth {
       ),
     );
 
-    TetaCMS.printWarning(res.body);
+    TetaCMS.printWarning(
+      "${((json.decode(res.body) as List<dynamic>?)?.first as Map<String, dynamic>?)?['count']}",
+    );
 
     final isCount = ((json.decode(res.body) as List<dynamic>?)?.first
             as Map<String, dynamic>?)?['count'] !=
         null;
 
     return TetaResponse<dynamic, TetaErrorResponse?>(
-      data: isCount
+      data: !isCount
           ? (((json.decode(res.body) as List<dynamic>?)?.first
                   as Map<String, dynamic>?)?['data'] as List<dynamic>? ??
               <dynamic>[])
