@@ -92,11 +92,18 @@ class TetaAnalytics {
       );
     }
 
-    return TetaResponse<List<dynamic>, TetaErrorResponse?>(
-      data: ((json.decode(res.body) as List<dynamic>?)?.first
-              as Map<String, dynamic>?)?['data'] as List<dynamic>? ??
-          <dynamic>[],
-      error: null,
-    );
+    if ((json.decode(res.body) as List<dynamic>?)?.isEmpty ?? true) {
+      return TetaResponse<List<dynamic>, TetaErrorResponse?>(
+        data: <dynamic>[],
+        error: null,
+      );
+    } else {
+      return TetaResponse<List<dynamic>, TetaErrorResponse?>(
+        data: ((json.decode(res.body) as List<dynamic>?)?.first
+                as Map<String, dynamic>?)?['data'] as List<dynamic>? ??
+            <dynamic>[],
+        error: null,
+      );
+    }
   }
 }

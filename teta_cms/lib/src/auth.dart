@@ -234,7 +234,10 @@ class TetaAuth {
       TetaCMS.instance.analytics.insertEvent(
         TetaAnalyticsType.tetaAuthQueryAyaya,
         'Teta Auth: custom Query with Ayaya',
-        <String, dynamic>{},
+        <String, dynamic>{
+          'weight':
+              res.bodyBytes.lengthInBytes + utf8.encode(ayayaQuery).length,
+        },
         isUserIdPreferableIfExists: false,
       ),
     );
