@@ -28,6 +28,7 @@ class TetaRealtime {
     _socket = socket_io.io(Constants.tetaUrl, opts);
 
     _socket?.onConnect((final dynamic _) {
+      TetaCMS.printWarning('Socket Connected');
       completer.complete();
     });
 
@@ -67,6 +68,8 @@ class TetaRealtime {
     final Function(SocketChangeEvent)? callback,
   }) async {
     if (_socket == null) await _openSocket();
+
+    TetaCMS.printWarning('Socket Id: ${_socket!.id}');
 
     final collId = collectionId ?? '*';
     final docId = action.targetDocument ? documentId : '*';
@@ -129,10 +132,18 @@ class TetaRealtime {
         }
       },
     );
+    TetaCMS.instance.analytics.insertEvent(
+      TetaAnalyticsType.streamCollection,
+      'Teta CMS: realtime request',
+      <String, dynamic>{},
+      isUserIdPreferableIfExists: true,
+    );
     TetaCMS.instance.client.getCollections().then(streamController.add);
     on(
       callback: (final e) async {
+        TetaCMS.log('on stream collections event. $e');
         final resp = await TetaCMS.instance.client.getCollections();
+        TetaCMS.log('on resp get collections: $resp');
         streamController.add(resp);
       },
     );
