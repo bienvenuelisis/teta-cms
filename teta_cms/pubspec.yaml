@@ -13,20 +13,20 @@ dependencies:
     sdk: flutter
 
   http:
-  equatable:
-  socket_io_client: ^1.0.2
-  hive:
-  universal_platform: ^1.0.0+1
-  webviewx:
-  webview_windows:
-  web_scraper: ^0.1.4
-  url_launcher: ^6.1.2
-  uni_links: ^0.5.1
-  dart_jsonwebtoken: ^2.4.1
+  equatable: 2.0.3
+  socket_io_client: 1.0.2
+  hive: 2.2.2
+  universal_platform: 1.0.0+1
+  webviewx: 0.2.1
+  webview_windows: 0.2.0
+  web_scraper: 0.1.4
+  url_launcher: 6.1.4
+  uni_links: 0.5.1
+  dart_jsonwebtoken: 2.4.1
   path_provider: 2.0.11
-  enum_to_string: ^2.0.1
-  get_it: ^7.2.0
-  dio: ^4.0.6
+  enum_to_string: 2.0.1
+  get_it: 7.2.0
+  dio: 4.0.6
   uuid: 3.0.6
   path_provider_android: 2.0.15
   path_provider_ios: 2.0.10
@@ -35,7 +35,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   
-  very_good_analysis: ^2.3.0
+  very_good_analysis: 2.4.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
