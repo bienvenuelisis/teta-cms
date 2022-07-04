@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
@@ -46,6 +45,8 @@ class TetaCMS {
     );
     return _instance;
   }
+
+  bool get isInitialized => _instance._initialized;
 
   /// Initialize the current TetaCMS instance
   ///
