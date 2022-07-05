@@ -447,7 +447,7 @@ class TetaClient {
       },
     );
 
-    TetaCMS.log('custom query: ${res.body}');
+    TetaCMS.log('get backups: ${res.body}');
 
     if (res.statusCode != 200) {
       return TetaResponse<List<dynamic>?, TetaErrorResponse>(
