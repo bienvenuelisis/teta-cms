@@ -436,4 +436,45 @@ class TetaClient {
       error: null,
     );
   }
+
+  Future<TetaResponse<List<dynamic>?, TetaErrorResponse?>> getBackups() async {
+    final uri = Uri.parse('${U.cmsUrl}backup/$prjId/list');
+
+    final res = await http.get(
+      uri,
+      headers: {
+        'authorization': 'Bearer $token',
+      },
+    );
+
+    TetaCMS.log('custom query: ${res.body}');
+
+    if (res.statusCode != 200) {
+      return TetaResponse<List<dynamic>?, TetaErrorResponse>(
+        data: null,
+        error: TetaErrorResponse(
+          code: res.statusCode,
+          message: res.body,
+        ),
+      );
+    }
+
+    await TetaCMS.instance.analytics.insertEvent(
+      TetaAnalyticsType.customQuery,
+      'Teta CMS: backups request',
+      <String, dynamic>{
+        'weight': res.bodyBytes.lengthInBytes,
+      },
+      isUserIdPreferableIfExists: false,
+    );
+
+    final map = json.decode(res.body) as List<dynamic>;
+    final backups =
+        (map.first as Map<String, dynamic>)['paths'] as List<dynamic>;
+
+    return TetaResponse<List<dynamic>, TetaErrorResponse?>(
+      data: backups,
+      error: null,
+    );
+  }
 }

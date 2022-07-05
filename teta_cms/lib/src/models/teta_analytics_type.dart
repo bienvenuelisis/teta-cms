@@ -19,6 +19,7 @@ enum TetaAnalyticsType {
   updateCollection,
   updateDocument,
   customQuery,
+  backupsList,
   streamCollection,
   db,
   store,
