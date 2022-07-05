@@ -460,7 +460,7 @@ class TetaClient {
     }
 
     await TetaCMS.instance.analytics.insertEvent(
-      TetaAnalyticsType.customQuery,
+      TetaAnalyticsType.backupsList,
       'Teta CMS: backups request',
       <String, dynamic>{
         'weight': res.bodyBytes.lengthInBytes,
