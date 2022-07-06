@@ -33,7 +33,7 @@ main() async {
 
 Since you call the .initialize method, you are able to use Teta.instance everywhere in your app
 
-### Database
+### Database with custom query
 
 ```dart
 // Fetch all docs in `CollectionA` created less than a week, ordering by `created_at`
@@ -53,6 +53,25 @@ if (response.error != null) {
 } else {
   // Safe to use response.data 🎉
 }
+```
+
+### Fetch docs
+
+```dart
+// Stream all docs by `collectionId` ordering and filtering
+final Future<List<dynamic>> stream = TetaCMS.instance.client.getCollection(
+  collectionId, // You can retrieve this from your project dashboard
+  limit: 10,
+  page: 0,
+  showDrafts: false,
+  filters: [
+    Filter(
+      'Key',
+      'Value',
+      type: FilterType.like,
+    )
+  ],
+);
 ```
 
 ### Stream
