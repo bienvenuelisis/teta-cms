@@ -195,7 +195,7 @@ class TetaAuth {
     await box.put('access_tkn', token);
   }
 
-  Future logout() async {
+  Future signOut() async {
     final box = await Hive.openBox<dynamic>('Teta Auth');
     await box.delete('access_tkn');
   }
