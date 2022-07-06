@@ -6,7 +6,7 @@ The Dart client for Teta CMS
 
 Teta CMS is a low-code back-end service. We provide:
 
-- NoSQL scalable database
+- Scalable NoSQL database
 - Real-time subscriptions
 - User authentication system and policies
 - Perform custom queries on your collections with our Ayaya language
