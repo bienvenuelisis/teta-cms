@@ -27,7 +27,7 @@ main() async {
   
   runApp(
     // Your app...
-  )
+  );
 }
 ```
 
