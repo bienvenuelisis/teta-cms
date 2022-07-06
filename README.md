@@ -38,7 +38,7 @@ Since you call the .initialize method, you are able to use Teta.instance everywh
 ```dart
 // Fetch all docs in `CollectionA` created less than a week, ordering by `created_at`
 final response = await TetaCMS.instance.client.customQuery(
-  '''
+  r'''
     MATCH name EQ CollectionA;
     IN docs;
     MATCH created_at GT DATESUB($now $week);
