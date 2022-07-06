@@ -59,7 +59,7 @@ if (response.error != null) {
 
 ```dart
 // Fetch all docs by `collectionId`, ordering and filtering
-final Future<List<dynamic>> stream = TetaCMS.instance.client.getCollection(
+final List<dynamic> response = await TetaCMS.instance.client.getCollection(
   collectionId, // You can retrieve this from your project dashboard
   limit: 10,
   page: 0,
