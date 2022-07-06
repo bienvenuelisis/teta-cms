@@ -69,7 +69,7 @@ final List<dynamic> response = await TetaCMS.instance.client.getCollection(
       'Key',
       'Value',
       type: FilterType.like,
-    )
+    ),
   ],
 );
 ```
@@ -88,7 +88,7 @@ final Stream<List<dynamic>> stream = TetaCMS.instance.realtime.streamCollection(
       'Key',
       'Value',
       type: FilterType.like,
-    )
+    ),
   ],
 );
 ```
