@@ -1,5 +1,5 @@
 name: teta_cms
-description: Teta CMS official package
+description: The Dart client for Teta CMS
 version: 0.1.5
 repository: https://github.com/teta-so/cms
 

@@ -21,10 +21,12 @@ class TetaErrorResponse {
   final int? code;
 }
 
-class TetaProductResponse extends TetaResponse<TetaProduct?, TetaErrorResponse?> {
-  TetaProductResponse(
-      {final TetaProduct? data, final TetaErrorResponse? error,})
-      : super(data: data, error: error);
+class TetaProductResponse
+    extends TetaResponse<TetaProduct?, TetaErrorResponse?> {
+  TetaProductResponse({
+    final TetaProduct? data,
+    final TetaErrorResponse? error,
+  }) : super(data: data, error: error);
 }
 
 class TetaProductsResponse
@@ -36,13 +38,16 @@ class TetaProductsResponse
 }
 
 class TetaCartResponse extends TetaResponse<TetaCart?, TetaErrorResponse?> {
-  TetaCartResponse(
-      {final TetaCart? data, final TetaErrorResponse? error,})
-      : super(data: data, error: error);
+  TetaCartResponse({
+    final TetaCart? data,
+    final TetaErrorResponse? error,
+  }) : super(data: data, error: error);
 }
 
-class TetaPaymentIntentResponse extends TetaResponse<String?, TetaErrorResponse?> {
-  TetaPaymentIntentResponse(
-      {final String? data, final TetaErrorResponse? error,})
-      : super(data: data, error: error);
+class TetaPaymentIntentResponse
+    extends TetaResponse<String?, TetaErrorResponse?> {
+  TetaPaymentIntentResponse({
+    final String? data,
+    final TetaErrorResponse? error,
+  }) : super(data: data, error: error);
 }

@@ -104,15 +104,18 @@ class TetaStoreProductsApi {
 
     if (res.statusCode != 200) {
       return TetaResponse<dynamic, TetaErrorResponse>(
-          error: TetaErrorResponse(
-            code: res.statusCode,
-            message: res.body,
-          ),
-          data: null);
+        error: TetaErrorResponse(
+          code: res.statusCode,
+          message: res.body,
+        ),
+        data: null,
+      );
     }
 
     return TetaResponse<String, dynamic>(
-        data: json.encode(res.body), error: null);
+      data: json.encode(res.body),
+      error: null,
+    );
   }
 
   /// Updates a product by id.

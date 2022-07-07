@@ -1,14 +1,11 @@
-import 'package:flutter/material.dart';
 import 'package:teta_cms/teta_cms.dart';
 import 'package:url_launcher/url_launcher_string.dart';
-import 'package:webview_windows/webview_windows.dart';
 
 class CMSPlatform {
   static Future login(
     final String url,
     final Function(String) callback,
   ) async {
-    final encodedUrl = Uri.encodeFull(url);
     TetaCMS.log(url);
     if (await canLaunchUrlString(url)) {
       await launchUrlString(
@@ -160,35 +157,5 @@ class CMSPlatform {
     } else {
       return false;
     }*/
-  }
-
-  static Future<WebviewPermissionDecision> _onPermissionRequested(
-    final String url,
-    final WebviewPermissionKind kind,
-    final bool isUserInitiated,
-    final BuildContext context,
-  ) async {
-    final decision = await showDialog<WebviewPermissionDecision>(
-      context: context,
-      builder: (final BuildContext context) => AlertDialog(
-        backgroundColor: const Color(0xFF181818),
-        title: const Text('WebView permission requested'),
-        content: Text("WebView has requested permission '$kind'"),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () =>
-                Navigator.pop(context, WebviewPermissionDecision.deny),
-            child: const Text('Deny'),
-          ),
-          TextButton(
-            onPressed: () =>
-                Navigator.pop(context, WebviewPermissionDecision.allow),
-            child: const Text('Allow'),
-          ),
-        ],
-      ),
-    );
-
-    return decision ?? WebviewPermissionDecision.none;
   }
 }

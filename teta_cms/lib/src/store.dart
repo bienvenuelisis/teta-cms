@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:teta_cms/src/models/response.dart';
 import 'package:teta_cms/src/store/carts_api.dart';
 import 'package:teta_cms/src/store/products_api.dart';
 import 'package:teta_cms/src/use_cases/get_server_request_headers/get_server_request_headers.dart';
@@ -12,8 +11,8 @@ import 'package:teta_cms/teta_cms.dart';
 class TetaStore {
   TetaStore(
     this.getServerRequestHeaders,
-      this.products,
-      this.cart,
+    this.products,
+    this.cart,
   );
 
   final GetServerRequestHeaders getServerRequestHeaders;
@@ -32,7 +31,7 @@ class TetaStore {
       return TetaProductsResponse(
         data: cartProducts,
       );
-    } catch (e){
+    } catch (e) {
       return TetaProductsResponse(
         error: TetaErrorResponse(
           code: 403,
@@ -58,12 +57,14 @@ class TetaStore {
         error: TetaErrorResponse(
           code: res.statusCode,
           message: res.body,
-        ), data: null,
+        ),
+        data: null,
       );
     }
 
     return TetaResponse<dynamic, dynamic>(
-      data: json.decode(res.body), error: null,
+      data: json.decode(res.body),
+      error: null,
     );
   }
 
@@ -83,11 +84,15 @@ class TetaStore {
         error: TetaErrorResponse(
           code: res.statusCode,
           message: res.body,
-        ), data: null,
+        ),
+        data: null,
       );
     }
 
-    return TetaResponse<String, dynamic>(data: json.encode(res.body), error: null);
+    return TetaResponse<String, dynamic>(
+      data: json.encode(res.body),
+      error: null,
+    );
   }
 
   Future<TetaResponse> setCurrency(final String currency) async {
@@ -105,10 +110,14 @@ class TetaStore {
         error: TetaErrorResponse(
           code: res.statusCode,
           message: res.body,
-        ), data: null,
+        ),
+        data: null,
       );
     }
 
-    return TetaResponse<String, dynamic>(data: json.encode(res.body), error: null);
+    return TetaResponse<String, dynamic>(
+      data: json.encode(res.body),
+      error: null,
+    );
   }
 }

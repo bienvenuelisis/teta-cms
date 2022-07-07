@@ -133,7 +133,7 @@ class TetaAuth {
   /// Performs login in mobile and web platforms
   Future signIn({
     /// Performs a function on success
-    required final Function() onSuccess,
+    required final Function(bool) onSuccess,
 
     /// The external provider
     final TetaProvider provider = TetaProvider.google,
@@ -162,7 +162,7 @@ class TetaAuth {
                     isUserIdPreferableIfExists: false,
                   ),
                 );
-                onSuccess();
+                onSuccess(isFirstTime);
               }
             }
           },
@@ -184,7 +184,7 @@ class TetaAuth {
             isUserIdPreferableIfExists: false,
           ),
         );
-        onSuccess();
+        onSuccess(isFirstTime);
       }
     });
   }

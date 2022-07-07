@@ -105,7 +105,7 @@ class TetaCMS {
       DartPluginRegistrant.ensureInitialized();
     } catch (e) {
       //This can throw unimplemented error on some platforms.
-      print('Info: $e');
+      TetaCMS.log('Info: $e');
     }
     if (UniversalPlatform.isAndroid) {
       PathProviderAndroid.registerWith();

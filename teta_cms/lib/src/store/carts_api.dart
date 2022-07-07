@@ -19,7 +19,7 @@ class TetaStoreCartsApi {
   final GetServerRequestHeaders getServerRequestHeaders;
   final Dio dio;
 
-  /// Gets a cart by [userId]
+  /// Gets a cart by userId
   Future<TetaCartResponse> get() async {
     final cmsUserId = (await TetaCMS.instance.auth.user.get)?.uid ?? '';
 
@@ -48,7 +48,7 @@ class TetaStoreCartsApi {
     );
   }
 
-  /// Adds the [product] to the cart of the given [userId]
+  /// Adds the product to the cart of the given userId
   Future<TetaResponse> insert(
     final String productId,
   ) async {

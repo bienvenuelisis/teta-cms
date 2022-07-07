@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:teta_cms/src/models/store/cart.dart';
 
 class CartMapper {

@@ -1,39 +1,131 @@
-<!-- 
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# Teta CMS
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages). 
+The Dart client for Teta CMS
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages). 
--->
+### Introducing Teta CMS
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+Teta CMS is a low-code back-end service. We provide:
 
-## Features
+- Scalable NoSQL database
+- Real-time subscriptions
+- User authentication system and policies
+- Perform custom queries on your collections with our Ayaya language
+- Use a easy to use, responsive UI
+- Control what your users do in your apps tracking events
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+## Examples
 
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
-
-## Usage
-
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
-
+### Initialize
 ```dart
-const like = 'sample';
+import 'package:teta_cms/teta_cms.dart';
+
+main() async {
+  await TetaCMS.initialize(
+    token: prjToken,
+    prjId: prjId,
+  );
+  
+  runApp(
+    // Your app...
+  );
+}
 ```
 
-## Additional information
+Since you call the .initialize method, you are able to use Teta.instance everywhere in your app
 
-TODO: Tell users more about the package: where to find more information, how to 
-contribute to the package, how to file issues, what response they can expect 
-from the package authors, and more.
+### Database with custom query
+
+```dart
+// Fetch all docs in `CollectionA` created less than a week, ordering by `created_at`
+final response = await TetaCMS.instance.client.query(
+  r'''
+    MATCH name EQ CollectionA;
+    IN docs;
+    MATCH created_at GT DATESUB($now $week);
+    SORT created_at -1;
+    LIMIT 20;
+  ''', 
+);
+
+// Check if it returns an error
+if (response.error != null) {
+  debugPrint('${response.error?.message}');
+} else {
+  // Safe to use response.data 🎉
+}
+```
+
+### Fetch docs
+
+```dart
+// Fetch all docs by `collectionId`, ordering and filtering
+final List<dynamic> response = await TetaCMS.instance.client.getCollection(
+  collectionId, // You can retrieve this from your project dashboard
+  limit: 10,
+  page: 0,
+  showDrafts: false,
+  filters: [
+    Filter(
+      'Key',
+      'Value',
+      type: FilterType.like,
+    ),
+  ],
+);
+```
+
+### Stream
+
+```dart
+// Stream all docs by `collectionId` ordering and filtering
+final Stream<List<dynamic>> stream = TetaCMS.instance.realtime.streamCollection(
+  collectionId, // You can retrieve this from your project dashboard
+  limit: 10,
+  page: 0,
+  showDrafts: false,
+  filters: [
+    Filter(
+      'Key',
+      'Value',
+      type: FilterType.like,
+    ),
+  ],
+);
+```
+
+### Social authentication
+
+```dart
+// Sign up user with Apple OAuth provider
+TetaCMS.instance.auth.signIn(
+  provider: TetaProvider.apple,
+  onSuccess: () async {
+    // Success 🎉
+  );
+);
+```
+
+### Retrieve current user
+
+```dart
+// Sign up user with Apple OAuth provider
+final user = await TetaCMS.instance.auth.user.get;
+if (user?.isLogged) {
+  // The user is logged 🎉
+} else {
+  // There is no current user
+}
+```
+
+### Sign Out
+
+```dart
+await TetaCMS.instance.auth.signOut();
+```
+
+### Teta CMS is still in open alpha
+
+- [x] We still could introduce some huge changes;
+- [x] Expect bugs, but it is ready for testing and side projects;
+- [ ] Beta: first stable version;
+- [ ] Teta: we are finally full Teta;
