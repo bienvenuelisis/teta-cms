@@ -10,8 +10,7 @@ Teta CMS is a low-code back-end service. We provide:
 - Real-time subscriptions
 - User authentication system and policies
 - Perform custom queries on your collections with our Ayaya language
-- Use a easy to use, responsive UI
-- Control what your users do in your apps tracking events
+- Use an easy-to-use and responsive user interface
 
 ## Examples
 
@@ -19,7 +18,7 @@ Teta CMS is a low-code back-end service. We provide:
 ```dart
 import 'package:teta_cms/teta_cms.dart';
 
-main() async {
+Future main() async {
   await TetaCMS.initialize(
     token: prjToken,
     prjId: prjId,
@@ -99,7 +98,7 @@ final Stream<List<dynamic>> stream = TetaCMS.instance.realtime.streamCollection(
 // Sign up user with Apple OAuth provider
 TetaCMS.instance.auth.signIn(
   provider: TetaProvider.apple,
-  onSuccess: () async {
+  onSuccess: (final isFirstTime) async {
     // Success 🎉
   );
 );
@@ -125,7 +124,8 @@ await TetaCMS.instance.auth.signOut();
 
 ### Teta CMS is still in open alpha
 
-- [x] We still could introduce some huge changes;
-- [x] Expect bugs, but it is ready for testing and side projects;
+- [x] Closed Alpha;
+- [x] Open Alpha: We could still introduce some big changes;
+- [ ] Open Alpha: Expect bugs, but it is ready for testing and side projects;
 - [ ] Beta: first stable version;
 - [ ] Teta: we are finally full Teta;

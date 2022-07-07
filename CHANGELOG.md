@@ -5,3 +5,6 @@
 * You can choose to use this package using our low-code front-end builder in Teta.
 * You can now use: a No-SQL database with real-time subscriptions and user authentication system.
 
+# 0.1.5+1
+
+* Fixes for the pub.dev release page
