@@ -37,7 +37,7 @@ Since you call the .initialize method, you are able to use Teta.instance everywh
 
 ```dart
 // Fetch all docs in `CollectionA` created less than a week, ordering by `created_at`
-final response = await TetaCMS.instance.client.customQuery(
+final response = await TetaCMS.instance.client.query(
   r'''
     MATCH name EQ CollectionA;
     IN docs;
