@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:teta_cms/src/db/backups.dart';
+import 'package:teta_cms/src/db/policy.dart';
 import 'package:teta_cms/src/utils.dart';
 import 'package:teta_cms/teta_cms.dart';
 
@@ -8,9 +10,13 @@ class TetaClient {
   TetaClient(
     this.token,
     this.prjId,
-  );
+  )   : backups = TetaBackups(token, prjId),
+        policies = TetaPolicies(token, prjId);
+
   final String token;
   final int prjId;
+  late final TetaBackups backups;
+  late final TetaPolicies policies;
 
   Map<String, String> get countHeader => {'cms-count-only': '1'};
 
@@ -392,7 +398,7 @@ class TetaClient {
     return true;
   }
 
-  Future<TetaResponse<List<dynamic>?, TetaErrorResponse?>> customQuery(
+  Future<TetaResponse<List<dynamic>?, TetaErrorResponse?>> query(
     final String query,
   ) async {
     final uri = Uri.parse('${U.cmsUrl}cms/aya');
@@ -433,47 +439,6 @@ class TetaClient {
 
     return TetaResponse<List<dynamic>, TetaErrorResponse?>(
       data: docs,
-      error: null,
-    );
-  }
-
-  Future<TetaResponse<List<dynamic>?, TetaErrorResponse?>> getBackups() async {
-    final uri = Uri.parse('${U.cmsUrl}backup/$prjId/list');
-
-    final res = await http.get(
-      uri,
-      headers: {
-        'authorization': 'Bearer $token',
-      },
-    );
-
-    TetaCMS.log('get backups: ${res.body}');
-
-    if (res.statusCode != 200) {
-      return TetaResponse<List<dynamic>?, TetaErrorResponse>(
-        data: null,
-        error: TetaErrorResponse(
-          code: res.statusCode,
-          message: res.body,
-        ),
-      );
-    }
-
-    await TetaCMS.instance.analytics.insertEvent(
-      TetaAnalyticsType.backupsList,
-      'Teta CMS: backups request',
-      <String, dynamic>{
-        'weight': res.bodyBytes.lengthInBytes,
-      },
-      isUserIdPreferableIfExists: false,
-    );
-
-    final map = json.decode(res.body) as List<dynamic>;
-    final backups =
-        (map.first as Map<String, dynamic>)['paths'] as List<dynamic>;
-
-    return TetaResponse<List<dynamic>, TetaErrorResponse?>(
-      data: backups,
       error: null,
     );
   }

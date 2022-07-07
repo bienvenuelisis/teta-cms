@@ -15,7 +15,7 @@ class TetaUserUtils {
   final int prjId;
 
   /// Check if users is logged in
-  Future<Map<String, dynamic>> get get async {
+  Future<TetaUser?> get get async {
     final box = await Hive.openBox<dynamic>('Teta Auth');
     final accessToken = await box.get('access_tkn') as String?;
     if (accessToken != null) {
@@ -47,12 +47,13 @@ class TetaUserUtils {
         ),
       );
 
-      final user =
-          json.decode(res.body) as Map<String, dynamic>? ?? <String, dynamic>{};
-      await TetaCMS.instance.analytics.init(userId: user['uid'] as String?);
+      final user = TetaUser.fromJson(
+          json.decode(res.body) as Map<String, dynamic>? ??
+              <String, dynamic>{});
+      await TetaCMS.instance.analytics.init(userId: user.uid);
       return user;
     }
-    return <String, dynamic>{};
+    return null;
   }
 
   /// Check if users is logged in

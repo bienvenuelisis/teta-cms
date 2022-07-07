@@ -14,3 +14,4 @@ export 'src/models/store/cart.dart';
 export 'src/models/store/product.dart';
 export 'src/models/store/shop.dart';
 export 'src/models/teta_analytics_type.dart';
+export 'src/models/user.dart';

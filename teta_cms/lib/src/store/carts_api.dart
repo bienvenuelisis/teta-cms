@@ -21,8 +21,7 @@ class TetaStoreCartsApi {
 
   /// Gets a cart by [userId]
   Future<TetaCartResponse> get() async {
-
-    final cmsUserId = ((await TetaCMS.instance.auth.user.get)['uid'] ?? '') as String;
+    final cmsUserId = (await TetaCMS.instance.auth.user.get)?.uid ?? '';
 
     final uri = Uri.parse(
       '${U.storeCartUrl}$cmsUserId',
@@ -53,7 +52,7 @@ class TetaStoreCartsApi {
   Future<TetaResponse> insert(
     final String productId,
   ) async {
-    final userId = (await TetaCMS.instance.auth.user.get)['uid'] as String?;
+    final userId = (await TetaCMS.instance.auth.user.get)?.uid;
 
     final uri = Uri.parse(
       '${U.storeCartUrl}$userId/$productId',
@@ -84,7 +83,7 @@ class TetaStoreCartsApi {
 
   /// Deletes a product by id
   Future<TetaResponse> delete(final String prodId) async {
-    final userId = (await TetaCMS.instance.auth.user.get)['uid'] as String?;
+    final userId = (await TetaCMS.instance.auth.user.get)?.uid;
 
     final uri = Uri.parse(
       '${U.storeProductUrl}$userId/$prodId',
@@ -106,14 +105,15 @@ class TetaStoreCartsApi {
     }
 
     return TetaResponse<String, dynamic>(
-        data: json.encode(res.body), error: null);
+      data: json.encode(res.body),
+      error: null,
+    );
   }
 
   Future<TetaPaymentIntentResponse> getPaymentIntent() async {
-    final userId = (await TetaCMS.instance.auth.user.get)['uid'] as String?;
+    final userId = (await TetaCMS.instance.auth.user.get)?.uid;
 
     try {
-
       final res = await dio.post<String>(
         '${U.storeCartUrl}$userId/buy',
         options: Options(
@@ -121,7 +121,7 @@ class TetaStoreCartsApi {
         ),
       );
 
-      if(200 != res.statusCode) {
+      if (200 != res.statusCode) {
         return TetaPaymentIntentResponse(
           error: TetaErrorResponse(
             code: res.statusCode,
@@ -133,10 +133,10 @@ class TetaStoreCartsApi {
       return TetaPaymentIntentResponse(
         data: (jsonDecode(res.data!) as Map<String, dynamic>)['key'] as String,
       );
-
     } catch (e) {
       return TetaPaymentIntentResponse(
-          error: TetaErrorResponse(message: e.toString(), code: 403),);
+        error: TetaErrorResponse(message: e.toString(), code: 403),
+      );
     }
   }
 }
