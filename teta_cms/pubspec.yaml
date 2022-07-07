@@ -1,8 +1,7 @@
 name: teta_cms
-description: TetaCMS official package
-version: 0.1.3
-homepage:
-publish_to: none
+description: Teta CMS official package
+version: 0.1.5
+repository: https://github.com/teta-so/cms
 
 environment:
   sdk: ">=2.16.1 <3.0.0"
