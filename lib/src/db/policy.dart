@@ -1,9 +1,16 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:http/http.dart' as http;
 import 'package:teta_cms/src/constants.dart';
 import 'package:teta_cms/teta_cms.dart';
+
+enum TetaPolicyScope {
+  read,
+  delete,
+  update,
+}
 
 /// Control all the policies in a project
 class TetaPolicies {
@@ -23,7 +30,7 @@ class TetaPolicies {
   Future<TetaResponse<List<dynamic>?, TetaErrorResponse?>> all(
     final String collId,
   ) async {
-    final uri = Uri.parse('${Constants.tetaUrl}backup/$prjId/list');
+    final uri = Uri.parse('${Constants.tetaUrl}policies/$prjId/$collId');
 
     final res = await http.get(
       uri,
@@ -45,8 +52,8 @@ class TetaPolicies {
     }
 
     await TetaCMS.instance.analytics.insertEvent(
-      TetaAnalyticsType.backupsList,
-      'Teta CMS: backups request',
+      TetaAnalyticsType.getPolicies,
+      'Teta CMS: get policies',
       <String, dynamic>{
         'weight': res.bodyBytes.lengthInBytes,
       },
@@ -68,10 +75,14 @@ class TetaPolicies {
     final String collId,
     final String key,
     final String value,
+    final TetaPolicyScope scope,
   ) async {
-    final uri = Uri.parse('${Constants.tetaUrl}backup/$prjId/download');
+    final scopeStr = EnumToString.convertToString(scope);
+    final uri = Uri.parse(
+      '${Constants.tetaUrl}/policy/$scopeStr/$prjId/$collId/$key/$value',
+    );
 
-    final res = await http.get(
+    final res = await http.post(
       uri,
       headers: {
         'authorization': 'Bearer $token',
@@ -91,8 +102,8 @@ class TetaPolicies {
     }
 
     await TetaCMS.instance.analytics.insertEvent(
-      TetaAnalyticsType.backupsList,
-      'Teta CMS: download backup request',
+      TetaAnalyticsType.insertPolicy,
+      'Teta CMS: insert new policy',
       <String, dynamic>{},
       isUserIdPreferableIfExists: false,
     );
@@ -127,8 +138,8 @@ class TetaPolicies {
     }
 
     await TetaCMS.instance.analytics.insertEvent(
-      TetaAnalyticsType.backupsList,
-      'Teta CMS: restore backup request',
+      TetaAnalyticsType.deletePolicy,
+      'Teta CMS: delete policy',
       <String, dynamic>{},
       isUserIdPreferableIfExists: false,
     );

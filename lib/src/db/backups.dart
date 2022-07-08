@@ -43,8 +43,8 @@ class TetaBackups {
     }
 
     await TetaCMS.instance.analytics.insertEvent(
-      TetaAnalyticsType.backupsList,
-      'Teta CMS: backups request',
+      TetaAnalyticsType.getBackups,
+      'Teta CMS: get backups',
       <String, dynamic>{
         'weight': res.bodyBytes.lengthInBytes,
       },
@@ -89,7 +89,7 @@ class TetaBackups {
       }
 
       await TetaCMS.instance.analytics.insertEvent(
-        TetaAnalyticsType.backupsList,
+        TetaAnalyticsType.downloadBackup,
         'Teta CMS: download backup request',
         <String, dynamic>{},
         isUserIdPreferableIfExists: false,
@@ -134,7 +134,7 @@ class TetaBackups {
       }
 
       await TetaCMS.instance.analytics.insertEvent(
-        TetaAnalyticsType.backupsList,
+        TetaAnalyticsType.restoreBackup,
         'Teta CMS: restore backup request',
         <String, dynamic>{},
         isUserIdPreferableIfExists: false,
