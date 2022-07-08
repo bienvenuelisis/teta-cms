@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 /// A custom StreamBuilder to avoid unwanted calls
@@ -12,7 +14,7 @@ class TetaStreamBuilder<T> extends StatefulWidget {
   }) : super(key: key);
 
   /// The stream
-  final Stream<T> stream;
+  final StreamController<T> stream;
 
   /// The builder
   final Widget Function(BuildContext, AsyncSnapshot<T>) builder;
@@ -22,7 +24,7 @@ class TetaStreamBuilder<T> extends StatefulWidget {
 }
 
 class _TetaStreamBuilderState<T> extends State<TetaStreamBuilder<T>> {
-  late Stream<T> _stream;
+  late StreamController<T> _stream;
 
   @override
   void initState() {
@@ -33,8 +35,14 @@ class _TetaStreamBuilderState<T> extends State<TetaStreamBuilder<T>> {
   @override
   Widget build(final BuildContext context) {
     return StreamBuilder<T>(
-      stream: _stream,
+      stream: _stream.stream,
       builder: widget.builder,
     );
+  }
+
+  @override
+  void dispose() {
+    _stream.close();
+    super.dispose();
   }
 }

@@ -30,7 +30,7 @@ class TetaPolicies {
   Future<TetaResponse<List<dynamic>?, TetaErrorResponse?>> all(
     final String collId,
   ) async {
-    final uri = Uri.parse('${Constants.tetaUrl}policies/$prjId/$collId');
+    final uri = Uri.parse('${Constants.tetaUrl}cms/policy/$prjId/$collId');
 
     final res = await http.get(
       uri,
@@ -79,7 +79,7 @@ class TetaPolicies {
   ) async {
     final scopeStr = EnumToString.convertToString(scope);
     final uri = Uri.parse(
-      '${Constants.tetaUrl}/policy/$scopeStr/$prjId/$collId/$key/$value',
+      '${Constants.tetaUrl}cms/policy/$scopeStr/$prjId/$collId/$key/$value',
     );
 
     final res = await http.post(

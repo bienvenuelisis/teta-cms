@@ -84,7 +84,7 @@ class TetaRealtime {
     if (docId == null) throw Exception('documentId is required');
 
     final uri = Uri.parse(
-      '${Constants.tetaUrl}/stream/listen/${_socket!.id}/${action.type}/$prjId/$collId/$docId',
+      '${Constants.tetaUrl}stream/listen/${_socket!.id}/${action.type}/$prjId/$collId/$docId',
     );
 
     final res = await http.post(
@@ -159,7 +159,7 @@ class TetaRealtime {
   }
 
   /// Stream a single collection with its docs only
-  Stream<List<dynamic>> streamCollection(
+  StreamController<List<dynamic>> streamCollection(
     final String collectionId, {
     final StreamAction action = StreamAction.all,
     final List<Filter> filters = const [],
@@ -210,6 +210,6 @@ class TetaRealtime {
         streamController.add(resp);
       },
     );
-    return streamController.stream;
+    return streamController;
   }
 }
