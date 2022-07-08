@@ -1,6 +1,8 @@
 # Teta CMS
 
-The Dart client for Teta CMS
+[![pub package](https://img.shields.io/pub/v/teta_cms.svg)](https://pub.dev/packages/teta_cms)
+
+The Dart client for [Teta CMS](https://teta.so)
 
 ### Introducing Teta CMS
 
@@ -9,12 +11,23 @@ Teta CMS is a low-code back-end service. We provide:
 - Scalable NoSQL database
 - Real-time subscriptions
 - User authentication system and policies
-- Perform custom queries on your collections with our Ayaya language
+- Perform custom queries on your collections with our [Ayaya](https://teta.so/ayaya-language/) language
 - Use an easy-to-use and responsive user interface
 
 ## Getting Started
 
 To use Teta CMS you have to create first a project on [Teta.so](https://teta.so)
+
+### Compatibility
+
+|          |  Auth              | Database | Ayaya  | Real-time   | Analytics |
+| -------- | :--------------:   | :------: | :------:  | :-------: | :-------: |
+| Android  |      ✅            |     ✅    |    ✅     |    ✅     |     ✅     |
+| iOS      |      ✅            |     ✅    |    ✅     |    ✅     |     ✅     |
+| Web      |      ✅            |     ✅    |    ✅     |    ✅     |     ✅     |
+| macOS    |     Coming soon    |     ✅    |    ✅     |    ✅     |     ✅     |
+| Windows  |     Coming soon    |     ✅    |    ✅     |    ✅     |     ✅     |
+| Linux    |     Coming soon    |     ✅    |    ✅     |    ✅     |     ✅     |
 
 ## Examples
 

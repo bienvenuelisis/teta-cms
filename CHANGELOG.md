@@ -13,3 +13,9 @@
 
 * Api docs improved
 * Readme improved
+
+# 0.1.5+3
+
+* Cms base url fixed
+* RowObject now fixed
+* Removed web only libraries
