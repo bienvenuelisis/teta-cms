@@ -2,13 +2,21 @@ import 'package:enum_to_string/enum_to_string.dart';
 import 'package:equatable/equatable.dart';
 import 'package:teta_cms/src/constants.dart';
 
+/// Schema of the collection, can be public or private
 enum CollectionSchema {
+  /// Users will see this in Teta dashboard
   public,
+
+  /// Users won't see this in Teta dashboard
   private,
 }
 
+/// Collection role, useful to identify a certain scope
 enum CollectionRole {
+  /// Generic role
   nil,
+
+  /// Used for custom queries
   query,
 }
 

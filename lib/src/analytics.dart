@@ -2,10 +2,12 @@ import 'dart:convert';
 
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:http/http.dart' as http;
-import 'package:teta_cms/src/utils.dart';
+import 'package:teta_cms/src/constants.dart';
 import 'package:teta_cms/teta_cms.dart';
 
+/// Teta Analytics is our service to track events in an OLAP DB
 class TetaAnalytics {
+  ///
   TetaAnalytics(
     this.token,
     this.prjId,
@@ -13,10 +15,16 @@ class TetaAnalytics {
     init();
   }
 
+  /// Token of the current prj
   final String token;
+
+  /// Id of the current prj
   final int prjId;
+
+  /// Detected id of the logged user
   String? _currentUserId;
 
+  /// Initialize the logged user id
   Future init({final String? userId}) async {
     _currentUserId = userId ?? (await TetaCMS.instance.auth.user.get)?.uid;
   }
@@ -29,7 +37,7 @@ class TetaAnalytics {
     required final bool isUserIdPreferableIfExists,
   }) async {
     final uri = Uri.parse(
-      '${U.analyticsUrl}events/add/${EnumToString.convertToString(type)}',
+      '${Constants.analyticsUrl}events/add/${EnumToString.convertToString(type)}',
     );
 
     final res = await http.post(
@@ -69,7 +77,7 @@ class TetaAnalytics {
     final String ayayaQuery,
   ) async {
     final uri = Uri.parse(
-      '${U.analyticsUrl}events/aya',
+      '${Constants.analyticsUrl}events/aya',
     );
 
     final res = await http.post(

@@ -2,25 +2,31 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:teta_cms/src/constants.dart';
 import 'package:teta_cms/src/store/carts_api.dart';
 import 'package:teta_cms/src/store/products_api.dart';
 import 'package:teta_cms/src/use_cases/get_server_request_headers/get_server_request_headers.dart';
-import 'package:teta_cms/src/utils.dart';
 import 'package:teta_cms/teta_cms.dart';
 
+/// Teta Store - Control your ecommerce
 class TetaStore {
+  /// Teta Store - Control your ecommerce
   TetaStore(
     this.getServerRequestHeaders,
     this.products,
     this.cart,
   );
 
+  /// Headers
   final GetServerRequestHeaders getServerRequestHeaders;
 
+  /// Products apis
   final TetaStoreProductsApi products;
 
+  /// Cart apis
   final TetaStoreCartsApi cart;
 
+  /// Gets products of the current cart
   Future<TetaProductsResponse> getCartProducts() async {
     try {
       final cartResponse = await cart.get();
@@ -44,7 +50,7 @@ class TetaStore {
   /// Gets all the store's transactions
   Future<TetaResponse> transactions(final String userToken) async {
     final uri = Uri.parse(
-      '${U.storeUrl}transactions',
+      '${Constants.storeUrl}transactions',
     );
 
     final res = await http.get(
@@ -71,7 +77,7 @@ class TetaStore {
   /// Delete a store
   Future<TetaResponse> delete() async {
     final uri = Uri.parse(
-      U.storeUrl,
+      Constants.storeUrl,
     );
 
     final res = await http.delete(
@@ -95,9 +101,10 @@ class TetaStore {
     );
   }
 
+  /// Sets a new currency
   Future<TetaResponse> setCurrency(final String currency) async {
     final uri = Uri.parse(
-      '${U.storeUrl}currency/$currency',
+      '${Constants.storeUrl}currency/$currency',
     );
 
     final res = await http.put(

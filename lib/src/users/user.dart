@@ -5,13 +5,18 @@ import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:teta_cms/teta_cms.dart';
 
+/// User utils
 class TetaUserUtils {
+  /// User utils
   TetaUserUtils(
     this.token,
     this.prjId,
   );
 
+  /// Token of the current prj
   final String token;
+
+  /// Id of the current prj
   final int prjId;
 
   /// Check if users is logged in

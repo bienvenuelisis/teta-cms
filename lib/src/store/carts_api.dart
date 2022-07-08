@@ -3,9 +3,9 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
+import 'package:teta_cms/src/constants.dart';
 import 'package:teta_cms/src/mappers/cart_mapper.dart';
 import 'package:teta_cms/src/use_cases/get_server_request_headers/get_server_request_headers.dart';
-import 'package:teta_cms/src/utils.dart';
 import 'package:teta_cms/teta_cms.dart';
 
 class TetaStoreCartsApi {
@@ -22,9 +22,8 @@ class TetaStoreCartsApi {
   /// Gets a cart by userId
   Future<TetaCartResponse> get() async {
     final cmsUserId = (await TetaCMS.instance.auth.user.get)?.uid ?? '';
-
     final uri = Uri.parse(
-      '${U.storeCartUrl}$cmsUserId',
+      '${Constants.storeCartUrl}$cmsUserId',
     );
 
     final res = await http.get(
@@ -55,7 +54,7 @@ class TetaStoreCartsApi {
     final userId = (await TetaCMS.instance.auth.user.get)?.uid;
 
     final uri = Uri.parse(
-      '${U.storeCartUrl}$userId/$productId',
+      '${Constants.storeCartUrl}$userId/$productId',
     );
 
     final res = await http.post(
@@ -86,7 +85,7 @@ class TetaStoreCartsApi {
     final userId = (await TetaCMS.instance.auth.user.get)?.uid;
 
     final uri = Uri.parse(
-      '${U.storeProductUrl}$userId/$prodId',
+      '${Constants.storeProductUrl}$userId/$prodId',
     );
 
     final res = await http.post(
@@ -115,7 +114,7 @@ class TetaStoreCartsApi {
 
     try {
       final res = await dio.post<String>(
-        '${U.storeCartUrl}$userId/buy',
+        '${Constants.storeCartUrl}$userId/buy',
         options: Options(
           headers: getServerRequestHeaders.execute(),
         ),

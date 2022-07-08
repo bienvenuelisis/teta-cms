@@ -12,9 +12,16 @@ Teta CMS is a low-code back-end service. We provide:
 - Perform custom queries on your collections with our Ayaya language
 - Use an easy-to-use and responsive user interface
 
+## Getting Started
+
+To use Teta CMS you have to create first a project on [Teta.so](https://teta.so)
+
 ## Examples
 
 ### Initialize
+To get the credentials, go to [Teta](https://teta.so) > project dashboard > Getting Started
+
+Since you call the .initialize method, you are able to use Teta.instance anywhere in your application
 ```dart
 import 'package:teta_cms/teta_cms.dart';
 
@@ -29,10 +36,9 @@ Future main() async {
   );
 }
 ```
-
-Since you call the .initialize method, you are able to use Teta.instance everywhere in your app
-
 ### Database with custom query
+
+Making a query with the [Ayaya](https://teta.so/ayaya-language/) language
 
 ```dart
 // Fetch all docs in `CollectionA` created less than a week, ordering by `created_at`
@@ -129,3 +135,8 @@ await TetaCMS.instance.auth.signOut();
 - [ ] Open Alpha: Expect bugs, but it is ready for testing and side projects;
 - [ ] Beta: first stable version;
 - [ ] Teta: we are finally full Teta;
+
+We are just at the beginning, and we still have a long way to go.
+
+### Let us know what you think, we thank you for your support :)
+![Reaction](https://media1.giphy.com/media/GOwylSCEZnINmgddJu/giphy.gif)

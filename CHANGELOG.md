@@ -8,3 +8,8 @@
 # 0.1.5+1
 
 * Fixes for the pub.dev release page
+
+# 0.1.5+2
+
+* Api docs improved
+* Readme improved

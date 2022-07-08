@@ -1,23 +1,33 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:teta_cms/src/constants.dart';
 import 'package:teta_cms/src/db/backups.dart';
 import 'package:teta_cms/src/db/policy.dart';
-import 'package:teta_cms/src/utils.dart';
 import 'package:teta_cms/teta_cms.dart';
 
+/// The CMS client to interact with the db
 class TetaClient {
+  /// Client to interact with the Teta CMS's db
   TetaClient(
     this.token,
     this.prjId,
   )   : backups = TetaBackups(token, prjId),
         policies = TetaPolicies(token, prjId);
 
+  /// Token of the current prj
   final String token;
+
+  /// Id of the current prj
   final int prjId;
+
+  /// Backups area
   late final TetaBackups backups;
+
+  /// Policies area
   late final TetaPolicies policies;
 
+  /// Http header for count
   Map<String, String> get countHeader => {'cms-count-only': '1'};
 
   /// Creates a new collection with name [collectionName] and prj_id [prjId].
@@ -29,7 +39,7 @@ class TetaClient {
     final String collectionName,
   ) async {
     final uri = Uri.parse(
-      '${U.cmsUrl}cms/$prjId/$collectionName',
+      '${Constants.tetaUrl}cms/$prjId/$collectionName',
     );
 
     final res = await http.post(
@@ -64,7 +74,7 @@ class TetaClient {
     final String collectionId,
   ) async {
     final uri = Uri.parse(
-      '${U.cmsUrl}cms/$prjId/$collectionId',
+      '${Constants.tetaUrl}cms/$prjId/$collectionId',
     );
 
     final res = await http.delete(
@@ -100,7 +110,7 @@ class TetaClient {
     final Map<String, dynamic> document,
   ) async {
     final uri = Uri.parse(
-      '${U.cmsUrl}cms/$prjId/$collectionId',
+      '${Constants.tetaUrl}cms/$prjId/$collectionId',
     );
 
     final res = await http.put(
@@ -138,7 +148,7 @@ class TetaClient {
     final String documentId,
   ) async {
     final uri = Uri.parse(
-      '${U.cmsUrl}cms/$prjId/$collectionId/$documentId',
+      '${Constants.tetaUrl}cms/$prjId/$collectionId/$documentId',
     );
 
     final res = await http.delete(
@@ -180,7 +190,7 @@ class TetaClient {
       ...filters,
       if (!showDrafts) Filter('_vis', 'public'),
     ];
-    final uri = Uri.parse('${U.cmsUrl}cms/$prjId/$collectionId');
+    final uri = Uri.parse('${Constants.tetaUrl}cms/$prjId/$collectionId');
 
     final res = await http.get(
       uri,
@@ -233,7 +243,7 @@ class TetaClient {
       ...filters,
       if (!showDrafts) Filter('_vis', 'public'),
     ];
-    final uri = Uri.parse('${U.cmsUrl}cms/$prjId/$collectionId');
+    final uri = Uri.parse('${Constants.tetaUrl}cms/$prjId/$collectionId');
 
     final res = await http.get(
       uri,
@@ -273,7 +283,7 @@ class TetaClient {
   ///
   /// Returns the collections as `List<Map<String,dynamic>>` without `docs`
   Future<List<CollectionObject>> getCollections() async {
-    final uri = Uri.parse('${U.cmsUrl}cms/$prjId');
+    final uri = Uri.parse('${Constants.tetaUrl}cms/$prjId');
 
     final res = await http.get(
       uri,
@@ -324,7 +334,7 @@ class TetaClient {
     final Map<String, dynamic>? attributes,
   ) async {
     final uri = Uri.parse(
-      '${U.cmsUrl}cms/$prjId/$collectionId',
+      '${Constants.tetaUrl}cms/$prjId/$collectionId',
     );
 
     final res = await http.patch(
@@ -368,7 +378,7 @@ class TetaClient {
     final Map<String, dynamic> content,
   ) async {
     final uri = Uri.parse(
-      '${U.cmsUrl}cms/$prjId/$collectionId/$documentId',
+      '${Constants.tetaUrl}cms/$prjId/$collectionId/$documentId',
     );
 
     final res = await http.put(
@@ -398,10 +408,11 @@ class TetaClient {
     return true;
   }
 
+  /// Performs a custom Ayaya query
   Future<TetaResponse<List<dynamic>?, TetaErrorResponse?>> query(
     final String query,
   ) async {
-    final uri = Uri.parse('${U.cmsUrl}cms/aya');
+    final uri = Uri.parse('${Constants.tetaUrl}cms/aya');
 
     final res = await http.post(
       uri,

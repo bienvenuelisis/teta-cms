@@ -2,19 +2,26 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:http/http.dart' as http;
-import 'package:teta_cms/src/utils.dart';
+import 'package:teta_cms/src/constants.dart';
 import 'package:teta_cms/teta_cms.dart';
 
+/// Controls all the backups of the current prj
 class TetaBackups {
+  /// Controls all the backups of the current prj
   TetaBackups(
     this.token,
     this.prjId,
   );
+
+  /// Token of the current prj
   final String token;
+
+  /// Id of the current prj
   final int prjId;
 
+  /// Get all backups
   Future<TetaResponse<List<dynamic>?, TetaErrorResponse?>> all() async {
-    final uri = Uri.parse('${U.cmsUrl}backup/$prjId/list');
+    final uri = Uri.parse('${Constants.tetaUrl}backup/$prjId/list');
 
     final res = await http.get(
       uri,
@@ -54,11 +61,13 @@ class TetaBackups {
     );
   }
 
+  /// Downloads a backup
   Future<TetaResponse<Uint8List, TetaErrorResponse?>> download(
     final String? backupId,
   ) async {
     if (backupId != null) {
-      final uri = Uri.parse('${U.cmsUrl}backup/$prjId/download/$backupId');
+      final uri =
+          Uri.parse('${Constants.tetaUrl}backup/$prjId/download/$backupId');
 
       final res = await http.get(
         uri,
@@ -99,11 +108,13 @@ class TetaBackups {
     );
   }
 
+  /// Restores a backup
   Future<TetaResponse<void, TetaErrorResponse?>> restore(
     final String? backupId,
   ) async {
     if (backupId != null) {
-      final uri = Uri.parse('${U.cmsUrl}backup/$prjId/restore/$backupId');
+      final uri =
+          Uri.parse('${Constants.tetaUrl}backup/$prjId/restore/$backupId');
 
       final res = await http.get(
         uri,

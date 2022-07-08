@@ -40,6 +40,7 @@ class _MyAppState extends State<MyApp> {
               return ListView.builder(
                 itemCount: snap.data?.data?.length ?? 0,
                 itemBuilder: (final c, final i) {
+                  // ignore: avoid_dynamic_calls
                   return Text('${snap.data?.data?[i]['_name']}');
                 },
               );

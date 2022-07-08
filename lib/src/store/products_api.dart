@@ -3,20 +3,27 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
+import 'package:teta_cms/src/constants.dart';
 import 'package:teta_cms/src/mappers/product_mapper.dart';
 import 'package:teta_cms/src/use_cases/get_server_request_headers/get_server_request_headers.dart';
-import 'package:teta_cms/src/utils.dart';
 import 'package:teta_cms/teta_cms.dart';
 
+/// Set of apis to control products
 class TetaStoreProductsApi {
+  /// Set of apis to control products
   TetaStoreProductsApi(
     this.productMapper,
     this.getServerRequestHeaders,
     this.dio,
   );
 
+  /// Product mapper
   final ProductMapper productMapper;
+
+  /// Http headers
   final GetServerRequestHeaders getServerRequestHeaders;
+
+  /// Client Dio
   final Dio dio;
 
   /// Gets all the products.
@@ -24,7 +31,7 @@ class TetaStoreProductsApi {
   Future<TetaProductsResponse> all() async {
     try {
       final res = await dio.get<String>(
-        '${U.storeProductUrl}list',
+        '${Constants.storeProductUrl}list',
         options: Options(
           headers: getServerRequestHeaders.execute(),
         ),
@@ -59,7 +66,7 @@ class TetaStoreProductsApi {
   /// The product is selected in the project's shop
   Future<TetaProductResponse> get(final String prodId) async {
     final uri = Uri.parse(
-      '${U.storeProductUrl}$prodId',
+      '${Constants.storeProductUrl}$prodId',
     );
 
     final res = await http.get(
@@ -89,7 +96,7 @@ class TetaStoreProductsApi {
   /// If everything goes ok it returns {'ok': true}
   Future<TetaResponse> insert(final TetaProduct product) async {
     final uri = Uri.parse(
-      U.storeProductUrl,
+      Constants.storeProductUrl,
     );
 
     final res = await http.post(
@@ -122,7 +129,7 @@ class TetaStoreProductsApi {
   /// Wants a product object to update all the fields.
   Future<TetaProductResponse> update(final TetaProduct product) async {
     final uri = Uri.parse(
-      '${U.storeProductUrl}${product.id}',
+      '${Constants.storeProductUrl}${product.id}',
     );
 
     final res = await http.post(
@@ -150,7 +157,7 @@ class TetaStoreProductsApi {
   /// Deletes a product by id
   Future<TetaResponse> delete(final String prodId) async {
     final uri = Uri.parse(
-      '${U.storeProductUrl}$prodId',
+      '${Constants.storeProductUrl}$prodId',
     );
 
     final res = await http.post(

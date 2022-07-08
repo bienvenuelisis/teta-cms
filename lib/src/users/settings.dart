@@ -4,14 +4,21 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:teta_cms/teta_cms.dart';
 
+/// Project settings
 class TetaProjectSettings {
+  /// Project settings
   TetaProjectSettings(
     this.token,
     this.prjId,
   );
+
+  /// Token of the current prj
   final String token;
+
+  /// Id of the current prj
   final int prjId;
 
+  /// Save OAuth providers credentials
   Future<void> saveCredentials({
     required final int prjId,
     required final TetaAuthCredentials credentials,
@@ -49,6 +56,7 @@ class TetaProjectSettings {
     );
   }
 
+  /// Retrieve project credentials
   Future<TetaAuthCredentials> retrieveCredentials({
     required final int prjId,
   }) async {

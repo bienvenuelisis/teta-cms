@@ -2,21 +2,28 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:http/http.dart' as http;
-import 'package:teta_cms/src/utils.dart';
+import 'package:teta_cms/src/constants.dart';
 import 'package:teta_cms/teta_cms.dart';
 
+/// Control all the policies in a project
 class TetaPolicies {
+  /// Control all the policies in a project
   TetaPolicies(
     this.token,
     this.prjId,
   );
+
+  /// Token of the current prj
   final String token;
+
+  /// Id of the current prj
   final int prjId;
 
+  /// Get all policies
   Future<TetaResponse<List<dynamic>?, TetaErrorResponse?>> all(
     final String collId,
   ) async {
-    final uri = Uri.parse('${U.cmsUrl}backup/$prjId/list');
+    final uri = Uri.parse('${Constants.tetaUrl}backup/$prjId/list');
 
     final res = await http.get(
       uri,
@@ -56,12 +63,13 @@ class TetaPolicies {
     );
   }
 
+  /// Insert a new policy
   Future<TetaResponse<Uint8List, TetaErrorResponse?>> insert(
     final String collId,
     final String key,
     final String value,
   ) async {
-    final uri = Uri.parse('${U.cmsUrl}backup/$prjId/download');
+    final uri = Uri.parse('${Constants.tetaUrl}backup/$prjId/download');
 
     final res = await http.get(
       uri,
@@ -95,10 +103,11 @@ class TetaPolicies {
     );
   }
 
+  /// Deletes a new policy
   Future<TetaResponse<void, TetaErrorResponse?>> delete(
     final String policyId,
   ) async {
-    final uri = Uri.parse('${U.cmsUrl}backup/$prjId/restore');
+    final uri = Uri.parse('${Constants.tetaUrl}backup/$prjId/restore');
 
     final res = await http.get(
       uri,

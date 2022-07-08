@@ -1,4 +1,6 @@
+/// Product model
 class TetaProduct {
+  /// Product model
   TetaProduct({
     required this.id,
     required this.name,
@@ -10,15 +12,31 @@ class TetaProduct {
     this.metadata,
   });
 
+  /// Product id
   final String id;
+
+  /// Product name
   final String name;
+
+  /// Product description
   final String? description;
+
+  /// Product price
   final num price;
+
+  /// Product count
   final num count;
+
+  /// Product image
   final String? image;
+
+  /// Is the product public?
   final bool isPublic;
+
+  /// Product metadata
   final Map<String, dynamic>? metadata;
 
+  /// Generate a model from a json schema
   static TetaProduct fromSchema(final Map<String, String> json) => TetaProduct(
         id: json['id'] ?? '',
         name: json['name'] ?? '',
@@ -30,6 +48,7 @@ class TetaProduct {
         metadata: <String, dynamic>{},
       );
 
+  /// Generate a json from the model
   Map<String, dynamic> toJson() => <String, dynamic>{
         '_id': id,
         'name': name,

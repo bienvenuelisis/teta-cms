@@ -1,6 +1,8 @@
 part of '../index.dart';
 
+/// Teta Database Utils
 class TetaDBUtils {
+  /// The instance of TetaDBUtils
   static final instance = _TetaDBUtils();
 }
 

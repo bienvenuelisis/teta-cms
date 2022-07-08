@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 
+/// A custom StreamBuilder to avoid unwanted calls
+
 class TetaStreamBuilder<T> extends StatefulWidget {
+  /// A custom StreamBuilder to avoid unwanted calls
+
   const TetaStreamBuilder({
     required this.stream,
     required this.builder,
     final Key? key,
   }) : super(key: key);
 
+  /// The stream
   final Stream<T> stream;
+
+  /// The builder
   final Widget Function(BuildContext, AsyncSnapshot<T>) builder;
 
   @override

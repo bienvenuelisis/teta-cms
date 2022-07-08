@@ -46,6 +46,7 @@ class TetaCMS {
     return _instance;
   }
 
+  /// Returns if the instance is initialized or not
   bool get isInitialized => _instance._initialized;
 
   /// Initialize the current TetaCMS instance
@@ -152,16 +153,20 @@ class TetaCMS {
     return box.get('tkn') as String;
   }
 
+  /// Print only in debug mode
   static void log(final String msg) {
     if (kDebugMode) {
       debugPrint(msg);
     }
   }
 
+  /// Print a warning message only in debug mode
   static void printWarning(final String text) => log('\x1B[33m$text\x1B[0m');
 
+  /// Print an error message only in debug mode
   static void printError(final String text) => log('\x1B[31m$text\x1B[0m');
 
+  /// Retrieve the project token
   static Future<String?> getToken() async {
     final box = await Hive.openBox<dynamic>('supabase_authentication');
     final accessToken =

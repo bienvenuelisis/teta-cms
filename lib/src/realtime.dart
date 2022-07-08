@@ -1,14 +1,22 @@
 part of 'index.dart';
 
+/// Teta Realtime - Use Realtime subscriptions
 class TetaRealtime {
+  /// Teta Realtime - Use Realtime subscriptions
   TetaRealtime(
     this.token,
     this.prjId,
   );
+
+  /// Token of the current prj
   final String token;
+
+  /// Id of the current prj
   final int prjId;
 
   socket_io.Socket? _socket;
+
+  /// List of all the streams
   List<RealtimeSubscription> streams = [];
 
   Future<void> _openSocket() {

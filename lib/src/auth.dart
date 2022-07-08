@@ -4,16 +4,18 @@ import 'dart:convert';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
+import 'package:teta_cms/src/constants.dart';
 import 'package:teta_cms/src/platform/index.dart';
 import 'package:teta_cms/src/users/settings.dart';
 import 'package:teta_cms/src/users/user.dart';
-import 'package:teta_cms/src/utils.dart';
 import 'package:teta_cms/teta_cms.dart';
 import 'package:uni_links/uni_links.dart';
 import 'package:universal_platform/universal_platform.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+/// Teta Auth - Control all the methods about authentication
 class TetaAuth {
+  /// Teta Auth - Control all the methods about authentication
   TetaAuth(
     this.token,
     this.prjId,
@@ -21,14 +23,23 @@ class TetaAuth {
     project = TetaProjectSettings(token, prjId);
     user = TetaUserUtils(token, prjId);
   }
+
+  /// Token of the current prj
   final String token;
+
+  /// Id of the current prj
   final int prjId;
+
+  /// Project settings
   late TetaProjectSettings project;
+
+  /// User utils
   late TetaUserUtils user;
 
+  /// Insert a new user inside the prj
   Future<bool> insertUser(final String userToken) async {
     final uri = Uri.parse(
-      '${U.baseUrl}auth/users/$prjId',
+      '${Constants.tetaUrl}auth/users/$prjId',
     );
 
     final res = await http.post(
@@ -63,13 +74,14 @@ class TetaAuth {
     return true;
   }
 
+  /// Retrieve all users
   Future<List<dynamic>> retrieveUsers({
     required final int prjId,
     final int limit = 10,
     final int page = 0,
   }) async {
     final uri = Uri.parse(
-      '${U.baseUrl}auth/users/$prjId',
+      '${Constants.tetaUrl}auth/users/$prjId',
     );
 
     final res = await http.get(
@@ -195,6 +207,7 @@ class TetaAuth {
     await box.put('access_tkn', token);
   }
 
+  /// Sign out in the current device
   Future signOut() async {
     final box = await Hive.openBox<dynamic>('Teta Auth');
     await box.delete('access_tkn');
@@ -205,7 +218,7 @@ class TetaAuth {
     final String ayayaQuery,
   ) async {
     final uri = Uri.parse(
-      '${U.baseUrl}auth/aya',
+      '${Constants.tetaUrl}auth/aya',
     );
 
     final res = await http.post(
