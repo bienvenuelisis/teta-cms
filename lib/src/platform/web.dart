@@ -1,11 +1,13 @@
 // ignore_for_file: avoid_dynamic_calls
 
 import 'dart:async';
-import 'dart:js';
 
 import 'package:teta_cms/teta_cms.dart';
+import 'package:universal_html/js.dart';
 
+/// Use login with providers on different devices
 class CMSPlatform {
+  /// Use login with providers on different devices
   static Future login(
     final String url,
     final Function(String) callback,

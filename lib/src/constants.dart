@@ -10,7 +10,7 @@ class Constants {
   static const String _port = '9840';
 
   /// Standard Teta url
-  static const String tetaUrl = 'https://$_host:$_port';
+  static const String tetaUrl = 'https://$_host:$_port/';
 
   /// Default Http headers
   static const Map<String, String> defaultHeaders = <String, String>{
