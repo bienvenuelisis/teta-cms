@@ -22,5 +22,5 @@
 
 # 0.1.6
 
-* Expose the StreamController to close it easier
-* Adjust TetaStreamBuilder to manage a StreamController closing it at dispose event
+* Expose the StreamController to control and close it more easily
+* Adapt TetaStreamBuilder to handle a StreamController, closing it at the dispose event
