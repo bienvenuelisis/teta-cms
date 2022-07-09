@@ -92,11 +92,26 @@ final List<dynamic> response = await TetaCMS.instance.client.getCollection(
 );
 ```
 
+Or you can use our TetaFutureBuilder.
+It manages the cache by preventing unwanted calls.
+
+```dart
+TetaFutureBuilder(
+  future: TetaCMS.instance.client.getCollection(
+    collectionId, // You can retrieve this from your project dashboard
+  ), 
+  builder: (final context, final snap) {
+    // build your widgets with snap.data as List<dynamic>
+  },
+);
+```
+
+
 ### Stream
 
 ```dart
 // Stream all docs by `collectionId` ordering and filtering
-final Stream<List<dynamic>> stream = TetaCMS.instance.realtime.streamCollection(
+final StreamController<List<dynamic>> controller = TetaCMS.instance.realtime.streamCollection(
   collectionId, // You can retrieve this from your project dashboard
   limit: 10,
   page: 0,
@@ -109,7 +124,25 @@ final Stream<List<dynamic>> stream = TetaCMS.instance.realtime.streamCollection(
     ),
   ],
 );
+
+// Remember to close it when you're done
+controller.close();
 ```
+
+Or you can use our TetaStreamBuilder.
+It manages the cache by preventing unwanted calls and closes the stream controller at the dispose event.
+
+```dart
+TetaStreamBuilder(
+  stream: TetaCMS.instance.realtime.streamCollection(
+    collectionId, // You can retrieve this from your project dashboard
+  ), 
+  builder: (final context, final snap) {
+    // build your widgets with snap.data as List<dynamic>
+  },
+);
+```
+
 
 ### Social authentication
 
@@ -140,6 +173,7 @@ if (user?.isLogged) {
 ```dart
 await TetaCMS.instance.auth.signOut();
 ```
+
 
 ### Teta CMS is still in open alpha
 

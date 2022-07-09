@@ -113,23 +113,23 @@ class TetaRealtime {
   ///
   /// Returns a `Stream<SocketChangeEvent>`
   ///
-  Stream<SocketChangeEvent> stream({
+  StreamController<SocketChangeEvent> stream({
     final StreamAction action = StreamAction.all,
     final String? collectionId,
     final String? documentId,
-  }) async* {
+  }) {
     final streamController = StreamController<SocketChangeEvent>();
-    await on(
+    on(
       collectionId: collectionId,
       callback: (final e) async* {
         streamController.add(e);
       },
     );
-    yield* streamController.stream;
+    return streamController;
   }
 
   /// Stream all collections without docs
-  Stream<List<CollectionObject>> streamCollections({
+  StreamController<List<CollectionObject>> streamCollections({
     final StreamAction action = StreamAction.all,
   }) {
     late final StreamController<List<CollectionObject>> streamController;
@@ -155,7 +155,7 @@ class TetaRealtime {
         streamController.add(resp);
       },
     );
-    return streamController.stream;
+    return streamController;
   }
 
   /// Stream a single collection with its docs only

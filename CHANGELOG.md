@@ -19,3 +19,8 @@
 * Cms base url fixed
 * RowObject now fixed
 * Removed web only libraries
+
+# 0.1.6
+
+* Expose the StreamController to close it easier
+* Adjust TetaStreamBuilder to manage a StreamController closing it at dispose event
