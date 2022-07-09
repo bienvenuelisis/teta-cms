@@ -20,7 +20,7 @@ To use Teta CMS you have to create first a project on [Teta.so](https://teta.so)
 
 ### Compatibility
 
-|          |  Auth              | Database | Ayaya  | Real-time   | Analytics |
+|          |  Auth              | Database | Ayaya  | Realtime   | Analytics |
 | -------- | :--------------:   | :------: | :------:  | :-------: | :-------: |
 | Android  |      ✅            |     ✅    |    ✅     |    ✅     |     ✅     |
 | iOS      |      ✅            |     ✅    |    ✅     |    ✅     |     ✅     |
@@ -92,7 +92,7 @@ final List<dynamic> response = await TetaCMS.instance.client.getCollection(
 );
 ```
 
-Or you can use our TetaFutureBuilder.
+Or you can use our **TetaFutureBuilder**.
 It manages the cache by preventing unwanted calls.
 
 ```dart
@@ -106,8 +106,9 @@ TetaFutureBuilder(
 );
 ```
 
+TetaFutureBuilder supports any future. You can also use it to run an [Ayaya](https://teta.so/ayaya-language/) query.
 
-### Stream
+### Realtime
 
 ```dart
 // Stream all docs by `collectionId` ordering and filtering
@@ -129,7 +130,7 @@ final StreamController<List<dynamic>> controller = TetaCMS.instance.realtime.str
 controller.close();
 ```
 
-Or you can use our TetaStreamBuilder.
+Or you can use our **TetaStreamBuilder**.
 It manages the cache by preventing unwanted calls and closes the stream controller at the dispose event.
 
 ```dart
