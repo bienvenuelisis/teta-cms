@@ -6,12 +6,6 @@ import 'package:http/http.dart' as http;
 import 'package:teta_cms/src/constants.dart';
 import 'package:teta_cms/teta_cms.dart';
 
-enum TetaPolicyScope {
-  read,
-  delete,
-  update,
-}
-
 /// Control all the policies in a project
 class TetaPolicies {
   /// Control all the policies in a project
@@ -27,7 +21,7 @@ class TetaPolicies {
   final int prjId;
 
   /// Get all policies
-  Future<TetaResponse<List<dynamic>?, TetaErrorResponse?>> all(
+  Future<TetaResponse<Map<String, dynamic>?, TetaErrorResponse?>> all(
     final String collId,
   ) async {
     final uri = Uri.parse('${Constants.tetaUrl}cms/policy/$prjId/$collId');
@@ -42,7 +36,7 @@ class TetaPolicies {
     TetaCMS.log('get backups: ${res.body}');
 
     if (res.statusCode != 200) {
-      return TetaResponse<List<dynamic>?, TetaErrorResponse>(
+      return TetaResponse<Map<String, dynamic>?, TetaErrorResponse>(
         data: null,
         error: TetaErrorResponse(
           code: res.statusCode,
@@ -60,11 +54,20 @@ class TetaPolicies {
       isUserIdPreferableIfExists: false,
     );
 
-    final map = json.decode(res.body) as List<dynamic>;
-    final backups =
-        (map.first as Map<String, dynamic>)['paths'] as List<dynamic>;
+    final map = json.decode(res.body) as Map<String, dynamic>;
+    final backups = <String, dynamic>{};
 
-    return TetaResponse<List<dynamic>, TetaErrorResponse?>(
+    if (map['policy']?['read'] != null) {
+      backups['read'] = (map['policy'] as Map<String, dynamic>?)?['read'];
+    }
+    if (map['policy']?['update'] != null) {
+      backups['update'] = (map['policy'] as Map<String, dynamic>?)?['update'];
+    }
+    if (map['policy']?['delete'] != null) {
+      backups['delete'] = (map['policy'] as Map<String, dynamic>?)?['delete'];
+    }
+
+    return TetaResponse<Map<String, dynamic>, TetaErrorResponse?>(
       data: backups,
       error: null,
     );
@@ -116,9 +119,12 @@ class TetaPolicies {
 
   /// Deletes a new policy
   Future<TetaResponse<void, TetaErrorResponse?>> delete(
-    final String policyId,
+    final String collId,
+    final TetaPolicyScope scope,
   ) async {
-    final uri = Uri.parse('${Constants.tetaUrl}backup/$prjId/restore');
+    final scopeStr = EnumToString.convertToString(scope);
+    final uri =
+        Uri.parse('${Constants.tetaUrl}cms/policy/$prjId/$collId/$scopeStr');
 
     final res = await http.get(
       uri,
