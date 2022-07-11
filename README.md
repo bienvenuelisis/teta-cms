@@ -175,6 +175,83 @@ if (user?.isLogged) {
 await TetaCMS.instance.auth.signOut();
 ```
 
+## Auth Deeplink configuration
+
+### Fill your redirect URL
+
+- Go to [app.teta.so](https://app.teta.so) > Project dashboard > Users > Config
+- Fill the `Redirect Url` field (eg. com.example.app://welcome following the format `SCHEME://HOSTNAME`)
+
+![Teta Auth redirect URL field](https://teta.so/wp-content/uploads/2022/07/Screenshot-2022-07-10-at-16.57.54.png)
+
+### Teta social OAuth config
+
+Follow our docs for the following OAuth providers:
+[Google](), [Apple](), [GitHub]().
+
+### Android
+
+Declare your Redirect Url inside the `ActivityManifest.xml` file.
+In this example we are using the value `com.example.app://welcome`
+
+```xml
+<manifest ...>
+  <application ...>
+    <activity ...>
+      <!-- ... -->
+
+      <!-- Teta Auth Deeplink -->
+      <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <!-- Your redirect URL -->
+        <data
+          android:scheme="com.example.app"
+          android:host="welcome" />
+      </intent-filter>
+    </activity>
+  </application>
+</manifest>
+```
+
+Android docs: https://developer.android.com/training/app-links/deep-linking
+
+### iOS
+
+Declare your Redirect Url inside the `ios/Runner/Info.plist` file.
+In this example we are using the value `com.example.app://welcome`
+
+```xml
+<plist>
+<dict>
+  <!-- Teta Auth Deeplink -->
+  <key>CFBundleURLTypes</key>
+  <array>
+    <dict>
+      <key>CFBundleTypeRole</key>
+      <string>Editor</string>
+      <key>CFBundleURLSchemes</key>
+      <array>
+        <string>com.example.app</string>
+      </array>
+    </dict>
+  </array>
+  <!-- ... -->
+</dict>
+</plist>
+```
+
+Apple docs: https://developer.apple.com/documentation/xcode/defining-a-custom-url-scheme-for-your-app
+
+### Web
+Nothing needs to be set up for the Web.
+
+### Windows, macOS, Linux
+Authentication for desktop platforms is coming soon.
+
+---
+
 
 ### Teta CMS is still in open alpha
 
