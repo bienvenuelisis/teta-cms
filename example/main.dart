@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:teta_cms/teta_cms.dart';
 
-Future main() async {
+void main() {
   const prjToken = '';
   const prjId = 0;
+
   TetaCMS.initialize(
     token: prjToken,
     prjId: prjId,

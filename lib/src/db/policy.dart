@@ -126,14 +126,14 @@ class TetaPolicies {
     final uri =
         Uri.parse('${Constants.tetaUrl}cms/policy/$prjId/$collId/$scopeStr');
 
-    final res = await http.get(
+    final res = await http.delete(
       uri,
       headers: {
         'authorization': 'Bearer $token',
       },
     );
 
-    if (res.statusCode != 202) {
+    if (res.statusCode != 200) {
       return TetaResponse<void, TetaErrorResponse>(
         data: null,
         error: TetaErrorResponse(

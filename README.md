@@ -38,8 +38,8 @@ Since you call the .initialize method, you are able to use Teta.instance anywher
 ```dart
 import 'package:teta_cms/teta_cms.dart';
 
-Future main() async {
-  await TetaCMS.initialize(
+void main() {
+  TetaCMS.initialize(
     token: prjToken,
     prjId: prjId,
   );
@@ -157,10 +157,12 @@ TetaCMS.instance.auth.signIn(
 );
 ```
 
+The `isFirstTime` flag tells us whether the user is a first-time login, which is useful if we only need to perform actions for the first time.​
+
 ### Retrieve current user
 
 ```dart
-// Sign up user with Apple OAuth provider
+// Get the current user
 final user = await TetaCMS.instance.auth.user.get;
 if (user?.isLogged) {
   // The user is logged 🎉
@@ -175,9 +177,14 @@ if (user?.isLogged) {
 await TetaCMS.instance.auth.signOut();
 ```
 
-## Auth Deeplink configuration
+---
+## Teta Auth configuration
+Authentication with Teta CMS works by opening a browser to allow people to log in using different providers.
+This method allows us to write much less code.
 
-### Fill your redirect URL
+To open a browser and return to the application after successful login, you need to configure the deeplink in your application.
+
+### Set your redirect URL
 
 - Go to [app.teta.so](https://app.teta.so) > Project dashboard > Users > Config
 - Fill the `Redirect Url` field (eg. com.example.app://welcome following the format `SCHEME://HOSTNAME`)
@@ -187,7 +194,9 @@ await TetaCMS.instance.auth.signOut();
 ### Teta social OAuth config
 
 Follow our docs for the following OAuth providers:
-[Google](), [Apple](), [GitHub]().
+- [Google](https://teta.so/login-with-google/)
+- [Apple](https://teta.so/login-with-apple/)
+- [GitHub](https://teta.so/login-with-github/)
 
 ### Android
 
