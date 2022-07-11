@@ -1,4 +1,4 @@
-## Fetch docs using a custom query
+### Retrieve docs from 2 collections, filtering and sorting by `_name` field and limiting to 10
 
 ```dart
 import 'package:flutter/material.dart';
@@ -32,8 +32,11 @@ class _MyAppState extends State<MyApp> {
             TetaFutureBuilder<TetaResponse<List<dynamic>?, TetaErrorResponse?>>(
           future: TetaCMS.instance.client.query(
             '''
-              MATCH name EQ Example;
+              MATCHOR name EQ Collection1 name EQ Collection2;
               IN docs;
+              MATCHOR _name EQ 'value' _name LIKE /value2/;
+              SORT _name 1;
+              LIMIT 10;
             ''',
           ),
           builder: (final c, final snap) {
@@ -60,7 +63,7 @@ class _MyAppState extends State<MyApp> {
 }
 ```
 
-## Tutorials
+### Tutorials
 This section will be updated whenever a new tutorial is released
 
 - [Using Teta CMS for authentication in Flutter](https://teta.so/using-teta-cms-for-authentication-in-flutter/)
