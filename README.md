@@ -2,7 +2,7 @@
 
 [![pub package](https://img.shields.io/pub/v/teta_cms.svg)](https://pub.dev/packages/teta_cms)
 
-The Dart client for [Teta CMS](https://teta.so)
+The Dart client for [Teta CMS](https://teta.so?utm_source=pub.dev&utm_medium=ClickToWebsite)
 
 ### Introducing Teta CMS
 
@@ -16,7 +16,7 @@ Teta CMS is a low-code back-end service. We provide:
 
 ## Getting Started
 
-To use Teta CMS you have to create first a project on [Teta.so](https://teta.so)
+To use Teta CMS you have to create first a project on [Teta.so](https://teta.so?utm_source=pub.dev&utm_medium=ClickToWebsite)
 
 ### Compatibility
 
@@ -32,7 +32,7 @@ To use Teta CMS you have to create first a project on [Teta.so](https://teta.so)
 ## Examples
 
 ### Initialize
-To get the credentials, go to [Teta](https://teta.so) > project dashboard > Getting Started
+To get the credentials, go to [Teta](https://teta.so?utm_source=pub.dev&utm_medium=ClickToWebsite) > project dashboard > Getting Started
 
 Since you call the .initialize method, you are able to use Teta.instance anywhere in your application
 ```dart
@@ -261,6 +261,10 @@ Authentication for desktop platforms is coming soon.
 
 ---
 
+## Tutorials
+This section will be updated whenever a new tutorial is released
+
+- [Using Teta CMS for authentication in Flutter](https://teta.so/using-teta-cms-for-authentication-in-flutter/)
 
 ### Teta CMS is still in open alpha
 

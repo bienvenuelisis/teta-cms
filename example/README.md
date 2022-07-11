@@ -1,3 +1,6 @@
+## Fetch docs using a custom query
+
+```dart
 import 'package:flutter/material.dart';
 import 'package:teta_cms/teta_cms.dart';
 
@@ -55,3 +58,9 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
+```
+
+## Tutorials
+This section will be updated whenever a new tutorial is released
+
+- [Using Teta CMS for authentication in Flutter](https://teta.so/using-teta-cms-for-authentication-in-flutter/)
