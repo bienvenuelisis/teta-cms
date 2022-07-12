@@ -25,7 +25,7 @@ class TetaUserUtils {
     final accessToken = await box.get('access_tkn') as String?;
     if (accessToken != null) {
       final uri = Uri.parse(
-        'https://public.teta.so:9840/auth/info/$prjId',
+        'https://cms.teta.so:9840/auth/info/$prjId',
       );
 
       final res = await http.get(
