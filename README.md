@@ -4,7 +4,9 @@
 
 The Dart client for [Teta CMS](https://teta.so?utm_source=pub.dev&utm_medium=ClickToWebsite)
 
-### Introducing Teta CMS
+![](https://teta.so/wp-content/uploads/2022/07/bg.jpg)
+
+## Introducing Teta CMS
 
 Teta CMS is a low-code back-end service. We provide:
 
@@ -265,6 +267,7 @@ Authentication for desktop platforms is coming soon.
 This section will be updated whenever a new tutorial is released
 
 - [Using Teta CMS for authentication in Flutter](https://teta.so/using-teta-cms-for-authentication-in-flutter/)
+- [Secure your database with Teta CMS policies]( https://teta.so/policies/)
 
 ### Teta CMS is still in open alpha
 

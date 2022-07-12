@@ -25,7 +25,8 @@
 * Expose the StreamController to control and close it more easily
 * Adapt TetaStreamBuilder to handle a StreamController, closing it at the dispose event
 
-# 0.1.6+1
+# 0.1.7
 
-* Adding collections policies
+* Add collections policies
 * Improve README with Teta Auth deeplink configuration
+* Improve example/README with an advanced example and tutorials library
