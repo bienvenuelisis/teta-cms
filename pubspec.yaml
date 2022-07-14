@@ -1,6 +1,6 @@
 name: teta_cms
 description: The Dart client for Teta CMS. Our mission is to help people build amazing products.
-version: 0.1.7+1
+version: 0.1.7+2
 homepage: 'https://teta.so'
 repository: https://github.com/teta-so/cms
 documentation: https://teta.so/flutter-docs
