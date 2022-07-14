@@ -75,6 +75,17 @@ if (response.error != null) {
 }
 ```
 
+With Ayaya, you can join two or more collections:
+
+```dart
+// Fetch all docs in `Collection1` and `Collection2`
+final response = await TetaCMS.instance.client.query(
+  '''
+    MATCHOR name EQ Collection1 name EQ Collection2;
+  ''', 
+);
+```
+
 ### Fetch docs
 
 ```dart
@@ -109,6 +120,9 @@ TetaFutureBuilder(
 ```
 
 TetaFutureBuilder supports any future. You can also use it to run an [Ayaya](https://teta.so/ayaya-language/) query.
+
+**[See other examples](https://pub.dev/packages/teta_cms/example).** 
+
 
 ### Realtime
 

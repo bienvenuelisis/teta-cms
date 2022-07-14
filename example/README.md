@@ -63,6 +63,64 @@ class _MyAppState extends State<MyApp> {
 }
 ```
 
+### Documents
+
+Insert
+
+```dart
+final res = await TetaCMS.instance.client.insertDocument(
+  collectionId,
+  <String, dynamic>{'name': 'Giulia', 'city': 'Roma'},
+);
+```
+
+Update
+
+```dart
+final res = await TetaCMS.instance.client.updateDocument(
+  collectionId,
+  documentId,
+  <String, dynamic>{'name': 'Alessia', 'city': 'Milano'},
+);
+```
+
+Delete
+
+```dart
+final res = await TetaCMS.instance.client.deleteDocument(
+  collectionId,
+  documentId,
+);
+```
+
+### Collections
+
+Create
+
+```dart
+final res = await TetaCMS.instance.client.createCollection(
+  collectionName,
+);
+```
+
+Update
+
+```dart
+final res = await TetaCMS.instance.client.updateCollection(
+  collectionId,
+  newName,
+  <String, dynamic>{'key': 'value', 'key': 'value'},
+);
+```
+
+Delete
+
+```dart
+final res = await TetaCMS.instance.client.deleteCollection(
+  collectionId,
+);
+```
+
 ### Tutorials
 This section will be updated whenever a new tutorial is released
 
