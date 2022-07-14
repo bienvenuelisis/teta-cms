@@ -68,3 +68,6 @@ This section will be updated whenever a new tutorial is released
 
 - [Using Teta CMS for authentication in Flutter](https://teta.so/using-teta-cms-for-authentication-in-flutter/)
 - [Secure your database with Teta CMS policies](https://teta.so/policies/)
+
+## Docs
+See our Flutter docs on [teta.so/flutter-docs](https://teta.so/flutter-docs)

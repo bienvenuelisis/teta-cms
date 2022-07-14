@@ -4,7 +4,7 @@
 
 The Dart client for [Teta CMS](https://teta.so?utm_source=pub.dev&utm_medium=ClickToWebsite)
 
-![](https://teta.so/wp-content/uploads/2022/07/bg.jpg)
+![Teta dashboard screenshots](https://teta.so/wp-content/uploads/2022/07/bg-1.jpg)
 
 ## Introducing Teta CMS
 
@@ -196,9 +196,9 @@ To open a browser and return to the application after successful login, you need
 ### Teta social OAuth config
 
 Follow our docs for the following OAuth providers:
-- [Google](https://teta.so/login-with-google/)
-- [Apple](https://teta.so/login-with-apple/)
-- [GitHub](https://teta.so/login-with-github/)
+- [Login with Google](https://teta.so/login-with-google/)
+- [Login with Apple](https://teta.so/login-with-apple/)
+- [Login with GitHub](https://teta.so/login-with-github/)
 
 ### Android
 
@@ -269,7 +269,10 @@ This section will be updated whenever a new tutorial is released
 - [Using Teta CMS for authentication in Flutter](https://teta.so/using-teta-cms-for-authentication-in-flutter/)
 - [Secure your database with Teta CMS policies](https://teta.so/policies/)
 
-### Teta CMS is still in open alpha
+## Docs
+See our Flutter docs on [teta.so/flutter-docs](https://teta.so/flutter-docs)
+
+## Teta CMS is still in open alpha
 
 - [x] Closed Alpha;
 - [x] Open Alpha: We could still introduce some big changes;
